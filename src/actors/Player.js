@@ -49,6 +49,8 @@ export class Player {
     this.carrying = false;
     this.noclip = false;
     this.enabled = true;
+    this.ladders = []; // Box3 volumes: inside one, W/S climb
+    this.onLadder = false;
 
     this.standHalf = P.height / 2 - P.radius;
     this.crouchHalf = P.crouchHeight / 2 - P.radius;
@@ -226,7 +228,18 @@ export class Player {
       this.grounded = false;
       Events.emit('player:jump', { position: this.curFeet.clone() });
     }
-    this.vel.y += CONFIG.physics.gravity * dt;
+    // ladders: inside a ladder volume, forward/back climbs and gravity is off
+    const tb = this.body.translation();
+    _tmp.set(tb.x, tb.y, tb.z);
+    this.onLadder = this.ladders.some((b) => b.containsPoint(_tmp));
+    if (this.onLadder && (Math.abs(my) > 0.1 || this.vel.y > 0 || inp.down('jump'))) {
+      const up = inp.down('jump') ? 1 : my;
+      this.vel.y = up * P.climbSpeed;
+      // forward means "up" on a ladder: barely drift sideways
+      this.vel.x *= 0.12;
+      this.vel.z *= 0.12;
+      this.coyote = 0;
+    } else this.vel.y += CONFIG.physics.gravity * dt;
 
     const desired = { x: this.vel.x * dt, y: this.vel.y * dt, z: this.vel.z * dt };
     this.controller.computeColliderMovement(this.collider, desired, RAPIER.QueryFilterFlags.EXCLUDE_SENSORS);

@@ -23,7 +23,7 @@ export class LightManager {
   // PointLight in their group as a marker: we take its settings and remove it.
   addFrom(obj) {
     const found = [];
-    obj.traverse((o) => { if (o.isPointLight) found.push(o); });
+    obj.traverse((o) => { if (o.isPointLight && !o.userData.registered) found.push(o); });
     for (const l of found) {
       const marker = l.parent;
       const src = {
@@ -31,6 +31,7 @@ export class LightManager {
         distance: l.distance || 5, decay: l.decay, on: true, flicker: 1, wp: l.position.clone(),
       };
       l.visible = false;
+      l.userData.registered = true;
       l.intensity = 0;
       this.sources.push(src);
       marker.userData.lightSource = src;

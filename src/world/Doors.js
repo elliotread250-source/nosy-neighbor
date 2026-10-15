@@ -8,6 +8,7 @@ import { makeMat } from '../art/Materials.js';
 import { roundedBox, chamferCylinder } from '../art/Geo.js';
 import * as Tex from '../art/CanvasTextures.js';
 import { CONFIG } from '../config.js';
+import { bakeStatic } from '../art/Bake.js';
 
 const DEG = Math.PI / 180;
 const _p = new Vector3();
@@ -128,6 +129,7 @@ export class Door {
     g.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
     this.slab = g;
     this.pivot.add(g);
+    if (!o.front) bakeStatic(g, `door-${o.id}`);
   }
 
   addBoards(n = 3) {
@@ -189,8 +191,9 @@ export class Door {
   // Open away from whoever is pushing.
   open(from, bang = false) {
     if (this.locked) return false;
+    // positive angle swings the leaf toward local -z: away from a pusher on +z
     const side = from ? this.sideOf(from) : this.swing;
-    this.target = -side * this.openAngle;
+    this.target = side * this.openAngle;
     if (this.o.saloon || this.o.both === false) this.target = this.swing * this.openAngle;
     this.speed = bang ? 12 : 3.2;
     if (bang) {

@@ -61,6 +61,8 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
   // F2 slab: roof deck over F1, floor of the mint wing
   const s2 = FLOOR_Y.F2;
   B.EXT.floorWithHoles(-7, 8.6, NH.z0, -13.2, s2, NH.slab, mats.deck, HOLES.F2.concat([[-7, 2, -26, -18]]));
+  // plaster underside so rooms below the roof deck get a proper ceiling
+  B.EXT.floorWithHoles(-7, 8.6, NH.z0, -13.2, s2 - NH.slab + 0.02, 0.03, mats.ceiling, HOLES.F2.concat([[-7, 2, -26, -18]]), { collide: false, cast: false });
   B.F2.floorWithHoles(-7, 2, NH.z0, -18, s2, NH.slab, mats.ceiling, HOLES.F2);
   // mint wing ceiling = tower floor
   B.F2.floorWithHoles(-7, 2, NH.z0, -18, FLOOR_Y.F2 + NH.F2.h + 0.2, 0.2, mats.ceiling, HOLES.TW);
@@ -250,9 +252,30 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
   // mint wing: slate-blue gable roof (leans with the wing)
   const mintTop = FLOOR_Y.F2 + NH.F2.h + 0.2;
   B.F2.gableRoof({
-    x: -2.5, z: -22, w: 9, d: 8, y: mintTop, pitch: 25, overhang: 0.6, t: 0.28,
+    x: -2.5, z: -22, w: 9, d: 8, y: mintTop, pitch: 25, overhang: 0.6, t: 0.28, slabs: false,
     mat: mats.roofAlt, gableMat: sidingFor('NH_SIDING_ALT'), fasciaMat: mats.trim, axis: 'x', sag: 0.12,
   });
+  // roof slopes built in pieces so the attic tower rises cleanly through them
+  {
+    const p = 25 * DEG, ridgeZ = -22, half = 4, over = 0.6, t = 0.28;
+    const TWr = NH.TOWER;
+    const yAt = (z) => mintTop + (half - Math.abs(z - ridgeZ)) * Math.tan(p);
+    const slab = (x0, x1, zA, zB) => {
+      // zA..zB along one slope (both on the same side of the ridge)
+      const zm = (zA + zB) / 2, L = Math.abs(zB - zA);
+      const south = zm > ridgeZ;
+      B.F2.box(x1 - x0, t, L / Math.cos(p), mats.roofAlt, (x0 + x1) / 2, yAt(zm), zm, { rotX: south ? p : -p, radius: 0.06, worldUV: false, wobble: 0.004 });
+    };
+    const xs = [[-7 - over, TWr.x0], [TWr.x0, TWr.x1], [TWr.x1, 2 + over]];
+    const southEave = -18 + over, northEave = -26 - over;
+    for (const [x0, x1] of xs) {
+      const mid = x0 === TWr.x0;
+      slab(x0, x1, mid ? TWr.z1 : ridgeZ, southEave);
+      slab(x0, x1, northEave, mid ? TWr.z0 : ridgeZ);
+    }
+    // ridge cap
+    B.F2.box(9 + over * 2, 0.16, 0.36, mats.trim, -2.5, yAt(ridgeZ) + 0.06, ridgeZ, { radius: 0.06, collide: false });
+  }
   // tomato room: shed roof tipping out over the yard
   B.TR.box(4.8, 0.2, 4.8, mats.roof, (T.x0 + T.x1) / 2, T.y + T.h + 0.15, (T.z0 + T.z1) / 2, { rotZ: -12 * DEG, radius: 0.05, worldUV: false });
 
@@ -272,6 +295,7 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
   const vane = buildWeathervane();
   vane.position.set(cone.position.x + 0.05, twTop + coneH - 0.15, cone.position.z);
   vane.rotation.z = 7 * DEG;
+  vane.userData.noBake = true;
   root.add(vane);
   let vaneT = 0, vaneTarget = 0;
   updaters.push((dt, t) => {
@@ -286,6 +310,7 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
   // single bare bulb glowing in the attic window
   const bulb = new Mesh(new SphereGeometry(0.09, 12, 8), makeMat('LAMPSHADE', { emissive: 'LAMPSHADE_GLOW', emissiveIntensity: 1.6 }));
   bulb.position.set(-3.5 + B.TW.shearAt(TW.y + 2.3).x, TW.y + 2.3, -20.6);
+  bulb.userData.noBake = true;
   root.add(bulb);
 
   // ------------------------------------------------------------ chimneys
@@ -324,6 +349,7 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
     hat.rotation.z = -10 * DEG;
     root.add(hat);
     const smoke = buildSmoke(new Vector3(tipX, 15.5, sz));
+    smoke.group.userData.noBake = true;
     root.add(smoke.group);
     updaters.push(smoke.update);
   }
@@ -403,6 +429,7 @@ export function buildNeighborHouse(scene, physics, { doors, windows, lights, zon
   flood.add(fl, lens);
   flood.position.set(-2, FLOOR_Y.F0 + 3.2, NH.z0 - 0.35);
   flood.rotation.set(0.5, Math.PI, 0);
+  flood.userData.noBake = true;
   root.add(flood);
 
   // west side: slanted cellar doors with a heavy chain and a big orange padlock

@@ -43,6 +43,24 @@ const SHOTS = {
   nhWest: { pos: [-15, 2.5, -8], target: [-4, 6, -22] },
   nhTree: { pos: [13.5, 2.0, -11.0], target: [10.5, 4.5, -16.5] },
   nhRoof: { pos: [16, 14, -6], target: [-1, 9, -22] },
+  // Inside
+  inHall: { pos: [0.25, 2.2, -14.4], target: [0.2, 1.8, -21.5] },
+  inLiving: { pos: [-2.2, 2.2, -21.3], target: [-6.0, 1.2, -15.5] },
+  inDining: { pos: [2.0, 2.3, -14.6], target: [6.5, 1.0, -19.5] },
+  inKitchen: { pos: [2.3, 2.2, -20.5], target: [7, 1.0, -25.5] },
+  inMudroom: { pos: [-0.6, 2.2, -22.5], target: [-4, 1, -25.6] },
+  inBath0: { pos: [-4.9, 2.1, -22.3], target: [-7.4, 1, -25.5] },
+  inHall1: { pos: [-1.0, 6.2, -14.5], target: [-1, 5.6, -26] },
+  inBedroom: { pos: [-2.8, 6.2, -14.5], target: [-6.5, 5.0, -19.5] },
+  inStudy: { pos: [1.2, 6.2, -14.4], target: [6.5, 5.0, -18.5] },
+  inKid: { pos: [1.0, 6.3, -20.0], target: [7.5, 5.2, -23.0] },
+  inCloset: { pos: [0.9, 6.2, -24.1], target: [7.5, 5.3, -25.8] },
+  inLanding: { pos: [-1.6, 9.9, -25.2], target: [-6.5, 9.2, -18.5] },
+  inPurple: { pos: [0.6, 9.9, -25.4], target: [0.4, 9.0, -18.5] },
+  inTomato: { pos: [5.5, 10.4, -19.6], target: [8.5, 9.5, -22.5] },
+  inAttic: { pos: [-2.4, 13.6, -20.4], target: [-4.5, 12.5, -22.8] },
+  inTunnel: { pos: [-3.8, -0.9, -25.3], target: [-0.3, -1.6, -25.3] },
+  inBasement: { pos: [0.75, 1.6, -21.5], target: [0.75, -1.6, -25.6] },
 };
 
 function poseFromTarget(pos, target) {
@@ -71,6 +89,7 @@ async function boot() {
 
   const player = new Player(engine, physics, input);
   player.spawn(level.spawn, level.spawnYaw);
+  if (level.interior) player.ladders = level.interior.ladderVolumes;
 
   const hud = new HUD(document.getElementById('hud'));
   const debug = new DebugOverlay(document.getElementById('debug'), { engine, physics, player, input });
@@ -116,6 +135,7 @@ async function boot() {
     ToonShared.uTime.value = t;
     for (const u of updaters) u(dt, t);
     lights.update(engine.camera.position);
+    level.updateCulling?.(engine.camera.position);
     indoorK = MathUtils.damp(indoorK, zones.isIndoor(engine.camera.position) ? 1 : 0, CONFIG.lighting.indoorFade, dt);
     lighting.setIndoor(indoorK);
     lighting.update(engine.camera.position);

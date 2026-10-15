@@ -117,6 +117,7 @@ export function buildPlayerHouse(parent, physics, lights) {
   place(F.rug('ph-rug', { w: 2.6, d: 2.0, color: 'CARPET_GREEN', pattern: 'circles' }), -2.6, 17.6, 0, false, y0 + 0.02);
   place(F.sofa('ph-sofa', 'BLUE_TOY', 2), -1.4, 17.6, -Math.PI / 2);
   const tvSet = place(F.tv('ph-tv'), -4.35, 17.6, Math.PI / 2);
+  tvSet.userData.noBake = true;
   const lampL = place(F.lamp('ph-lamp', { h: 1.9 }), -4.4, 15.0, 0, false);
   lights?.addFrom(lampL);
   place(F.bookshelf('ph-shelf', { w: 1.0, h: 1.8, leanDeg: 0.5, rows: 3 }), -0.3, 15.0, Math.PI);
@@ -134,6 +135,7 @@ export function buildPlayerHouse(parent, physics, lights) {
   const lampB = place(F.lamp('ph-lampB', { kind: 'table', base: 'SKY_TOY' }), 4.6, 16.75, 0, false, y0 + 0.55);
   lights?.addFrom(lampB);
   const radio = place(F.radio('ph-radio'), 1.3, 21.55, Math.PI, false, y0 + 0.86);
+  radio.userData.noBake = true;
   place(F.dresser('ph-dresser'), 1.6, 21.55, Math.PI);
   place(F.wardrobe('ph-wardrobe', 'WOOD_LIGHT'), 3.6, 21.4, Math.PI);
   const posterA = F.frame('ph-poster', { w: 0.7, h: 0.9, color: 'RED_TOY', pic: 'SKY_TOY' });

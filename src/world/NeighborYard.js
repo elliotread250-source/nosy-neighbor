@@ -122,6 +122,7 @@ export function buildNeighborYard(scene, physics, { doors }) {
   const gnome = S.gnome();
   gnome.scale.setScalar(1.25);
   gnome.position.set(-5.5, 0, -10.6);
+  gnome.userData.noBake = true;
   root.add(gnome);
   const mat = S.doormat('GO AWAY');
   mat.position.set(0, NH.porch.y + 0.01, -13.45);
@@ -183,6 +184,7 @@ export function buildNeighborYard(scene, physics, { doors }) {
       water.add(blob);
     }
     pool.add(rim, floor, water);
+    pool.userData.noBake = true;
     pool.position.set(5, 0, -29.5);
     pool.traverse((m) => { if (m.isMesh) m.receiveShadow = true; });
     root.add(pool);
@@ -197,6 +199,7 @@ export function buildNeighborYard(scene, physics, { doors }) {
     const wheel = new Mesh(new TorusGeometry(0.14, 0.035, 8, 16), makeMat('RED_TOY', { spec: 0.4 }));
     const hub = new Mesh(new SphereGeometry(0.05, 8, 6), makeMat('METAL'));
     valve.add(wheel, hub);
+    valve.userData.noBake = true;
     valve.position.set(2.8, 0.45, -29.5);
     valve.rotation.y = Math.PI / 2;
     const stem = new Mesh(chamferCylinder(0.04, 0.04, 0.3, 8, 0.01, { bottom: true }), makeMat('METAL'));
@@ -233,6 +236,7 @@ export function buildNeighborYard(scene, physics, { doors }) {
       obj.rotation.y = -ang;
       obj.castShadow = true;
       obj.traverse((m) => { if (m.isMesh) m.castShadow = true; });
+      obj.userData.noBake = true;
       root.add(obj);
     };
     place(vest, 0.35, 0.38);

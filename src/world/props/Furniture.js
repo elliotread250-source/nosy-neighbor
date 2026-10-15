@@ -24,7 +24,7 @@ function m(geo, mat, { cast = true, receive = true } = {}) {
 
 // Rounded box, base at y=0, with optional warps, smoothed.
 function rb(w, h, d, r, warp = {}, name = '') {
-  const g = roundedBox(w, h, d, r ?? Math.min(w, h, d) * 0.12, undefined, { bottom: true, skipNormals: true, midStep: warp.midStep ?? 0.35 });
+  const g = roundedBox(w, h, d, r ?? Math.min(w, h, d) * 0.12, undefined, { bottom: true, skipNormals: true, midStep: warp.midStep ?? 0.6 });
   if (warp.taper) taper(g, warp.taper, 1);
   if (warp.bulge) bulge(g, warp.bulge);
   if (warp.sag) sag(g, warp.sag, warp.sagAxis ?? 'x');
@@ -69,6 +69,7 @@ export function wardrobe(name, color = 'WOOD_MID') {
     kn.position.set(-s * 0.5, 1.1, 0.09);
     pivot.add(dg, inset, kn);
     pivot.rotation.x = -leanDeg * DEG;
+    pivot.userData.noBake = true;
     g.add(pivot);
     doors.push(pivot);
   }
@@ -341,6 +342,7 @@ export function tv(name, { on = true } = {}) {
     ant.rotation.z = -s * 30 * DEG;
     g.add(ant);
   }
+  screen.userData.noBake = true;
   g.userData.screen = screen;
   return g;
 }
@@ -510,6 +512,7 @@ export function washingMachine(name) {
   dial.rotation.x = Math.PI / 2;
   dial.position.set(0.22, 0.83, 0.37);
   g.add(dial);
+  dial.userData.noBake = true;
   g.userData.dial = dial;
   return g;
 }
@@ -541,6 +544,7 @@ export function grandfatherClock(name) {
   bob.rotation.x = Math.PI / 2;
   bob.position.y = -0.82;
   pend.add(rod, bob);
+  pend.userData.noBake = true;
   pend.position.set(0.02, 1.85, 0.25);
   g.add(pend);
   g.userData.update = (dt, t) => { pend.rotation.z = Math.sin(t * Math.PI) * 0.22; };

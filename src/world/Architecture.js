@@ -332,6 +332,7 @@ export class Builder {
     const slope = half / Math.cos(pitch);
     const rise = (span / 2) * Math.tan(pitch);
     for (const s of [-1, 1]) {
+      if (o.slabs === false) break;
       // slab centered on its slope
       const cx = axis === 'x' ? 0 : s * (half / 2);
       const cz = axis === 'x' ? s * (half / 2) : 0;

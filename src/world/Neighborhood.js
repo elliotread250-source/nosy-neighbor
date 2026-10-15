@@ -122,6 +122,7 @@ export function buildNeighborhood(scene, physics, lights, zones) {
   bk.rotation.y = 30 * DEG;
   root.add(bk);
   const spr = S.sprinkler();
+  spr.userData.noBake = true;
   spr.position.set(25, 0, 8.5);
   spr.rotation.y = Math.PI;
   root.add(spr);

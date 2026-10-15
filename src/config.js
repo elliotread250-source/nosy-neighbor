@@ -76,6 +76,7 @@ export const CONFIG = {
     leanRoll: 8,
     leanLerp: 9,
     noclipSpeed: 10,
+    climbSpeed: 2.6,
   },
 
   world: {
@@ -158,6 +159,15 @@ export const CONFIG = {
     colorMul: 0.25,
     toward: 'OUTLINE_BASE',
     towardAmount: 0.5,
+  },
+
+  godRays: {
+    opacity: 0.15,
+    motesPerWindow: 40,
+  },
+
+  interior: {
+    cullDistance: 42, // outdoors, interiors beyond this are hidden
   },
 
   fog: {

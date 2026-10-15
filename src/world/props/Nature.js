@@ -79,7 +79,7 @@ export function tree(name, opts = {}) {
     g.add(bm);
     // leaf puff at the end
     const puff = new Mesh(blob(r, 0.9, 3, `${name}puff`), makeMat('GRASS', { rim: 0.2, wind: 0.004 }));
-    puff.position.set(b.dir[0] * len * 0.95, b.y + 0.9, b.dir[1] * len * 0.95);
+    puff.position.set(b.dir[0] * len * 0.45, b.y + 1.4, b.dir[1] * len * 0.45);
     puff.castShadow = true;
     g.add(puff);
     branch = { mesh: bm, length: len, angle: ang };

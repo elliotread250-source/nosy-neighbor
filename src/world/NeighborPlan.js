@@ -66,7 +66,7 @@ export const WALLS = [
     openings: [W(6, 0.7, 1.1, 2.3, { id: 'w-hallEnd' }), W(11, 0.6, 1.4, 2.4, { id: 'w-closet' })] },
   // ---- F1 interior ----
   { id: 'f1-hallW', floor: 'F1', kind: 'int', axis: 'z', from: -14, to: -26, at: -2.4,
-    openings: [D(1.2, { id: 'd-fake', fake: true }), D(4.5, { id: 'd-bedroom' }), D(8, { id: 'd-bath1' }), D(10.8, { id: 'd-stair2' })] },
+    openings: [D(1.2, { id: 'd-fake', fake: true }), D(4.5, { id: 'd-bedroom' }), D(8, { id: 'd-bath1' }), D(10.3, { id: 'd-stair2' })] },
   { id: 'f1-hallE', floor: 'F1', kind: 'int', axis: 'z', from: -14, to: -26, at: 0.4,
     openings: [D(2.8, { id: 'd-study' }), D(7.6, { id: 'd-kid', lock: 'blue' }), D(10.9, { id: 'd-closet', lock: 'red' })] },
   { id: 'f1-bedBath', floor: 'F1', kind: 'int', axis: 'x', from: -7, to: -2.4, at: -20.5, openings: [] },
@@ -111,7 +111,8 @@ export const ROOMS = [
   { id: 'bedroom', name: "Grimsby's bedroom", floor: 'F1', x0: -7, x1: -2.4, z0: -20.5, z1: -14, paper: ['diamonds', 'WALLPAPER_BLUE', 'WALLPAPER_BLUE_DIAMOND'], floorMat: 'carpetGreen' },
   { id: 'bath1', name: 'Upstairs bathroom', floor: 'F1', x0: -7, x1: -2.4, z0: -23.5, z1: -20.5, paper: ['pinstripes', 'WALLPAPER_YELLOW', 'YELLOW_TOY'], floorMat: 'yellowTile' },
   { id: 'stair2', name: 'Back stairwell', floor: 'F1', x0: -7, x1: -2.4, z0: -26, z1: -23.5, paint: 'WAINSCOT', floorMat: 'dark' },
-  { id: 'study', name: 'Study', floor: 'F1', x0: 0.4, x1: 8.6, z0: -19.5, z1: -13.2, paper: ['stripes', 'WALLPAPER_GREEN', 'WALLPAPER_GREEN_STRIPE'], floorMat: 'wood' },
+  { id: 'study', name: 'Study', floor: 'F1', x0: 0.4, x1: 8.6, z0: -19.5, z1: -14, paper: ['stripes', 'WALLPAPER_GREEN', 'WALLPAPER_GREEN_STRIPE'], floorMat: 'wood' },
+  { id: 'study', part: true, name: 'Study', floor: 'F1', x0: 2, x1: 8.6, z0: -14, z1: -13.2, paper: ['stripes', 'WALLPAPER_GREEN', 'WALLPAPER_GREEN_STRIPE'], floorMat: 'wood' },
   { id: 'kid', name: "Kid's room", floor: 'F1', x0: 0.4, x1: 8.6, z0: -23.8, z1: -19.5, paper: ['clouds', 'WALLPAPER_BLUE', 'WHITE'], floorMat: 'carpetRed' },
   { id: 'closet', name: 'Utility closet', floor: 'F1', x0: 0.4, x1: 8.6, z0: -26, z1: -23.8, paint: 'METAL', floorMat: 'dark' },
 
@@ -125,7 +126,7 @@ export const ROOMS = [
 export const HOLES = {
   F0: [[-4.4, -3.2, -25.9, -24.7], [0.1, 1.4, -25.8, -22.2]], // washer stair (secret), basement stair
   F1: [[-1.42, -0.28, -22.0, -17.15], [-0.8, -0.1, -23.4, -22.7]], // main stairs, ladder shaft
-  F2: [[-6.85, -2.55, -25.05, -23.65], [-0.8, -0.1, -23.4, -22.7]], // back stairs, ladder shaft
+  F2: [[-6.95, -2.7, -25.95, -23.55], [-0.8, -0.1, -23.4, -22.7]], // back stairs (U-turn), ladder shaft
   TW: [[-4.0, -3.2, -22.0, -21.2]], // attic hatch
 };
 

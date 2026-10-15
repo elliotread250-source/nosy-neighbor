@@ -8,8 +8,12 @@ import { gfx } from '../config.js';
 // UVs are in world meters on each face, so a texture's repeat = 1 / tileSizeMeters.
 export function roundedBox(w, h, d, radius, segments, opts = {}) {
   const r = Math.min(radius ?? Math.min(w, h, d) * 0.08, Math.min(w, h, d) / 2 - 1e-4);
-  const s = Math.max(1, segments ?? gfx().bevelSegments);
-  const midStep = opts.midStep ?? 0.6; // target interior segment length in meters
+  let s = Math.max(1, segments ?? gfx().bevelSegments);
+  // small things don't need many bevel rings
+  const minDim = Math.min(w, h, d);
+  if (minDim < 0.1) s = Math.min(s, 1);
+  else if (minDim < 0.35) s = Math.min(s, 2);
+  const midStep = opts.midStep ?? 0.9; // target interior segment length in meters
   const midMax = opts.midMax ?? 8;
   const mx = Math.max(1, Math.min(midMax, Math.ceil(w / midStep)));
   const my = Math.max(1, Math.min(midMax, Math.ceil(h / midStep)));
