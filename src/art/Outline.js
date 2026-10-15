@@ -12,6 +12,9 @@ const VERT = /* glsl */ `
 #include <common>
 #include <fog_pars_vertex>
 #include <skinning_pars_vertex>
+#ifdef USE_COLOR
+varying vec3 vOutlineColor;
+#endif
 uniform float uThickness;
 uniform float uRefDist;
 uniform float uMinScale;
@@ -28,6 +31,9 @@ void main() {
   transformed += n * (uThickness * s) / max(sc, vec3(1e-4));
   vec4 mvPosition = modelViewMatrix * vec4(transformed, 1.0);
   gl_Position = projectionMatrix * mvPosition;
+  #ifdef USE_COLOR
+  vOutlineColor = color;
+  #endif
   #include <fog_vertex>
 }
 `;
@@ -37,8 +43,18 @@ const FRAG = /* glsl */ `
 #include <fog_pars_fragment>
 uniform vec3 uColor;
 uniform float uOpacity;
+uniform vec3 uToward;
+uniform float uMul;
+uniform float uTowardAmt;
+#ifdef USE_COLOR
+varying vec3 vOutlineColor;
+#endif
 void main() {
-  gl_FragColor = vec4(uColor, uOpacity);
+  vec3 c = uColor;
+  #ifdef USE_COLOR
+  c = mix(vOutlineColor * uMul, uToward, uTowardAmt);
+  #endif
+  gl_FragColor = vec4(c, uOpacity);
   #include <colorspace_fragment>
   #include <fog_fragment>
 }
@@ -51,7 +67,7 @@ export function outlineColorFor(base) {
 }
 
 export function makeOutlineMaterial(baseColor, thickness = O.thickness, opts = {}) {
-  const key = `${baseColor.getHexString()}-${thickness}-${opts.unique ? Math.random() : ''}`;
+  const key = `${baseColor.getHexString()}-${thickness}-${opts.vertexColors ? 'vc' : ''}-${opts.unique ? Math.random() : ''}`;
   if (!opts.unique && cache.has(key)) return cache.get(key);
   const mat = new ShaderMaterial({
     uniforms: UniformsUtils.merge([
@@ -63,12 +79,16 @@ export function makeOutlineMaterial(baseColor, thickness = O.thickness, opts = {
         uRefDist: { value: O.refDistance },
         uMinScale: { value: O.minScale },
         uMaxScale: { value: O.maxScale },
+        uToward: { value: Palette[O.toward].clone() },
+        uMul: { value: O.colorMul },
+        uTowardAmt: { value: O.towardAmount },
       },
     ]),
     vertexShader: VERT,
     fragmentShader: FRAG,
     side: BackSide,
     fog: true,
+    vertexColors: !!opts.vertexColors,
   });
   mat.userData.baseThickness = thickness;
   if (!opts.unique) cache.set(key, mat);
@@ -84,11 +104,14 @@ export function addOutline(obj, opts = {}) {
   const out = [];
   const targets = [];
   obj.traverse((m) => {
-    if (m.isMesh && !m.userData.isOutline && !m.userData.noOutline) targets.push(m);
+    if (!m.isMesh || m.userData.isOutline) return;
+    for (let p = m; p && p !== obj; p = p.parent) if (p.userData.noOutline) return;
+    targets.push(m);
   });
   for (const m of targets) {
     const base = m.material?.color ? m.material.color : new Color(0.5, 0.5, 0.5);
-    const mat = makeOutlineMaterial(base, opts.thickness ?? O.thickness, opts);
+    const vc = !!m.geometry.attributes.color && !!m.material.vertexColors;
+    const mat = makeOutlineMaterial(base, opts.thickness ?? O.thickness, { ...opts, vertexColors: vc });
     const hull = new Mesh(m.geometry, mat);
     hull.userData.isOutline = true;
     hull.castShadow = false;

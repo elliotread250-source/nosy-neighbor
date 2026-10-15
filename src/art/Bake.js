@@ -21,7 +21,7 @@ function shadingClass(mat) {
   };
 }
 
-export function bakeStatic(group, name = 'baked') {
+export function bakeStatic(group, name = 'baked', bakeOpts = {}) {
   group.updateMatrixWorld(true);
   const buckets = new Map();
   const remove = [];
@@ -63,7 +63,7 @@ export function bakeStatic(group, name = 'baked') {
     const g = mergeGeometries(e.geos, false);
     if (!g) continue;
     const mat = e.sc
-      ? makeMat('WHITE', { vertexColors: true, rim: e.sc.rim, spec: e.sc.spec, skin: e.sc.skin, side: e.sc.side, fog: e.sc.fog })
+      ? makeMat('WHITE', { vertexColors: true, rim: e.sc.rim, spec: e.sc.spec, skin: e.sc.skin, side: e.sc.side, fog: e.sc.fog, unique: !!bakeOpts.unique })
       : e.mat;
     const m = new Mesh(g, mat);
     m.castShadow = e.cast;
@@ -84,16 +84,16 @@ export function bakeStatic(group, name = 'baked') {
 
 // Bake an object locally, then recurse into each animated (noBake) part so
 // even a wardrobe door or a tub curtain becomes one or two meshes.
-export function bakeDeep(obj, name = 'deep') {
+export function bakeDeep(obj, name = 'deep', opts = {}) {
   const flag = obj.userData.noBake;
   obj.userData.noBake = false;
   const parts = [];
   obj.traverse((o) => { if (o !== obj && o.userData.noBake && !parts.some((p) => isAncestor(p, o))) parts.push(o); });
-  bakeStatic(obj, name);
+  bakeStatic(obj, name, opts);
   for (const p of parts) {
     let n = 0;
     p.traverse((o) => { if (o.isMesh) n++; });
-    if (n > 1) bakeDeep(p, `${name}-part`);
+    if (n > 1) bakeDeep(p, `${name}-part`, opts);
     p.userData.noBake = true;
   }
   obj.userData.noBake = flag;

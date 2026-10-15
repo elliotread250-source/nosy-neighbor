@@ -12,10 +12,11 @@ import { buildWorld } from './world/World.js';
 import { LightManager } from './world/Lights.js';
 import { Zones } from './world/Zones.js';
 import { ToonShared } from './art/Materials.js';
-import { MathUtils } from 'three';
+import { MathUtils, MeshBasicMaterial, Color } from 'three';
 import { Player } from './actors/Player.js';
 import { HUD } from './ui/HUD.js';
 import { DebugOverlay } from './ui/DebugOverlay.js';
+import { Neighbor, EXPRESSIONS } from './actors/Neighbor.js';
 
 // Fixed camera poses for automated screenshots: ?shot=<name>
 const SHOTS = {
@@ -61,6 +62,14 @@ const SHOTS = {
   inAttic: { pos: [-2.4, 13.6, -20.4], target: [-4.5, 12.5, -22.8] },
   inTunnel: { pos: [-3.8, -0.9, -25.3], target: [-0.3, -1.6, -25.3] },
   inBasement: { pos: [0.75, 1.6, -21.5], target: [0.75, -1.6, -25.6] },
+  // Character viewer (?viewer=1 puts Grimsby on a turntable on the player's lawn)
+  grimFront: { pos: [2.5, 1.55, 13.4], target: [2.5, 1.15, 9.5], viewer: true },
+  grim34: { pos: [5.4, 1.6, 12.6], target: [2.5, 1.1, 9.5], viewer: true },
+  grimSide: { pos: [6.6, 1.3, 9.5], target: [2.5, 1.1, 9.5], viewer: true },
+  grimBack: { pos: [2.5, 1.6, 5.6], target: [2.5, 1.1, 9.5], viewer: true },
+  grimClose: { pos: [2.5, 1.86, 10.55], target: [2.5, 1.84, 9.5], viewer: true },
+  grimMid: { pos: [2.5, 1.5, 11.6], target: [2.5, 1.2, 9.5], viewer: true },
+  grimSilhouette: { pos: [2.5, 1.3, 39], target: [2.5, 1.1, 9.5], viewer: true },
 };
 
 function poseFromTarget(pos, target) {
@@ -90,6 +99,35 @@ async function boot() {
   const player = new Player(engine, physics, input);
   player.spawn(level.spawn, level.spawnYaw);
   if (level.interior) player.ladders = level.interior.ladderVolumes;
+
+  // ---- character viewer: Grimsby on a turntable, keys cycle expressions
+  const qs = new URLSearchParams(location.search);
+  let viewer = null;
+  if (qs.has('viewer') || (qs.get('shot') && SHOTS[qs.get('shot')]?.viewer)) {
+    viewer = new Neighbor(engine.scene);
+    viewer.root.position.set(2.5, 0, 9.5);
+    viewer.root.rotation.y = (+(qs.get('rot') || 0)) * Math.PI / 180;
+    viewer.setExpression(qs.get('expr') || 'suspicious');
+    if (qs.get('grip')) for (const s of ['L', 'R']) viewer.setGrip(s, +qs.get('grip'));
+    viewer.lookTarget = engine.camera.position;
+    const names = Object.keys(EXPRESSIONS);
+    let ei = 0;
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyX') { ei = (ei + 1) % names.length; viewer.setExpression(names[ei]); console.log('expression', names[ei]); }
+      if (e.code === 'KeyT') viewer.root.userData.spin = !viewer.root.userData.spin;
+    });
+    if (qs.has('silhouette')) {
+      const black = new MeshBasicMaterial({ color: 0x000000 });
+      viewer.root.traverse((m) => { if (m.isMesh && m.userData.isOutline) m.visible = false; else if (m.isMesh) m.material = black; });
+      engine.scene.background = new Color(0xffffff);
+      engine.scene.fog = null;
+      for (const c of [...engine.scene.children]) if (c !== viewer.root && !c.isLight && !c.isCamera) c.visible = false;
+    }
+    updaters.push((dt) => {
+      if (viewer.root.userData.spin) viewer.root.rotation.y += dt * 0.6;
+      viewer.update(dt);
+    });
+  }
 
   const hud = new HUD(document.getElementById('hud'));
   const debug = new DebugOverlay(document.getElementById('debug'), { engine, physics, player, input });
@@ -150,7 +188,7 @@ async function boot() {
   }
   requestAnimationFrame(loop);
 
-  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input, postfx, zones, lights, level } });
+  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input, postfx, zones, lights, level, viewer } });
 }
 
 boot().catch((err) => {
