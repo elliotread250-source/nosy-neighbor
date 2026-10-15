@@ -4,7 +4,7 @@ import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
 const base = process.argv[2] || 'http://localhost:5173/';
-const shots = (process.argv[3] || 'yard,furniture,chunk,character,sky,crates,fence').split(',');
+const shots = (process.argv[3] || 'porch,street,playerFront,aerial,bedroom,living,flanking,eastEnd').split(',');
 const extra = process.argv[4] || '';
 const outDir = 'screenshots';
 mkdirSync(outDir, { recursive: true });

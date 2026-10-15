@@ -94,12 +94,15 @@ function eachVertex(geo, fn) {
 // ---------- Warps ----------
 
 // Shear along X or Z proportional to height above the base. Base stays planted.
-export function lean(geo, angleDeg, axis = 'z') {
+// baseY: shear pivot height (defaults to the geometry's own base). Pass a
+// shared baseY to lean several pieces of one wall consistently.
+export function lean(geo, angleDeg, axis = 'z', baseY) {
   const b = bounds(geo);
+  const y0 = baseY ?? b.min.y;
   const k = Math.tan(angleDeg * DEG * intensity());
   const off = axis === 'x' ? 0 : 2;
   return eachVertex(geo, (a, i) => {
-    a[i + off] += (a[i + 1] - b.min.y) * k;
+    a[i + off] += (a[i + 1] - y0) * k;
   });
 }
 

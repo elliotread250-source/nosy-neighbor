@@ -81,6 +81,7 @@ export const CONFIG = {
   world: {
     warpIntensity: 1.0, // global multiplier on every warp. Crank it for dream sequences.
     worldSeed: 1337,
+    windStrength: 1.0,
   },
 
   lighting: {
@@ -94,9 +95,14 @@ export const CONFIG = {
     shadowNormalBias: 0.07,
     shadowSoftness: 3,
     hemiIntensity: 1.45,
+    hemiIntensityIndoor: 1.15,
+    indoorFade: 3, // crossfade speed
     hemiSky: 'HEMI_SKY_DAY',
     hemiGround: 'HEMI_GROUND_DAY',
     ambientIntensity: 0.15,
+    maxPointLights: 8,
+    lampIntensity: 0.9,
+    ambientIndoor: 0.55,
   },
 
   toon: {
@@ -113,6 +119,7 @@ export const CONFIG = {
     specThreshold: 0.92,
     specStrength: 0.35,
     minBrightness: 0.27, // ambient lift floor, fraction of albedo
+    maxBrightness: 1.15, // lit color never exceeds this multiple of albedo
   },
 
   post: {
@@ -127,7 +134,7 @@ export const CONFIG = {
     bloom: true,
     bloomStrength: 0.35,
     bloomRadius: 0.6,
-    bloomThreshold: 0.85,
+    bloomThreshold: 1.2, // linear; only emissives and the sun exceed it
     grade: true,
     saturation: 1.18,
     chaseSaturation: 1.35,

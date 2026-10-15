@@ -46,6 +46,9 @@ export const ToonShared = {
   uSunRef: new Uniform(CONFIG.lighting.sunIntensity / Math.PI),
   uRimColor: new Uniform(Palette[T.rimColor].clone()),
   uMinBright: new Uniform(T.minBrightness),
+  uMaxBright: new Uniform(T.maxBrightness),
+  uTime: new Uniform(0),
+  uWind: new Uniform(CONFIG.world.windStrength),
 };
 
 // indoorAmount: 0 = fully outdoors, 1 = fully indoors. Crossfade-friendly.
@@ -62,6 +65,7 @@ uniform float uShadowTintStrength;
 uniform float uSunRef;
 uniform vec3 uRimColor;
 uniform float uMinBright;
+uniform float uMaxBright;
 uniform float uRim;
 uniform float uRimPower;
 uniform float uSpec;
@@ -83,8 +87,9 @@ const FRAG_OUT = /* glsl */ `
   // hue-shift toward the tint at the same brightness, never toward black
   vec3 tinted = lit * (tint / max(nnLum(tint), 1e-3));
   lit = mix(lit, tinted, shadowAmt * uShadowTintStrength);
-  // ambient lift floor
+  // ambient lift floor, and a ceiling so close lamps never blow out
   lit = max(lit, albedo * uMinBright);
+  lit = min(lit, albedo * uMaxBright + 0.04);
 
   vec3 nView = normalize(vViewPosition);
   float fres = pow(1.0 - clamp(dot(normal, nView), 0.0, 1.0), uRimPower);
@@ -129,6 +134,7 @@ export function makeMat(colorName, o = {}) {
     o.skin ?? false,
     o.depthWrite ?? true,
     o.alphaTest ?? 0,
+    o.wind ?? 0,
   ]);
   if (!o.unique && cache.has(key)) return cache.get(key);
 
@@ -168,13 +174,29 @@ export function applyToon(mat, o = {}) {
     uSkinTintMix: new Uniform(o.skin ? 0.7 : 0),
   };
   mat.userData.toon = local;
+  const wind = o.wind ?? 0;
+  local.uWindAmt = new Uniform(wind);
   mat.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, ToonShared, local);
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>\n${FRAG_PARS}`)
       .replace('#include <opaque_fragment>', FRAG_OUT);
+    if (wind) {
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', `#include <common>\nuniform float uTime; uniform float uWind; uniform float uWindAmt;`)
+        .replace('#include <begin_vertex>', `#include <begin_vertex>
+          vec3 wOrigin = (modelMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+          #ifdef USE_INSTANCING
+            wOrigin += instanceMatrix[3].xyz;
+          #endif
+          float sway = sin(uTime * 1.9 + wOrigin.x * 0.35 + wOrigin.z * 0.27) * 0.6
+                     + sin(uTime * 3.3 + wOrigin.x * 0.9) * 0.25;
+          float hgt = max(position.y, 0.0);
+          transformed.x += sway * uWind * uWindAmt * hgt * hgt;
+          transformed.z += sway * 0.5 * uWind * uWindAmt * hgt * hgt;`);
+    }
   };
-  mat.customProgramCacheKey = () => 'nn-toon-v1';
+  mat.customProgramCacheKey = () => (wind ? 'nn-toon-v1-wind' : 'nn-toon-v1');
   return mat;
 }
 

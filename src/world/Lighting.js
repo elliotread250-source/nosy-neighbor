@@ -4,7 +4,8 @@ import { DirectionalLight, HemisphereLight, AmbientLight, Fog, Object3D, Vector3
 import { CONFIG, gfx } from '../config.js';
 import { Palette } from '../art/Palette.js';
 import { sunDirection } from '../art/Sky.js';
-import { ToonShared } from '../art/Materials.js';
+import { ToonShared, setShadowZone } from '../art/Materials.js';
+import { Color } from 'three';
 
 const L = CONFIG.lighting;
 
@@ -48,6 +49,16 @@ export class Lighting {
     );
     this.sun.target.position.copy(this._focus);
     this.sun.position.copy(this._focus).addScaledVector(this.sunDir, L.sunDistance);
+  }
+
+  // 0 = outdoors, 1 = indoors: warmer, dimmer fill and warm shadow tint.
+  setIndoor(k) {
+    this.indoor = k;
+    this.hemi.color.copy(Palette.HEMI_SKY_DAY).lerp(Palette.HEMI_SKY_IN, k);
+    this.hemi.groundColor.copy(Palette.HEMI_GROUND_DAY).lerp(Palette.HEMI_GROUND_IN, k);
+    this.hemi.intensity = L.hemiIntensity + (L.hemiIntensityIndoor - L.hemiIntensity) * k;
+    this.ambient.intensity = L.ambientIntensity + (L.ambientIndoor - L.ambientIntensity) * k;
+    setShadowZone(k);
   }
 
   setSunDirection(dir) {

@@ -337,25 +337,64 @@ export function carpet(base = 'CARPET_RED', pattern = 'border') {
   });
 }
 
-// ---------- Cartoon window glare: two diagonal bars. Stretch over the pane. ----------
+// ---------- Cartoon window glare: pale tinted glass with two diagonal bars ----------
 export function glassGlare() {
   return cached('glare', () => {
     const S = 128;
     const [c, g] = canvas(S);
     g.clearRect(0, 0, S, S);
-    g.fillStyle = css('GLASS', 1);
-    g.globalAlpha = 1;
+    g.fillStyle = css('GLASS', 0.32);
     g.fillRect(0, 0, S, S);
     g.translate(S / 2, S / 2);
     g.rotate(-Math.PI / 4);
-    g.fillStyle = 'rgba(255,255,255,0.9)';
-    g.fillRect(-S, -22, S * 2, 16);
-    g.fillStyle = 'rgba(255,255,255,0.55)';
-    g.fillRect(-S, 4, S * 2, 8);
+    g.fillStyle = 'rgba(255,255,255,0.6)';
+    g.fillRect(-S, -24, S * 2, 18);
+    g.fillStyle = 'rgba(255,255,255,0.35)';
+    g.fillRect(-S, 4, S * 2, 9);
     const t = finishTex(c, 1);
     t.wrapS = t.wrapT = 1001;
     t.repeat.set(1, 1);
     return t;
+  });
+}
+
+// ---------- Painted sign / label texture (mats, signs) ----------
+export function label(text, { bg = 'CARDBOARD', fg = 'BLACK_SOFT', w = 512, h = 256, font = 'Luckiest Guy', size = 110, rotate = 0, border = null } = {}) {
+  return cached(`label-${text}-${bg}-${fg}-${w}-${h}-${size}-${border}`, () => {
+    const [c, g] = canvas(w, h);
+    g.fillStyle = css(bg);
+    g.fillRect(0, 0, w, h);
+    if (border) {
+      g.strokeStyle = css(border);
+      g.lineWidth = 14;
+      g.strokeRect(12, 12, w - 24, h - 24);
+    }
+    g.translate(w / 2, h / 2);
+    g.rotate(rotate);
+    g.fillStyle = css(fg);
+    g.font = `${size}px "${font}", "Arial Black", Impact, sans-serif`;
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    const lines = String(text).split('\n');
+    lines.forEach((ln, i) => g.fillText(ln, 0, (i - (lines.length - 1) / 2) * size * 1.05));
+    const t = finishTex(c, 1);
+    t.wrapS = t.wrapT = 1001;
+    t.repeat.set(1, 1);
+    return t;
+  });
+}
+
+// ---------- Curtain fabric with soft vertical folds ----------
+export function curtain(base = 'WALLPAPER_PINK') {
+  return cached(`curtain-${base}`, () => {
+    const S = 128;
+    const [c, g] = canvas(S);
+    for (let x = 0; x < S; x++) {
+      const f = 0.82 + 0.18 * (0.5 + 0.5 * Math.sin((x / S) * Math.PI * 8));
+      g.fillStyle = shade(base, f);
+      g.fillRect(x, 0, 1, S);
+    }
+    return finishTex(c, 1);
   });
 }
 

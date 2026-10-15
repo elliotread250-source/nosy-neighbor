@@ -8,12 +8,18 @@ import { Sky } from './art/Sky.js';
 import { PostFX } from './art/PostFX.js';
 import { Lighting } from './world/Lighting.js';
 import { buildTestScene } from './world/TestScene.js';
+import { buildNeighborhood } from './world/Neighborhood.js';
+import { LightManager } from './world/Lights.js';
+import { Zones } from './world/Zones.js';
+import { ToonShared } from './art/Materials.js';
+import { MathUtils } from 'three';
 import { Player } from './actors/Player.js';
 import { HUD } from './ui/HUD.js';
 import { DebugOverlay } from './ui/DebugOverlay.js';
 
 // Fixed camera poses for automated screenshots: ?shot=<name>
 const SHOTS = {
+  // Milestone 1/2 test yard (?test=1)
   yard: { pos: [0, 1.6, 9], target: [0, 1.4, -8] },
   furniture: { pos: [4.2, 1.6, -3.2], target: [4, 1.1, -8] },
   chunk: { pos: [-3.5, 1.8, -1.5], target: [-8, 3, -9] },
@@ -21,6 +27,15 @@ const SHOTS = {
   sky: { pos: [0, 1.6, 6], target: [-30, 14, 10] },
   crates: { pos: [3.2, 1.6, 1.5], target: [5.5, 0.8, -2.2] },
   fence: { pos: [-8.5, 1.5, 8], target: [-9, 1.2, 2] },
+  // The street
+  porch: { pos: [-1.2, 1.9, 12.9], target: [0, 4, -20] },
+  street: { pos: [-30, 2.2, 3], target: [10, 2, 0] },
+  playerFront: { pos: [-6, 1.8, 3], target: [0, 2.5, 18] },
+  aerial: { pos: [0, 38, 48], target: [0, 0, 0] },
+  bedroom: { pos: [2.2, 1.9, 19.5], target: [2.8, 1.6, 14] },
+  living: { pos: [0.0, 1.7, 15.2], target: [-4.4, 1.0, 20] },
+  flanking: { pos: [20, 1.8, 2], target: [30, 3, 12] },
+  eastEnd: { pos: [40, 2, 0], target: [60, 1.5, 0] },
 };
 
 function poseFromTarget(pos, target) {
@@ -40,7 +55,12 @@ async function boot() {
 
   const sky = new Sky(engine.scene);
   const lighting = new Lighting(engine.scene);
-  const level = buildTestScene(engine.scene, physics);
+  const lights = new LightManager(engine.scene);
+  const zones = new Zones();
+  const useTest = new URLSearchParams(location.search).has('test');
+  const level = useTest ? buildTestScene(engine.scene, physics) : buildNeighborhood(engine.scene, physics, lights, zones);
+  const updaters = level.updaters || [];
+  let indoorK = 0;
 
   const player = new Player(engine, physics, input);
   player.spawn(level.spawn, level.spawnYaw);
@@ -85,6 +105,12 @@ async function boot() {
     input.pollGamepad();
     physics.step(dt, (h) => player.fixedUpdate(h));
     player.update(dt, physics.alpha);
+    const t = performance.now() / 1000;
+    ToonShared.uTime.value = t;
+    for (const u of updaters) u(dt, t);
+    lights.update(engine.camera.position);
+    indoorK = MathUtils.damp(indoorK, zones.isIndoor(engine.camera.position) ? 1 : 0, CONFIG.lighting.indoorFade, dt);
+    lighting.setIndoor(indoorK);
     lighting.update(engine.camera.position);
     sky.update(dt, engine.camera);
     hud.update(dt, player);
@@ -97,7 +123,7 @@ async function boot() {
   }
   requestAnimationFrame(loop);
 
-  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input, postfx } });
+  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input, postfx, zones, lights, level } });
 }
 
 boot().catch((err) => {
