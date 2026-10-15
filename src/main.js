@@ -17,6 +17,7 @@ import { Player } from './actors/Player.js';
 import { HUD } from './ui/HUD.js';
 import { DebugOverlay } from './ui/DebugOverlay.js';
 import { Neighbor, EXPRESSIONS } from './actors/Neighbor.js';
+import { NeighborAnimator, CLIPS } from './actors/NeighborAnimator.js';
 
 // Fixed camera poses for automated screenshots: ?shot=<name>
 const SHOTS = {
@@ -70,6 +71,8 @@ const SHOTS = {
   grimClose: { pos: [2.5, 1.86, 10.55], target: [2.5, 1.84, 9.5], viewer: true },
   grimMid: { pos: [2.5, 1.5, 11.6], target: [2.5, 1.2, 9.5], viewer: true },
   grimSilhouette: { pos: [2.5, 1.3, 39], target: [2.5, 1.1, 9.5], viewer: true },
+  lineup: { pos: [2.5, 1.35, 6.7], target: [2.5, 0.95, 1.0], viewer: true },
+  lineupSide: { pos: [10.5, 1.2, 1.0], target: [2.5, 0.95, 1.0], viewer: true },
 };
 
 function poseFromTarget(pos, target) {
@@ -106,6 +109,31 @@ async function boot() {
   if (qs.has('viewer') || (qs.get('shot') && SHOTS[qs.get('shot')]?.viewer)) {
     viewer = new Neighbor(engine.scene);
     viewer.root.position.set(2.5, 0, 9.5);
+    viewer.anim = new NeighborAnimator(viewer);
+    const animName = qs.get('anim') || 'idle';
+    viewer.anim.play(animName, 0);
+    viewer.anim.speed = { walk: 1.4, sneak: 1.0, run: 5.6 }[animName] ?? 0;
+    // lineup: one Grimsby per clip, side by side
+    const lineup = [];
+    if (qs.get('lineup')) {
+      const list = qs.get('lineup').split(',');
+      viewer.root.visible = false;
+      list.forEach((name, i) => {
+        const n = new Neighbor(engine.scene);
+        n.root.position.set(2.5 + (i - (list.length - 1) / 2) * 1.25, 0, 1.0);
+        n.root.rotation.y = (+(qs.get('rot') || 0)) * Math.PI / 180;
+        n.anim = new NeighborAnimator(n);
+        n.anim.allowGestures = false;
+        n.anim.play(name, 0);
+        n.anim.speed = { walk: 1.4, sneak: 1.0, run: 5.6 }[name] ?? 0;
+        n.anim.clipTime = +(qs.get('at') || 0.6) * (CLIPS[name].duration || 1);
+        n.anim.phase = +(qs.get('phase') || 0.8);
+        if (name === 'run') n.setExpression('angry');
+        if (name === 'reach') n.setExpression('scream');
+        n.lookTarget = engine.camera.position;
+        lineup.push(n);
+      });
+    }
     viewer.root.rotation.y = (+(qs.get('rot') || 0)) * Math.PI / 180;
     viewer.setExpression(qs.get('expr') || 'suspicious');
     if (qs.get('grip')) for (const s of ['L', 'R']) viewer.setGrip(s, +qs.get('grip'));
@@ -123,9 +151,21 @@ async function boot() {
       engine.scene.fog = null;
       for (const c of [...engine.scene.children]) if (c !== viewer.root && !c.isLight && !c.isCamera) c.visible = false;
     }
+    const freeze = qs.has('freeze');
     updaters.push((dt) => {
       if (viewer.root.userData.spin) viewer.root.rotation.y += dt * 0.6;
+      viewer.anim.update(dt);
       viewer.update(dt);
+      for (const n of lineup) { n.anim.update(freeze ? 0 : dt); n.update(dt); }
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyP') {
+        const names = Object.keys(CLIPS);
+        const i = (names.indexOf(viewer.anim.clip) + 1) % names.length;
+        viewer.anim.play(names[i]);
+        viewer.anim.speed = { walk: 1.4, sneak: 1.0, run: 5.6 }[names[i]] ?? 0;
+        console.log('clip', names[i]);
+      }
     });
   }
 
