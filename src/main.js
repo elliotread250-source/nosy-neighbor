@@ -8,7 +8,7 @@ import { Sky } from './art/Sky.js';
 import { PostFX } from './art/PostFX.js';
 import { Lighting } from './world/Lighting.js';
 import { buildTestScene } from './world/TestScene.js';
-import { buildNeighborhood } from './world/Neighborhood.js';
+import { buildWorld } from './world/World.js';
 import { LightManager } from './world/Lights.js';
 import { Zones } from './world/Zones.js';
 import { ToonShared } from './art/Materials.js';
@@ -36,6 +36,13 @@ const SHOTS = {
   living: { pos: [0.0, 1.7, 15.2], target: [-4.4, 1.0, 20] },
   flanking: { pos: [20, 1.8, 2], target: [30, 3, 12] },
   eastEnd: { pos: [40, 2, 0], target: [60, 1.5, 0] },
+  // The neighbor's house
+  nhPorch: { pos: [0.5, 2.0, 12.6], target: [0, 7, -20] },
+  nhCorner: { pos: [22, 2.2, 4], target: [0, 6.5, -20] },
+  nhBack: { pos: [8, 2.0, -33], target: [-1, 6, -20] },
+  nhWest: { pos: [-15, 2.5, -8], target: [-4, 6, -22] },
+  nhTree: { pos: [13.5, 2.0, -11.0], target: [10.5, 4.5, -16.5] },
+  nhRoof: { pos: [16, 14, -6], target: [-1, 9, -22] },
 };
 
 function poseFromTarget(pos, target) {
@@ -58,7 +65,7 @@ async function boot() {
   const lights = new LightManager(engine.scene);
   const zones = new Zones();
   const useTest = new URLSearchParams(location.search).has('test');
-  const level = useTest ? buildTestScene(engine.scene, physics) : buildNeighborhood(engine.scene, physics, lights, zones);
+  const level = useTest ? buildTestScene(engine.scene, physics) : buildWorld(engine.scene, physics, lights, zones);
   const updaters = level.updaters || [];
   let indoorK = 0;
 

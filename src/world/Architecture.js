@@ -46,6 +46,19 @@ export class Builder {
     this.name = name;
     this.statics = new Map(); // material -> { mat, geos: [], cast, receive }
     this.count = 0;
+    this.shear = null; // { deg, axis: 'x'|'z', baseY } leans the whole chunk
+  }
+
+  // Lean everything built after this call (a whole wing), pivoting at baseY.
+  setShear(deg, axis, baseY) {
+    this.shear = deg ? { deg, axis, baseY } : null;
+  }
+
+  // Horizontal offset the chunk shear applies at height y.
+  shearAt(y) {
+    if (!this.shear) return { x: 0, z: 0 };
+    const k = Math.tan(this.shear.deg * DEG * CONFIG.world.warpIntensity) * (y - this.shear.baseY);
+    return this.shear.axis === 'x' ? { x: k, z: 0 } : { x: 0, z: k };
   }
 
   // Register a geometry already in world space for merging.
@@ -66,11 +79,20 @@ export class Builder {
    *         collide (default true), dynamic (return Mesh instead of merging), cast, receive, worldUV }
    */
   box(w, h, d, mat, x, y, z, opts = {}) {
+    if (this.shear && !opts.noShear) {
+      if (opts.rotX || opts.rotZ) {
+        const o = this.shearAt(y + h / 2);
+        x += o.x; z += o.z;
+      } else if (!opts.lean) {
+        opts = { ...opts, lean: [this.shear.deg, this.shear.axis, this.shear.baseY - y] };
+      }
+    }
     const g = roundedBox(w, h, d, opts.radius ?? Math.min(w, h, d, 0.5) * 0.12, opts.segments, { skipNormals: true, midStep: opts.midStep });
     g.translate(0, h / 2, 0); // origin at base
     if (opts.sag) sagWarp(g, opts.sag[0], opts.sag[1] ?? 'x');
     if (opts.skewTop) skewWarp(g, opts.skewTop[0], opts.skewTop[1]);
     if (opts.lean) leanWarp(g, opts.lean[0], opts.lean[1] ?? 'z', opts.lean[2]);
+    if (opts.lean2) leanWarp(g, opts.lean2[0], opts.lean2[1] ?? 'x', opts.lean2[2]);
     if (opts.wobble !== 0) wobble(g, opts.wobble ?? CONFIG.warpBudgets.wobble * 0.5, 1.3, seedFrom(`${this.name}${this.count++}`));
     smoothNormals(g);
     _e.set(opts.rotX ?? 0, opts.rotY ?? 0, opts.rotZ ?? 0);
@@ -151,11 +173,15 @@ export class Builder {
     return ops.map((o) => {
       const mid = from + dir * o.at;
       const shear = Math.tan(leanDeg * DEG * CONFIG.world.warpIntensity) * ((o.bottom + o.top) / 2);
+      const cy = y + (o.bottom + o.top) / 2;
+      const ch = leanDeg ? { x: 0, z: 0 } : this.shearAt(cy);
       return {
-        x: axis === 'x' ? mid : at + (leanAxis === 'x' ? shear : 0),
-        z: axis === 'x' ? at + (leanAxis === 'z' ? shear : 0) : mid,
-        y: y + (o.bottom + o.top) / 2,
+        x: (axis === 'x' ? mid : at + (leanAxis === 'x' ? shear : 0)) + ch.x,
+        z: (axis === 'x' ? at + (leanAxis === 'z' ? shear : 0) : mid) + ch.z,
+        y: cy,
         w: o.w, h: o.top - o.bottom, bottom: y + o.bottom, axis, t,
+        lean: leanDeg || (this.shear && this.shear.axis === leanAxis ? this.shear.deg : 0),
+        spec: o,
       };
     });
   }
@@ -163,6 +189,49 @@ export class Builder {
   floor(x0, x1, z0, z1, y, t, mat, opts = {}) {
     const w = Math.abs(x1 - x0), d = Math.abs(z1 - z0);
     return this.box(w, t, d, mat, (x0 + x1) / 2, y - t, (z0 + z1) / 2, { radius: 0.02, wobble: 0, midStep: 2, ...opts });
+  }
+
+  // Floor slab with rectangular holes [x0,x1,z0,z1]: split into strips.
+  floorWithHoles(x0, x1, z0, z1, y, t, mat, holes = [], opts = {}) {
+    const xs = new Set([x0, x1]);
+    for (const h of holes) { xs.add(Math.max(x0, Math.min(x1, h[0]))); xs.add(Math.max(x0, Math.min(x1, h[1]))); }
+    const xl = [...xs].sort((a, b) => a - b);
+    for (let i = 0; i < xl.length - 1; i++) {
+      const a = xl[i], bb = xl[i + 1];
+      if (bb - a < 0.01) continue;
+      const mid = (a + bb) / 2;
+      const cut = holes.filter((h) => h[0] < mid && h[1] > mid).map((h) => [h[2], h[3]]).sort((p, q) => p[0] - q[0]);
+      let cz = z0;
+      const spans = [];
+      for (const [h0, h1] of cut) {
+        if (h0 > cz + 0.01) spans.push([cz, Math.min(h0, z1)]);
+        cz = Math.max(cz, h1);
+      }
+      if (cz < z1 - 0.01) spans.push([cz, z1]);
+      for (const [s0, s1] of spans) this.floor(a, bb, s0, s1, y, t, mat, opts);
+    }
+  }
+
+  /**
+   * Straight stairs. Starts at (x, z) at height y0, climbs `steps` risers along dir
+   * ('+x','-x','+z','-z'), each rise r and run u, width w. Solid stringer blocks under each step.
+   */
+  stairs(x, z, y0, dir, steps, r, u, w, mat, opts = {}) {
+    const ax = dir[1], sgn = dir[0] === '-' ? -1 : 1;
+    for (let i = 0; i < steps; i++) {
+      const top = y0 + (i + 1) * r;
+      const along = (i + 0.5) * u * sgn;
+      const px = ax === 'x' ? x + along : x;
+      const pz = ax === 'z' ? z + along : z;
+      const base = opts.solid === false ? top - 0.12 : y0;
+      this.box(ax === 'x' ? u + 0.02 : w, top - base, ax === 'z' ? u + 0.02 : w, mat, px, base, pz, { radius: 0.03, wobble: 0.002, cast: true });
+      // chunky nosing
+      const nx = ax === 'x' ? px + sgn * (u / 2 - 0.02) : px;
+      const nz = ax === 'z' ? pz + sgn * (u / 2 - 0.02) : pz;
+      if (opts.nosing) this.box(ax === 'x' ? 0.06 : w + 0.04, 0.06, ax === 'z' ? 0.06 : w + 0.04, opts.nosing, nx, top - 0.05, nz, { collide: false, radius: 0.02 });
+    }
+    const end = steps * u * sgn;
+    return { x: ax === 'x' ? x + end : x, z: ax === 'z' ? z + end : z, y: y0 + steps * r };
   }
 
   /**

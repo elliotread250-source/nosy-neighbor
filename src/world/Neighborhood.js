@@ -42,7 +42,15 @@ export function buildNeighborhood(scene, physics, lights, zones) {
   for (let i = 0; i < guv.count; i++) guv.setXY(i, guv.getX(i) * 420, guv.getY(i) * 420);
   ground.receiveShadow = true;
   root.add(ground);
-  physics.addStaticBox(new Vector3(0, -0.5, 0), new Vector3(210, 0.5, 210));
+  // ground collider with a hole under the neighbor's house (tunnels live down there)
+  {
+    const hx0 = -8.2, hx1 = 8.2, hz0 = -26.2, hz1 = -13.8, E = 210;
+    const slab = (x0, x1, z0, z1) => physics.addStaticBox(new Vector3((x0 + x1) / 2, -0.5, (z0 + z1) / 2), new Vector3((x1 - x0) / 2, 0.5, (z1 - z0) / 2));
+    slab(-E, E, hz1, E);
+    slab(-E, E, -E, hz0);
+    slab(-E, hx0, hz0, hz1);
+    slab(hx1, E, hz0, hz1);
+  }
 
   // ---- road, center line, sidewalks, curbs ----
   const L = T.halfLength * 2 + 30;
