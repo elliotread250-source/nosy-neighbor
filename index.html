@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nosy Neighbor</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ink: #2a1e3a;
+        --cream: #fff8ec;
+        --mustard: #f2c94c;
+        --tomato: #e07a5f;
+        --teal: #7cc6b6;
+      }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #e9d8c6; }
+      body { font-family: 'Nunito', system-ui, sans-serif; color: var(--ink); user-select: none; }
+      #app { position: fixed; inset: 0; }
+      #app canvas { display: block; width: 100%; height: 100%; outline: none; }
+
+      #overlay {
+        position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: radial-gradient(ellipse at center, rgba(42, 30, 58, 0.25), rgba(42, 30, 58, 0.6));
+        cursor: pointer; transition: opacity 0.25s; z-index: 10;
+      }
+      #overlay.hidden { opacity: 0; pointer-events: none; }
+      .overlay-title {
+        font-family: 'Luckiest Guy', 'Nunito', sans-serif; font-size: clamp(42px, 8vw, 96px); color: var(--mustard);
+        letter-spacing: 2px; transform: rotate(-2deg);
+        text-shadow: 4px 5px 0 var(--ink), -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink);
+      }
+      .overlay-sub {
+        margin-top: 18px; padding: 12px 26px; font-weight: 800; font-size: 20px; background: var(--cream);
+        border: 4px solid var(--ink); border-radius: 18px; box-shadow: 5px 6px 0 var(--ink); transform: rotate(1.2deg);
+      }
+      .overlay-help { margin-top: 22px; color: var(--cream); font-weight: 700; font-size: 14px; text-align: center; line-height: 1.6; text-shadow: 0 2px 0 var(--ink); }
+
+      #hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+      .hud-crosshair {
+        position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+        background: var(--cream); box-shadow: 0 0 0 2px rgba(42, 30, 58, 0.55);
+      }
+      .hud-objective {
+        position: absolute; top: 28px; left: 50%; transform: translateX(-50%) rotate(-0.8deg); padding: 8px 18px;
+        background: var(--cream); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink);
+        font-weight: 800; opacity: 0; transition: opacity 0.6s; white-space: nowrap;
+      }
+      .hud-objective.show { opacity: 1; }
+      .hud-stamina {
+        position: absolute; bottom: 110px; left: 50%; width: 180px; height: 12px; margin-left: -90px;
+        background: rgba(42, 30, 58, 0.45); border: 3px solid var(--ink); border-radius: 10px; overflow: hidden;
+        opacity: 0; transition: opacity 0.4s;
+      }
+      .hud-stamina.show { opacity: 1; }
+      .hud-stamina-fill { height: 100%; background: var(--teal); transform-origin: left center; }
+      .hud-stamina.exhausted .hud-stamina-fill { background: var(--tomato); }
+
+      .debug-stats {
+        position: fixed; top: 8px; left: 8px; margin: 0; padding: 8px 10px; z-index: 20;
+        font: 12px/1.35 ui-monospace, monospace; color: #fff; background: rgba(20, 16, 30, 0.6); border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="hud"></div>
+    <div id="debug"></div>
+    <div id="overlay">
+      <div class="overlay-title">Nosy Neighbor</div>
+      <div class="overlay-sub">Click to play</div>
+      <div class="overlay-help">
+        WASD move &middot; Shift sprint &middot; C / Ctrl crouch &middot; Space jump &middot; Q / Z lean &middot; Esc pause
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
