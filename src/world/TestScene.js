@@ -8,6 +8,7 @@ import { roundedBox, chamferCylinder, turned, smoothNormals } from '../art/Geo.j
 import { lean, taper, bulge, twist, wobble, sag, skewTop, bend, furnitureWarp, rng, seedFrom } from '../art/Warp.js';
 import * as Tex from '../art/CanvasTextures.js';
 import { CONFIG } from '../config.js';
+import { addOutline } from '../art/Outline.js';
 
 const DEG = Math.PI / 180;
 
@@ -235,6 +236,7 @@ export function buildTestScene(scene, physics) {
     m.castShadow = true;
     root.add(m);
     physics.addDynamic(m, { shape: 'ball', radius: 0.18, mass: 0.4, restitution: 0.75 });
+    addOutline(m, { thickness: 0.012 });
   }
 
   // ---- Character-sized test capsule (style probe for outlines in M2) ----
@@ -251,6 +253,7 @@ export function buildTestScene(scene, physics) {
     const nose = new Mesh(new SphereGeometry(0.06, 20, 14), makeMat('NB_NOSE', { spec: 0.5, skin: true }));
     nose.position.set(-2, 1.95, -2.72);
     add(nose, { collide: false });
+    for (const o of [m, head, nose]) addOutline(o);
   }
 
   // ---- A wonky picket fence ----

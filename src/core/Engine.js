@@ -20,6 +20,7 @@ export class Engine {
     r.shadowMap.type = PCFShadowMap;
     container.appendChild(r.domElement);
     r.domElement.tabIndex = 0;
+    r.info.autoReset = false; // reset once per frame so stats count every pass
 
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(CONFIG.camera.fov, 1, CONFIG.camera.near, CONFIG.camera.far);
@@ -67,6 +68,7 @@ export class Engine {
   }
 
   render(dt) {
+    this.renderer.info.reset();
     if (this.postfx) this.postfx.render(dt);
     else this.renderer.render(this.scene, this.camera);
   }

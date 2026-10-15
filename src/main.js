@@ -5,6 +5,7 @@ import { Engine } from './core/Engine.js';
 import { Input } from './core/Input.js';
 import { Physics } from './core/Physics.js';
 import { Sky } from './art/Sky.js';
+import { PostFX } from './art/PostFX.js';
 import { Lighting } from './world/Lighting.js';
 import { buildTestScene } from './world/TestScene.js';
 import { Player } from './actors/Player.js';
@@ -33,6 +34,8 @@ async function boot() {
   const app = document.getElementById('app');
   const engine = new Engine(app);
   const physics = await Physics.init();
+  const postfx = new PostFX(engine.renderer, engine.scene, engine.camera);
+  if (CONFIG.post.enabled && !new URLSearchParams(location.search).has('nopost')) engine.setPostFX(postfx);
   const input = new Input(engine.canvas);
 
   const sky = new Sky(engine.scene);
@@ -94,7 +97,7 @@ async function boot() {
   }
   requestAnimationFrame(loop);
 
-  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input } });
+  if (CONFIG.debug) Object.assign(window, { nn: { engine, physics, player, sky, lighting, input, postfx } });
 }
 
 boot().catch((err) => {

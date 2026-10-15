@@ -11,9 +11,9 @@ export const CONFIG = {
   graphics: {
     preset: params.get('gfx') || 'medium', // low | medium | high
     presets: {
-      low: { renderScale: 0.75, shadowMapSize: 512, shadows: true, bevelSegments: 2, maxPixelRatio: 1 },
-      medium: { renderScale: 1.0, shadowMapSize: 1024, shadows: true, bevelSegments: 3, maxPixelRatio: 1.5 },
-      high: { renderScale: 1.0, shadowMapSize: 2048, shadows: true, bevelSegments: 3, maxPixelRatio: 2 },
+      low: { renderScale: 0.75, shadowMapSize: 512, shadows: true, bevelSegments: 2, maxPixelRatio: 1, msaa: 0, bloom: false, outlineScale: 0.8, grassCount: 2000 },
+      medium: { renderScale: 1.0, shadowMapSize: 1024, shadows: true, bevelSegments: 3, maxPixelRatio: 1.5, msaa: 4, bloom: true, outlineScale: 1, grassCount: 4000 },
+      high: { renderScale: 1.0, shadowMapSize: 2048, shadows: true, bevelSegments: 3, maxPixelRatio: 2, msaa: 4, bloom: true, outlineScale: 1.15, grassCount: 6000 },
     },
   },
 
@@ -113,6 +113,44 @@ export const CONFIG = {
     specThreshold: 0.92,
     specStrength: 0.35,
     minBrightness: 0.27, // ambient lift floor, fraction of albedo
+  },
+
+  post: {
+    enabled: true,
+    edges: true,
+    edgeOpacity: 0.55,
+    edgeThickness: 1.0,
+    edgeFadeStart: 22,
+    edgeFadeEnd: 40,
+    edgeDepthK: 40.0,
+    edgeNormalK: 5.0,
+    bloom: true,
+    bloomStrength: 0.35,
+    bloomRadius: 0.6,
+    bloomThreshold: 0.85,
+    grade: true,
+    saturation: 1.18,
+    chaseSaturation: 1.35,
+    contrast: 1.06,
+    liftAmount: 0.06,
+    gainAmount: 0.08,
+    warmth: 0.012,
+    chaseAberration: 1.6, // px at screen edges
+    vignetteOn: true,
+    vignette: 0.35,
+    vignetteChase: 0.6,
+    grainOn: true,
+    grain: 0.025,
+  },
+
+  outline: {
+    thickness: 0.02, // meters at the reference distance
+    refDistance: 4,
+    minScale: 0.5,
+    maxScale: 2.2,
+    colorMul: 0.25,
+    toward: 'OUTLINE_BASE',
+    towardAmount: 0.5,
   },
 
   fog: {
