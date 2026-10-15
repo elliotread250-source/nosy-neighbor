@@ -1,6 +1,6 @@
 # ACT 3 HOUSE: SCALE-ACCURATE RECONSTRUCTION PROMPT FOR CLAUDE CODE
 
-Paste this whole document into Claude Code as one message (it has two parts: the build plan, then a detailed engineering spec), in a session on the `nosy-neighbor` repo. Read all of it before you write any code. Then do Milestone 0 first. Do not skip it.
+Paste this whole document into Claude Code as one message (it has three parts: the build plan, a detailed engineering spec, and a room-by-room house bible), in a session on the `nosy-neighbor` repo. Read all of it before you write any code. Then do Milestone 0 first. Do not skip it.
 
 ---
 
@@ -493,7 +493,7 @@ For every point along the stair, the clear height from the nosing line up to the
 
 ### 17.4 Handrails and balusters
 
-Handrail height 0.90 m above the nosing line. Balusters spaced so the gap is no more than 0.10 m. In survey mode, handrails are simple rounded rails. The second-floor railing that the player jumps onto in section 6 is a distinct object, a `climbable_rail`, with its own height and top width (default 0.90 m high, top 0.08 m wide, tagged `assumed`), because the jump puzzle depends on it.
+Handrail height 0.90 m above the nosing line. Balusters spaced so the gap is no more than 0.10 m. In survey mode, handrails are simple rounded rails. The second-floor railing that the player jumps onto in section 6 is a distinct object, a `climbable_rail`, with its own height and top width (default 0.55 m high, cap 0.50 m wide so the player can stand on it, tagged `design`), because the jump puzzle depends on it.
 
 ### 17.5 Player collision on stairs
 
@@ -515,13 +515,13 @@ capsuleRadius       0.22 m
 walkSpeed           2.2 m/s
 sprintSpeed         4.2 m/s
 gravity             9.81 m/s^2 (game feel may use a higher value; keep it a named constant)
-jumpVelocity        3.6 m/s
+jumpVelocity        4.0 m/s
 maxStepHeight       0.30 m
 ```
 
 ### 18.2 Jump height and reach
 
-Maximum rise of a jump from standing: `h = v^2 / (2 * g)`. With v = 3.6 and g = 9.81, that is about 0.66 m. Time to the apex: `t = v / g`, about 0.37 s, so the full jump lasts about 0.73 s. Horizontal travel during a sprinting jump: `speed * 0.73`, about 3.1 m at sprint speed.
+Maximum rise of a jump from standing: `h = v^2 / (2 * g)`. With v = 4.0 and g = 9.81, that is about 0.82 m. Time to the apex: `t = v / g`, about 0.41 s, so the full jump lasts about 0.82 s. Horizontal travel during a sprinting jump: `speed * 0.82`, about 3.4 m at sprint speed.
 
 Add a short coyote time (0.1 s) and a jump buffer (0.1 s). They make jumps forgiving and do not change the reach numbers, but the test must include them.
 
@@ -824,5 +824,432 @@ The project is done for this round when all of these are true, and you've shown 
 - [ ] `PROGRESS.md`, the changelog, and the README are current.
 - [ ] It's deployed on Railway through GitHub, and I have the live URL.
 - [ ] The final report lists the three assumed dimensions that matter most and the exact screenshots that would replace them.
+
+---
+
+# PART III: THE HOUSE BIBLE (PURE DETAIL)
+
+This part is the baseline content for `house.json`, written out room by room. Read this first, then enter it.
+
+How to read the tags. Everything here is a starting design that I wrote so the project has something concrete to build from on day one. It is not extracted from the game. Use these four marks and carry them into the data:
+
+- `[D]` documented by a walkthrough or wiki (see section 1 for the short list of what that covers).
+- `[A]` assumed: a proportion rule or a guess.
+- `[S]` standard: a real-world standard size.
+- `[X]` design: a choice I made to make the layout work, a puzzle fit, or the style read well.
+
+When you enter a value into `house.json`, tag it from this list. Anything I did not mark is `[A]`. When I give you real screenshots, these numbers get replaced, room by room, and nothing in this part is precious.
+
+Layout rectangles are given as `x[min,max] z[min,max]` in meters, bounding each room at the wall centerlines. Interior walls are 0.18 m thick and exterior walls 0.30 m, split evenly across the line. If the tiling test (section 9, plus the overlap check below) finds a gap or an overlap, fix it by moving the least certain room, log the change in the changelog, and never by stretching a measured one.
+
+Two extra checks for this part, add them to the test suite: no two rooms on the same floor overlap by more than 1 mm, and the union of rooms on each floor has no holes larger than the declared wall thickness.
+
+---
+
+## 35. GLOBAL PARAMETERS FOR THE BASELINE HOUSE
+
+```
+footprint (ground)          14.0 m (X) by 11.0 m (Z)                     [A]
+exterior wall thickness     0.30 m                                       [A]
+interior wall thickness     0.18 m                                       [A]
+slab thickness              0.30 m                                       [A]
+standard ceiling            3.40 m (F0, F1), 3.00 m (F2 box)             [A]
+basement ceiling            3.20 m                                       [A]
+floor elevations (top of floor)
+  B1   -3.50 m
+  F0    0.00 m
+  F1    3.70 m
+  F2    7.40 m  (a 3.0 m box sitting on the F1 roof terrace; the terrace deck is also at 7.40 m)
+  R    10.70 m  (roof deck on top of the F2 box)
+door standard               0.95 m wide, 2.60 m tall                     [A]
+window standard             0.90 m wide, 1.50 m tall, sill 0.90 m        [A]
+player height               1.20 m, eye height 1.10 m                    [A]
+```
+
+Floor naming used everywhere: `B1`, `F0`, `F1`, `F2`, `R`, `W` (windmill). The penultimate floor, which the documented ladder climbs to, is `F2`, the box on the terrace, with the roof deck `R` above it. `[D]` for the ladder going to the second-highest floor.
+
+The big idea behind this layout, so you can reason about it: the house is a two-story block with one narrow stair column, a gated section on the first floor, a ladder that is the only way up to the control box, and a roof terrace that holds the train loop and the windmill. The ground floor is the friendly, cluttered, broken-into floor. The first floor is where the barrier puzzle and the birthday room live. The box on top is the machinery. The roof is the playground.
+
+---
+
+## 36. THE EXTERIOR SHELL
+
+All exterior colors `[A]`, drawn from the main palette in `NOSY_NEIGHBOR_PROMPT.md` section 4 so the house reads as part of the same world.
+
+**Walls.** Horizontal clapboard siding, boards 0.18 m tall, a 3 mm shadow groove under each board. Ground floor in the mustard `NH_SIDING_MAIN` `#F2C94C`, the first floor in a slightly different `#EBC14A` (repainted look), the F2 box in mint `NH_SIDING_ALT` `#7CC6B6`. Trim is `NH_TRIM` `#FFF8EC`, 0.14 m wide at corners and around windows.
+
+**Foundation.** A visible concrete plinth 0.45 m tall `NH_FOUNDATION` `#A79A8A` around the whole base, with three small barred cellar vents at 1.2 m spacing on the east side `[X]`.
+
+**Front (street side, Z = 0).** Faces the street. Centered on the foyer, a front door 0.95 by 2.60 m in red `NH_DOOR_FRONT` `#C0392B`. It is shut and bolted from inside, so it does not open (the documented way in is the broken window). `[D]` for the broken window as the way in. A porch roof 5.0 m wide, 1.6 m deep, on two fat columns 0.28 m across, over three steps (rise 0.18 m, tread 0.30 m, width 3.0 m). The living-room window, left of the door, is the broken one: window 0.90 by 1.50 m, sill 0.90 m, the pane smashed to jagged triangles stuck in the corners, glass chunks on the porch boards below and on the interior sill, one shutter hanging from a single hinge at 25 degrees. The dining-room window on the right is intact with the diagonal glare stripes from the main art doctrine.
+
+**West side (X = 0).** Two windows on F0 (living room and back hall), both boarded from outside with three horizontal 1x6 boards each `[S]` `[X]` (the walkthroughs mention boarded rooms). Two windows on F1, one boarded. A downspout in dull metal `NH_METAL_SHEET` `#9AA7B0`.
+
+**East side (X = 14).** A side door into the kitchen, locked, with a camera bracket above it `[D]` for cameras in general. A wooden fence gate. A coiled hose. F1 has two windows. The cellar vents sit here.
+
+**Back (Z = 11).** The mudroom service door (locked), a screen door in front of it, the back steps. A wide back yard, which the main project treats as the training ground for the neighbor but which, in this study, is just a fenced rectangle 14 m wide by 8 m deep.
+
+**Roof lines.** F0 and F1 form one block under a flat roof terrace at 7.40 m, with a low parapet 0.55 m tall and 0.25 m thick all around `[X]`, a brick red `NH_ROOF` `#B33A3A` coping on the parapet, and 0.45 m eaves on the front porch only. The F2 box stands in the middle of the terrace.
+
+**F2 box.** Footprint `x[3.5,10.5] z[3.0,8.0]`, height 3.0 m, mint siding, and a low-pitch gable roof of 12 degrees in slate blue `NH_ROOF_ALT` `#3F5E8C`, with the roof deck line at 10.70 m.
+
+**The terrace.** The ring of the F1 roof around the F2 box is the walkable terrace: 3.0 m wide at the front and back, 3.5 m on each side `[A]`. This is where the train track loops. `[D]` for the train running around the roof.
+
+**The windmill.** On top of the F2 box roof, centered at (x 7.0, z 5.5). See section 42. `[D]` for a windmill on the roof (weak source).
+
+**Chimney.** One brick chimney, 0.9 by 0.9 m, at the east edge of the terrace, rising 1.5 m above the terrace deck `[X]`. It is a landmark and a climbing aid.
+
+**Gutters and pipes.** Half-round gutters, 0.12 m, in `NH_METAL_SHEET`, and vertical pipes on three corners.
+
+**Security.** A camera at each of the four corners of the terrace parapet and one above the east door `[D]` for the existence of cameras. Each camera body 0.20 by 0.10 by 0.10 m `[S]`, bracket arm 0.25 m long, field of view 70 degrees, range 10 m, sweeping 90 degrees every 8 seconds.
+
+---
+
+## 37. GROUND FLOOR (F0), ROOM BY ROOM
+
+Elevation 0.00. Standard ceiling 3.40. All floors in this level are wide-plank wood `FLOOR_WOOD` `#B9773E` unless stated.
+
+### 37.1 foyer_f0
+
+`x[4.5,9.5] z[0.0,3.0]`, 5.0 by 3.0 m, 15 m squared.
+
+Entry from the front door (x 6.5 to 7.45 on the z = 0 wall, centered at x 7.0). Doors out to the living room (west wall, door at z 1.0 to 1.95, offset from the south wall 1.0 m), to the dining room (east wall, z 1.0 to 1.95), and to the hallway (north wall, z = 3.0, x 5.2 to 6.15) which leads on to `hall_ground`.
+
+Walls: wallpaper, green stripes `WALLPAPER_GREEN` `#A8C686` with `#8FB370` stripes, above a wainscot `WAINSCOT` `#D9C3A0` 1.0 m tall. Ceiling `#FBF4E6`. Floor with a long red runner `CARPET_RED` `#B23A48`, 1.1 m wide, from the front door to the hallway door, dusty and kicked up at the end.
+
+Props: a coat stand `[X]` 1.9 m tall with a brown jacket, tilted 5 degrees; a console table 1.1 m wide, 0.40 m deep, 0.80 m tall with a bowl and loose keys that jingle (decoys, `[X]`); a framed picture, 0.5 by 0.4 m, at 1.5 m height; a cardboard moving box 0.5 by 0.4 by 0.35 m next to the door, taped shut, labeled with a canvas-drawn black scribble, pushed against the wall.
+
+Lighting: a single ceiling pendant bulb at 3.0 m height, warm `#FFC97A`, dim and flickering slightly. Daylight leaks under the bolted front door as a thin bright bar across the floor.
+
+Sound: floorboards creak under the runner, a ticking clock somewhere deeper in the house, faint wind at the door gap.
+
+The foyer is a spoke room, you see it often, and it is the first place the player gets a sense of scale, so measure it first when screenshots arrive.
+
+### 37.2 living_f0
+
+`x[0.0,4.5] z[0.0,6.5]`, 4.5 by 6.5 m, 29 m squared.
+
+Doors: east wall to the foyer (z 1.0 to 1.95), a door to `back_hall_f0` through the wall at z 6.5 (x 3.2 to 4.15). Windows: the broken window on the south (front) wall at x 1.6 to 2.5, sill 0.90 `[D]` entry; a second window on the west wall at z 3.0 to 3.9, boarded from outside, which lets thin bars of light in `[X]`.
+
+Walls: blue diamond wallpaper `WALLPAPER_BLUE` `#9EC5E8` with `#7FAFD9` diamonds, partly peeled at one corner `[X]`.
+
+Props, with sizes and positions:
+- Orange sofa `RETRO_ORANGE` `#F39C4A`, 2.0 m by 0.9 m by 0.85 m, against the west wall, with one cushion thrown on the floor.
+- Armchair `SOFA_GREEN` `#6B8E4E`, 0.85 by 0.85 by 0.9 m, angled 35 degrees toward the window.
+- Coffee table, 1.1 by 0.6 by 0.42 m, with an overturned mug, a newspaper, and a broken record sleeve `[X]`.
+- A tall bookcase 1.0 m wide, 0.30 m deep, 2.3 m tall against the north wall, leaning 4 degrees, books spilled across the floor in front of it (physics objects, 25 of them, `[X]`).
+- A boxy television 0.65 by 0.5 by 0.5 m on a low stand, screen showing static.
+- Four cardboard boxes of mixed sizes by the broken window, stacked 2 high, which are the player's step up to the window sill if they want one `[X]`.
+- Broken glass shards on the floor under the window, 14 shards of 3 to 10 cm, as non-solid decals plus 6 small physics shards.
+
+The broken window sill is at 0.90 m and the player's maximum standing jump rise is 0.82 m, so the entry requires either the boxes or a sprint-jump with step-up. State the intended route in a comment in the data: the box stack at 0.35 m plus a jump `[X]`.
+
+### 37.3 dining_f0
+
+`x[9.5,14.0] z[0.0,5.5]`, 4.5 by 5.5 m, 24.75 m squared.
+
+Doors: west wall to the foyer, and north wall (z 5.5) to the kitchen, a double swing door 1.4 m wide. Windows: one on the south wall, intact, one on the east wall, boarded.
+
+Walls: yellow pinstripe `WALLPAPER_YELLOW` `#F6E3A1` with `#E3C873` lines.
+
+Props: a long table 2.2 by 1.0 by 0.78 m with six chairs, two knocked over; dinner plates, some with food-like props; a chandelier hanging at 2.4 m, 0.7 m diameter, tilted by a snapped chain `[X]`; a china cabinet, 1.2 by 0.45 by 1.9 m, doors ajar; a sideboard along the east wall with a lamp, not the climbable one.
+
+A security camera in the north-east corner of the ceiling `[D]` `[X]`, covering the doorway to the kitchen.
+
+### 37.4 hall_ground (the cluttered hallway)
+
+`x[4.5,7.0] z[3.0,6.0]`, 2.5 by 3.0 m, 7.5 m squared. `[D]` a cluttered hallway near the stairs.
+
+Connects: south door to the foyer, west door to the living room is not here (that is via the foyer), north opens straight into `stair_hall_f0`. East wall door at z 4.0 to 4.95 into a small closet with the electrical panel `[X]`.
+
+This is the cluttered hallway. Clutter budget: 35 props, all physics, seeded `[X]`. Specific items: three cardboard boxes stacked against the east wall (0.5 by 0.4 by 0.35 each), a rolled carpet 1.6 m long leaning on the west wall, a bicycle frame with no wheels, a wooden crate 0.6 by 0.4 by 0.4, a bucket, a pile of newspapers, a stack of picture frames face to the wall, a folded stepladder 1.2 m tall. The clutter forces the player to weave and crouch, and it makes noise when knocked.
+
+Floor: dark wood `FLOOR_WOOD_DARK` `#8A5328`. Walls: pink polka-dot `WALLPAPER_PINK` `#F2B5B5` with `#E89393` dots.
+
+Lighting: one bulb, at the north end.
+
+### 37.5 stair_hall_f0
+
+`x[4.5,7.0] z[6.0,11.0]`, 2.5 by 5.0 m, 12.5 m squared. Contains the stair to F1. `[D]` stairs near the cluttered hallway.
+
+The stair is a straight flight along the west wall, 1.1 m wide, rising toward negative Z (so the climber moves from the back of the house toward the front). Total rise is 3.70 m from floor top to floor top. With target riser 0.20, there are 19 risers (true riser 0.1947 m) and 18 treads of 0.26 m, run 4.68 m `[A]`. Blondel value 2 times 0.1947 plus 0.26 equals 0.649 m, comfortable. Bottom step at z 10.9, top step at z 6.22. The slab hole on F1 above is `x[4.5,5.6] z[6.2,10.9]`. Headroom 2.0 m minimum, verified by test.
+
+East of the flight, `x[5.7,7.0]`, is a floor strip 1.3 m wide, used as a landing space with an umbrella stand and a small side table with a lamp. This lamp is a normal one, 0.55 m tall, not the climbable one on F1.
+
+The stair has a banister on the open side (east): a simple chunky wooden handrail at 0.90 m, with balusters every 0.12 m `[A]`.
+
+### 37.6 kitchen_f0
+
+`x[7.0,14.0] z[5.5,11.0]`, 7.0 by 5.5 m, 38.5 m squared.
+
+Doors: the double swing door to the dining room (in the shared wall at z 5.5, x 9.5 to 10.9, 1.4 m wide), a service door to the back at z 11.0 (the mudroom door, locked), a side door on the east wall x 14.0 at z 7.0 to 7.95 (locked, camera above). West door to `stair_hall_f0` at x 7.0 z 8.0 to 8.95.
+
+Black and white checkerboard floor, 0.30 m tiles `FLOOR_TILE_A` `#F3F0E6` and `FLOOR_TILE_B` `#2E2E36`. Walls: mint half-height tile in `RETRO_MINT` `#A8E6CF` to 1.2 m, cream paint above.
+
+Props: a bulged mint fridge 0.8 by 0.75 by 1.8 m, door open a crack with a faint light inside; a stove 0.75 by 0.65 by 0.9 m with a kettle; counters 0.6 m deep and 0.9 m tall along the north and east walls; sink with dishes; an island table, 1.6 by 0.8 by 0.9 m; four stools; a pantry cupboard; a cork board with scraps of paper; a pile of folded laundry on the island; one of the cupboard doors is hanging by a hinge.
+
+A camera above the east door `[D]` `[X]`.
+
+### 37.7 back_hall_f0
+
+`x[2.0,4.5] z[6.5,11.0]`, 2.5 by 4.5 m, 11.25 m squared.
+
+Doors: east wall to the stair hall (x 4.5, z 8.0 to 8.95), a door to `living_f0` (at z 6.5, x 3.2 to 4.15), west door to the basement landing (x 2.0, z 8.5 to 9.45) which is the sealed basement door. `[D]` basement sealed with boards and bolts and a keycard lock.
+
+Walls: plain green paint `#9DBF7B`. Floor: concrete-gray tile `#B9B3A3`, a drain at the center `[X]`.
+
+The sealed door, in detail: a heavy steel door 0.95 by 2.60 m painted dark green, flush in a steel frame, with a keycard panel on the north jamb at 1.25 m above the floor, 0.12 by 0.18 m, a single red LED that goes green when unlocked `[D]`. Across the door, three horizontal boards 140 by 38 mm `[S]` `[X]` at heights 0.55, 1.30, and 2.05 m, each held by two bolts into the frame (six bolts total, head 24 mm, washer 40 mm `[S]`), board length 1.15 m, overhanging each jamb by 0.1 m. The crowbar removes each bolt (hold 1.5 s). `[D]` a crowbar and bolts.
+
+Sound: a faint low hum comes from behind the door.
+
+### 37.8 basement_landing_f0 and the basement
+
+`basement_landing_f0` is `x[0.0,2.0] z[6.5,11.0]`, 2.0 by 4.5 m, 9 m squared: a plain concrete landing with a bare bulb and the top of the basement stairs, descending toward positive Z. Basement stair: rise 3.50 m total, 18 risers of 0.1944 m, 17 treads of 0.26 m, run 4.42 m `[A]`, fits the 4.5 m landing with 0.08 m to spare. If the builder's fit check fails by less than 0.3 m, extend the landing depth and log it.
+
+`basement_b1`: `x[0.0,9.0] z[3.0,11.0]`, 9.0 by 8.0 m, 72 m squared, ceiling 3.20, concrete floor `BASEMENT_FLOOR` `#4C5A57`, walls `BASEMENT_WALL` `#6F8F86`, a sour cyan-green light `BASEMENT_LIGHT` `#A6F0D0` from tube lights. Contents `[X]`: a long workbench 2.4 by 0.7 by 0.9 m with tools, a drawn chalk outline on the floor, a pipe run along the ceiling, a boiler 0.9 by 0.9 by 1.6 m, shelves of jars, a wall of tally marks, and an exit door at the north end (locked, `[X]`) leading to a short passage. The basement is not part of the documented route past the sealed door; treat it as the destination and keep it simple until I give you references.
+
+---
+
+## 38. FIRST FLOOR (F1), ROOM BY ROOM
+
+Elevation 3.70. Ceiling 3.40. The house's second level, one flight up from the ground floor. Floors are `FLOOR_WOOD` unless stated.
+
+Tiling for F1, all rectangles `[A]`:
+
+```
+hall_f1         x[4.5,7.0]   z[0.0,6.2]
+stairwell_f1    x[4.5,7.0]   z[6.2,11.0]   (stair opening x[4.5,5.6] z[6.2,10.9])
+bedroom_a       x[0.0,4.5]   z[0.0,5.5]
+bath_f1         x[0.0,4.5]   z[5.5,8.0]
+study_f1        x[0.0,4.5]   z[8.0,11.0]
+gallery_f1      x[7.0,14.0]  z[0.0,6.0]    (the gated section)
+birthday_room   x[7.0,14.0]  z[6.0,11.0]
+```
+
+### 38.1 hall_f1
+
+2.5 by 6.2 m, 15.5 m squared. The top of the stair is at z 6.22 on the west edge, so the player steps out of the stairwell into the hall's back end and walks toward the front of the house. A narrow, slightly sloping hall: the floor falls 0.06 m over its length toward the front `[X]`, a barely visible tilt that the player feels more than sees.
+
+Pink polka-dot wallpaper `WALLPAPER_PINK`. A runner `CARPET_GREEN` `#4E8C5A`, 0.9 m wide. Doors: west to bedroom_a (x 4.5, z 1.0 to 1.95), east to the gated section (the Dutch gate, section 39, z 1.5 to 3.5). The bath and the study open off the stairwell (see 38.4 and 38.5). There is no window in the hall. Lighting is one ceiling bulb and one wall sconce, warm. A security camera above the gate on the hall side, pointing at the gate `[D]` `[X]`.
+
+### 38.2 bedroom_a
+
+4.5 by 5.5 m, 24.75 m squared. A messy bedroom: a bed 2.0 by 1.4 by 0.55 m with a quilt, a nightstand 0.5 by 0.4 by 0.55 m holding an alarm clock, a wardrobe 1.2 by 0.6 by 2.2 m, a dresser 1.2 by 0.5 by 1.0 m with a mirror, a chair with clothes, a rug. One window on the west wall, boarded from outside, thin bars of light. Wallpaper: blue diamond `WALLPAPER_BLUE`. A closet door in the north wall, 0.8 m wide, opening into a 1.2 by 0.8 m walk-in closet `[X]` that holds a few boxes.
+
+### 38.3 study_f1
+
+4.5 by 3.0 m, 13.5 m squared. A desk 1.4 by 0.7 by 0.75 m with a typewriter, a lamp, a map pinned to the wall (a vague street plan, `[X]`, no real text), a filing cabinet, a shelf of binders. A window on the west wall, intact, with the light angled across the desk. One red LED on a small monitor panel on the desk that shows the camera feeds in static `[X]`.
+
+### 38.4 bath_f1
+
+4.5 by 2.5 m, 11.25 m squared. Yellow tile, a clawfoot tub 1.7 by 0.75 by 0.65 m, a toilet, a sink, a medicine cabinet. Door to the hall at x 4.5, z 6.0 to 6.95. A leaking pipe drips, which the player hears from the hall.
+
+### 38.5 stairwell_f1
+
+2.5 by 4.8 m, 12 m squared. The opening over the stair is `x[4.5,5.6] z[6.2,10.9]`, protected by an open balustrade along its east edge at x 5.7 (a simple railing 0.90 m high with balusters every 0.12 m `[A]`). East of the opening is a floor strip `x[5.7,7.0]`, 1.3 m wide. A door in the east wall at z 8.0 to 8.95 leads into the birthday room. A tall plant on the strip.
+
+### 38.6 gallery_f1 (the gated section)
+
+7.0 by 6.0 m, 42 m squared. `[D]` a second-floor section that is gated off.
+
+Entered through the Dutch gate (section 39) from the hall. A long, bright room with three tall windows on the east wall (each 0.9 by 1.5 m, sill 0.9) and two on the front wall, all intact, with a lot of daylight. Contents `[X]`: a long table, a sofa under a window, a rug, shelves of old toys, and three covered mannequin-shaped shapes under dust sheets in the south-east corner (one of the documented mannequins is here, 1.75 m `[A]` `[D]`, under a sheet). The key feature is the ladder:
+
+Ladder: a free-standing steel ladder `[S]` on a frame 0.9 by 0.9 m at `x[8.0,8.8] z[4.6,5.4]`, rising from the gallery floor to a ceiling hatch directly under the F2 box floor `[X]`. Rung spacing 0.28 m, rails 0.45 m apart, rung diameter 0.025 m. Total climb 3.70 m, which is 13 rungs (3.7 / 0.28 is 13.2, round to 13, true spacing 0.285 m). The hatch is a hole 0.7 by 0.7 m through the F1 ceiling slab, lined up with a matching hole in the F2 floor above. The `[D]` source only says the ladder goes to the penultimate floor, so the ladder's location in the gallery is `[X]`.
+
+### 38.7 birthday_room
+
+7.0 by 5.0 m, 35 m squared. `[D]` the birthday room that needs several mannequins.
+
+Entered from the stairwell door. Decoration `[X]`: streamers on the ceiling in `RED_TOY` `#E63946`, `YELLOW_TOY` `#FFD166`, and `BLUE_TOY` `#457B9D`; a long party table 3.0 by 1.0 by 0.78 m with a cake 0.25 m across and 0.15 m tall (frosting pink, one slice missing); a ring of six small chairs around it, five of them empty and one tipped over; paper hats; a banner reading nothing legible (a canvas texture of indistinct fat letters); balloons (instanced spheres, 0.25 m, bobbing). Along the east wall, five labeled floor markers `[X]` where mannequins must stand: five circular pads 0.6 m across in `NH_PLANKS` color, spaced 1.2 m. The number of mannequins is five `[X]` placeholder; keep it a data value, `birthday.mannequinCount`, and do not hard-code it, because the real number is unknown.
+
+Lighting: warm string lights, a dim chandelier, and an unlit disco ball that sparkles when the puzzle completes. Sound: a music box tune plays slowly when the room is empty and speeds up as each mannequin is placed `[X]`.
+
+---
+
+## 39. THE GATED SECTION: THE BARRIER, THE RAIL, AND THE LAMP
+
+`[D]` The route past the gate is to jump onto a railing, then onto a lamp, then over. This section pins down the geometry so the jump test passes with margin. All positions are on F1, floor top at 3.70, and the heights below are measured from the floor.
+
+The gate. A Dutch-style gate in the wall at x = 7.0 between `hall_f1` and `gallery_f1`: opening 2.0 m wide, `z[1.5,3.5]`, 2.60 m tall, with a barrier that fills the lower 1.60 m `[X]` (steel pickets, rail 0.04 m, picket spacing 0.10 m) and leaves the upper 1.00 m open, so a player who gets high enough can clear it. A latch on the gallery side is out of reach.
+
+The rail. A broad cap rail, 2.0 m long, 0.55 m high, 0.50 m wide on top, standing against the east wall of the hall at `x[6.5,7.0] z[3.6,5.6]` `[X]`. It is the cap of a built-in half-wall, textured like the banister. The player can stand on it because the cap is wider than the player capsule (0.44 m).
+
+The lamp. A heavy floor lamp, anchored to the floor so it does not move, at `x[6.0,6.5] z[2.4,2.9]`, with a broad flat shade cap 0.52 m across at 1.20 m height `[X]`. The shade is a steel-reinforced drum that supports the player.
+
+The hops, with the default jump of 0.82 m rise and a foot-clear of 0.72 m (jump rise minus 0.1):
+
+1. Floor to rail top, rise 0.55 m, margin 0.17 m.
+2. Rail top to lamp top, rise 0.65 m, horizontal gap about 0.75 m, vertical margin 0.07 m. This is the tight one, by design `[X]`.
+3. Lamp top to over the gate and into the gallery, clear the gate top at 1.60 m plus 0.10 m, needed rise above the lamp top 0.50 m, margin 0.22 m, landing at `x` greater than 7.3, `z[1.5,3.5]`.
+
+The jump test must pass with these margins. If the real values differ, the test reports which hop fails.
+
+Failure feel: if the player falls off the lamp, the lamp does not tip. If the player stands on the rail, a camera on the ceiling sees them, so the alarm event fires, which gives the route a stealth cost `[X]`.
+
+---
+
+## 40. SECOND LEVEL BOX (F2): THE PENULTIMATE FLOOR
+
+Elevation 7.40, ceiling 3.00, a box sitting on the F1 roof terrace (the room dimensions below are inside the box walls). Footprint `x[3.5,10.5] z[3.0,8.0]`, 7.0 by 5.0 m, with exterior walls 0.30 m thick in mint siding. `[D]` the ladder reaches the penultimate floor.
+
+Rooms, tiling with a partition at z = 5.5:
+
+```
+ladder_room_f2    x[3.5,10.5]  z[3.0,5.5]    7.0 by 2.5 m
+control_room_f2   x[3.5,10.5]  z[5.5,8.0]    7.0 by 2.5 m
+```
+
+### 40.1 ladder_room_f2
+
+The ladder emerges from a floor hatch at `x[8.0,8.8] z[4.6,5.4]` with a steel guard rail around it, 0.90 m tall. The room is bare: concrete floor, bare mint walls, a bulb on a cord. The train track crosses the room east to west as an indoor segment: the track enters through a hole in the west wall at x = 3.5, `z[3.8,5.0]`, 1.2 m wide, 1.0 m tall, sill 0.30 m, crosses the room at z = 4.2, and exits through a matching hole in the east wall at x = 10.5 `[X]`. `[D]` a train track and a hole that leads into another room. A second hole in the partition wall at z = 5.5, `x[5.0,6.2]`, 1.2 m wide, 1.0 m tall, sill 0.30 m, is the documented hole that leads into the control room, big enough for the player to crawl through `[D]` `[X]`.
+
+### 40.2 control_room_f2
+
+The machinery room. A bank of switches along the south wall, a window of cracked glass 0.9 by 1.5 m looking out over the back terrace, a desk, and the two controls that start the train `[D]`: a big red button on a post 1.0 m tall at `x 6.0, z 7.4`, and a lever at `x 8.5, z 7.4` mounted in a slot box 0.3 by 0.3 by 0.9 m. Press the button, then pull the lever (section 19.4 of this document). A fault light above the lever blinks until the sequence is right. An exterior door at the south wall, x 6.5 to 7.45, leads out to the back terrace. A camera in the north-east ceiling corner `[D]` `[X]`.
+
+---
+
+## 41. THE TERRACE AND THE TRAIN LOOP
+
+The terrace deck is the F1 roof at elevation 7.40, around the F2 box. Strips: front `z[0,3.0]`, back `z[8.0,11.0]`, west `x[0,3.5]`, east `x[10.5,14.0]`. A parapet 0.55 m tall and 0.25 m thick runs around the outer edge `[X]`, with a gap at the ladder access from the street side where a rain pipe leans (a fire-escape route for later). The deck surface is dark roofing felt `#3B3B44` with seams every 1.0 m.
+
+The loop path, as a closed Catmull-Rom spline through control points at 7.40 plus 0.05 (rail height above deck), walking clockwise from above. All points `[X]` `[A]`:
+
+```
+P0   ( 1.5, 7.45, 1.5)   front-left corner
+P1   ( 7.0, 7.45, 1.5)   front center
+P2   (12.5, 7.45, 1.5)   front-right corner
+P3   (12.5, 7.45, 5.5)   east center
+P4   (12.5, 7.45, 9.5)   back-right corner
+P5   ( 7.0, 7.45, 9.5)   back center
+P6   ( 1.5, 7.45, 9.5)   back-left corner
+P7   ( 1.5, 7.45, 5.5)   west center, then back to P0
+```
+
+The track passes through the F2 box once, through the ladder room via the two holes in section 40.1 (west hole at z 4.2 and east hole at z 4.2). To do this, add two more control points at the holes, `(3.4, 7.70, 4.2)` and `(10.6, 7.70, 4.2)` (the track inside the box sits 0.3 m above the box floor, on small sleepers), and connect the loop so that from the west center the track goes into the west hole, crosses the room, exits the east hole, and rejoins the east side of the loop. In other words the loop is a ring plus a chord through the box. The builder must verify closure and the minimum turn radius of 1.2 m.
+
+Length of the outer ring: about 2 times (11.0 plus 8.0) equals 38 m. At 1.0 m/s a lap takes about 38 seconds, plus the chord. `[A]`
+
+The train: an engine 0.9 m long, 0.5 m wide, 0.6 m tall, red body `RED_TOY`, a yellow chimney, a yellow stripe; two carriages 0.9 m long each in `BLUE_TOY` and `YELLOW_TOY`, a 0.1 m gap between cars. The player can stand on a carriage roof. A mannequin rides in the last carriage `[X]` and the player must stop or ride the train to get it (a decoy puzzle piece, flagged in the data as `design`). The train starts after the button and lever are used in order. It runs for 3 laps and then stops at the station spot P1 `[X]`.
+
+---
+
+## 42. THE WINDMILL
+
+`[D]` (weak source) A windmill sits on the roof; the player climbs it to get a mannequin.
+
+Base at the center of the F2 box roof, elevation 10.70 (box roof deck), at `x 7.0, z 5.5`. The tower is a tapered octagonal prism 3.0 m tall, 1.2 m across at the base and 0.8 m at the top `[X]`, painted `NH_TRIM` with a mint band. A fixed ladder on its east side, rungs spaced about 0.28 m `[S]`: 11 rungs for 3.0 m (3.0 / 0.28 is 10.7, round to 11, true spacing 0.273 m). The hub at the top, 0.30 m across, carries four blades, each 1.8 m long and 0.35 m wide, 8 degrees of twist, in `NH_SCAFFOLD` `#C9A227` and white, rotating 0.3 revolutions per second `[A]`, slowing to 0.1 when the player is on the ladder. The mannequin hangs from the hub 0.2 m below its center, in reach from the top rung. A small platform 0.8 m wide at the tower's top `[X]` makes the grab possible.
+
+Access from the terrace to the roof of the F2 box: a steel ladder on the east exterior wall of the box, at `x 10.5 plus 0.05, z[5.0,5.8]`, rising 3.0 m from the terrace deck to the box roof deck, with a safety cage `[X]`. The roof deck is a 12 degree gable in slate blue; the ladder lands on a flat 1.0 m perch at the eave.
+
+---
+
+## 43. SECURITY LAYOUT
+
+`[D]` Reports mention new cameras and laser grids. All positions below are `[X]`, in the order the player meets them.
+
+1. Broken window: no camera. The first room has none, so the entry feels safe.
+2. Foyer: nothing. Dining room: one ceiling camera (section 37.3).
+3. Cluttered hallway: a laser tripwire across the closet door, 0.3 m above the floor, which trips if the player knocks the boxes.
+4. Kitchen: a camera above the east door.
+5. Basement landing: a camera over the sealed door, covering the six bolts. Removing a bolt takes 1.5 s, so the player must time it against the camera's sweep, 8 seconds per cycle with a 3 second blind window on the left side.
+6. F1 hall: a camera above the Dutch gate, and a laser grid in the hall at z 5.0, three beams at heights 0.2, 0.6, and 1.0 m, which the player has to jump or crawl through.
+7. Gallery: two ceiling cameras with overlapping cones, leaving a 1.5 m blind strip along the south wall.
+8. F2 box: one camera in the control room.
+9. Terrace corners: four exterior cameras on the parapet corners with a 90 degree sweep.
+
+Alarm behavior: a camera that sees the player starts a 2 s tracking beep, then fires an `alarm` event with the player's position and a loudness of 90 (on a 0 to 100 scale), which the neighbor system hears anywhere in the house. A laser trip fires the same event with loudness 100. Cameras can be disabled by hitting their power switch (a red box on the wall nearby) with a thrown object `[X]`.
+
+---
+
+## 44. MASTER PROP LIST WITH SIZES AND COUNTS
+
+Counts are for the baseline and `[X]`. Sizes are `[S]` where a real standard exists, otherwise `[A]`.
+
+```
+cardboard box (small)       0.35 x 0.30 x 0.25 m      12
+cardboard box (medium)      0.50 x 0.40 x 0.35 m      14
+cardboard box (large)       0.70 x 0.50 x 0.50 m       6
+wooden crate                0.60 x 0.40 x 0.40 m       8
+bucket                      0.30 m dia, 0.30 m tall    5
+paint can                   0.16 m dia, 0.19 m tall    6
+chair (dining)              0.45 x 0.45 x 0.95 m       8
+chair (child, party)        0.30 x 0.30 x 0.55 m       6
+table (dining)              2.2 x 1.0 x 0.78 m        1
+table (party)               3.0 x 1.0 x 0.78 m        1
+sofa                        2.0 x 0.9 x 0.85 m        2
+armchair                    0.85 x 0.85 x 0.90 m       1
+bed                         2.0 x 1.4 x 0.55 m        1
+wardrobe                    1.2 x 0.6 x 2.2 m         1
+bookcase                    1.0 x 0.30 x 2.3 m        2
+lamp (table)                0.55 m tall               6
+lamp (floor, normal)        1.6 m tall                3
+lamp (climbable, anchored)  1.20 m cap height, cap 0.52 m   1
+rail (climbable)            2.0 x 0.5 x 0.55 m         1
+mannequin (adult)           1.75 m tall, 0.45 m wide   5   (see below)
+crowbar                     0.60 m long, 0.02 m round  1
+keycard                     85.6 x 54 x 0.76 mm (scaled 2.0)  1
+bolt                        24 mm head, 80 mm long     6
+board                       1.15 x 0.14 x 0.038 m      3
+steel ladder                rung spacing 0.28 m        2 (+1 windmill tower)
+security camera             0.20 x 0.10 x 0.10 m       12
+laser emitter               0.06 m cube                6
+train engine                0.9 x 0.5 x 0.6 m          1
+train carriage              0.9 x 0.5 x 0.45 m         2
+```
+
+The five mannequin locations `[X]`: one under a dust sheet in the gallery, one riding the last train carriage, one hanging from the windmill hub, one in the study closet in a plastic bag, one in the basement standing against a wall. The keycard `[X]` is in the control room desk drawer. The crowbar `[X]` is behind the stove in the kitchen. These pickup locations are design placeholders; keep them in a data file (`puzzle.json`).
+
+---
+
+## 45. LIGHTING AND SOUND CUES, BY AREA
+
+```
+area            light                                sound
+foyer           dim bulb, bar of daylight under door  floor creak, distant clock
+living room     daylight bars through boards,         wind through broken window,
+                bright shaft from broken window       glass crunch underfoot
+cluttered hall  one weak bulb, flicker                clutter clinks, rattling closet
+kitchen         fridge light, daylight from east      fridge hum, drip
+back hall       gray, flat                            low hum from basement door
+basement        cyan-green tube lights                boiler thrum, pipe knock
+F1 hall         bulb + sconce, warm                   bath drip, floor tilt creak
+gallery         bright daylight, three windows        faint wind, dust-sheet flap
+birthday room   warm string lights                    music box, balloons squeak
+F2 ladder room  bare bulb                             train hum when running
+F2 control      red fault light, switch glow          relay clicks, button clunk
+terrace         open sky, hard shadows                wind, flapping tarp, train chuff
+windmill        sky                                   blade whoosh, creaking hub
+```
+
+---
+
+## 46. WHAT TO MEASURE FIRST (PRIORITY LIST FOR SCREENSHOTS)
+
+Ranked by how many other numbers depend on each one, so my screenshots give the most accuracy per image:
+
+1. Ceiling height on F0 (affects every floor elevation).
+2. The player height versus the door height in the same frame (the master scale).
+3. The width and length of the cluttered hallway and the stair run (fixes the center column).
+4. The stair rise count and tread depth (fixes floor-to-floor height independently).
+5. The gate height and the rail height and the lamp height in one frame (the whole jump route).
+6. The width of the front facade and the porch (fixes the footprint).
+7. The F1 floor-to-ceiling height and the ladder length.
+8. The terrace width, the parapet height, and the train track gauge.
+9. The windmill height and blade length.
+10. Room sizes for the kitchen, dining room, and living room.
+
+---
+
+## 47. HOW TO ENTER PART III INTO THE DATA
+
+1. Create `house.json` with the floors, rooms, openings, stairs, and features listed above, tagging each value using the marks.
+2. Create `puzzle.json` with the pickup locations, the bolt order, the mannequin count, and the button-lever sequence.
+3. Create `security.json` with each camera and laser, its position, cone angle, range, and sweep.
+4. Create `train.json` with the spline control points and the train dimensions.
+5. Run the audit and show me the percentage. It will read as nearly all `assumed`, with a small `documented` slice, and zero `measured`, which is correct.
+6. Run the tests. Fix any tiling, overlap, headroom, or jump failure by following the rule at the top of this part (move the least certain room, log it, never stretch a measured value).
+7. Then proceed with the milestones in section 10.
+
+---
 
 Now start with Milestone 0.
