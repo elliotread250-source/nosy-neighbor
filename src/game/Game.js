@@ -32,6 +32,11 @@ import { Sfx } from '../audio/Sfx.js';
 import { Voice } from '../audio/Voice.js';
 import { Music } from '../audio/Music.js';
 import { Ambience } from '../audio/Ambience.js';
+import { Settings } from '../ui/Settings.js';
+import { Menus } from '../ui/Menus.js';
+import { SaveGame } from './SaveGame.js';
+import { SaveSystem } from '../core/SaveSystem.js';
+import { PLAYER_HOUSE as PH } from '../world/PlayerHouse.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
 import { HUD } from '../ui/HUD.js';
 import { DebugOverlay } from '../ui/DebugOverlay.js';
@@ -47,6 +52,7 @@ export class Game {
   }
 
   async init() {
+    Settings.load();
     const app = document.getElementById('app');
     this.engine = new Engine(app);
     this.physics = await Physics.init();
@@ -103,6 +109,9 @@ export class Game {
     this.hud = new HUD(document.getElementById('hud'));
     this.debug = new DebugOverlay(document.getElementById('debug'), { engine: this.engine, physics: this.physics, player: this.player, input: this.input, game: this });
     this.debugViz = new DebugViz(this);
+    if (this.story) this.saveGame = new SaveGame(this);
+    Settings.apply(this);
+    Events.on('debug:giveAll', () => this.giveAll());
     this._setupScreens();
     this.frame = 0;
     this.loop = this.loop.bind(this);
@@ -111,10 +120,9 @@ export class Game {
   }
 
   _setupScreens() {
-    const overlay = document.getElementById('overlay');
     const { player, hud, input, engine } = this;
+    this.menus = new Menus(this);
     if (this.shot) {
-      overlay.style.display = 'none';
       hud.setVisible(false);
       player.enabled = false;
       player.noclip = true;
@@ -131,22 +139,78 @@ export class Game {
       }
       return;
     }
-    let started = false;
-    overlay.addEventListener('click', () => {
-      this.audio.unlock();
-      input.requestLock();
-      engine.canvas.focus();
-    });
     input.onLockChange = (locked) => {
-      overlay.classList.toggle('hidden', locked || this.state === 'ended');
-      overlay.querySelector('.overlay-title').textContent = started ? 'Paused' : 'Nosy Neighbor';
-      overlay.querySelector('.overlay-sub').textContent = started ? 'Click to keep sneaking' : 'Click to play';
-      if (locked && !started) {
-        started = true;
-        if (this.story && !qs.has('nointro')) this.story.startIntro();
-        else { hud.showObjective('Find out what\'s in the basement.'); Events.emit('music', { track: 'explore' }); }
-      }
+      if (!locked && this.state === 'play' && !this.paused) this.pause();
     };
+    // tests and quick iteration skip the title
+    if (qs.has('notitle') || this.test || this.viewer) {
+      this.state = 'play';
+      return;
+    }
+    this.state = 'title';
+    this.titleT = 0;
+    hud.root.classList.add('titlemode');
+    player.enabled = false;
+    player.externalCamera = true;
+    player.noclip = true;
+    this.storyClock.set(0.85);
+    this.menus.show('title');
+    Events.emit('music', { track: 'title' });
+    // the very first click anywhere wakes the audio for the title music
+    window.addEventListener('pointerdown', () => this.audio.unlock(), { once: true });
+  }
+
+  _updateTitle(dt) {
+    // slow drift past his house at golden hour
+    this.titleT += dt;
+    const t = this.titleT * 0.045;
+    const cam = this.engine.camera;
+    const x = Math.sin(t) * 13;
+    cam.position.set(x, 3.0 + Math.sin(t * 1.3) * 0.6, 3.5);
+    cam.lookAt(x * 0.35 - 8.5, 6.2, -20);
+  }
+
+  startGame(cont) {
+    const p = this.player;
+    this.state = 'play';
+    this.hud.root.classList.remove('titlemode');
+    p.noclip = false;
+    p.externalCamera = false;
+    p.enabled = true;
+    p.spawn(PH.bedSpawn, PH.bedSpawnYaw);
+    this.storyClock.set(0);
+    this.engine.canvas.focus();
+    const save = cont ? SaveSystem.load() : null;
+    if (save && this.saveGame?.restore(save)) {
+      this.hud.showObjective('Welcome back. Find out what\'s in the basement.', 5);
+      Events.emit('music', { track: save.keys.includes('basement') ? 'tension' : 'explore' });
+    } else if (this.story && !qs.has('nointro')) this.story.startIntro();
+    else { this.hud.showObjective('Find out what\'s in the basement.'); Events.emit('music', { track: 'explore' }); }
+  }
+
+  pause() {
+    if (this.state !== 'play') return;
+    this.paused = true;
+    this._pauseDrawn = false;
+    this.menus.show('pause');
+    if (this.audio.ready) this.audio.master.gain.setTargetAtTime(CONFIG.audio.master * 0.25, this.audio.now, 0.1);
+  }
+
+  resume() {
+    this.paused = false;
+    this.engine.tick();
+    if (this.audio.ready) this.audio.applyVolumes();
+  }
+
+  // Debug F8: every key and tool.
+  giveAll() {
+    const ix = this.interaction;
+    if (!ix) return;
+    for (const c of ['red', 'blue', 'green', 'yellow', 'attic', 'basement']) ix.inv.keys.add(c);
+    const d = this.devices;
+    for (const e of [d.crowbar, d.magnet, d.flashlightTool]) if (e && !e.held) ix.inv.addProp(e);
+    if (!ix.inv.has('wrench')) ix.inv.addProp(d.spawnTool('wrench', new Vector3(0, -50, 0)));
+    Events.emit('inventory:changed', {});
   }
 
   // ------------------------------------------------------------ catch & respawn
@@ -209,6 +273,15 @@ export class Game {
     const dt = realDt * this.timeScale;
     const { input, physics, player, engine } = this;
     input.pollGamepad();
+    if (this.paused) {
+      // nothing moves while paused: draw once and hold the frame under the blur
+      if (!this._pauseDrawn) { engine.render(realDt); this._pauseDrawn = true; }
+      input.endFrame();
+      this.frame++;
+      requestAnimationFrame(this.loop);
+      return;
+    }
+    if (this.state === 'title') this._updateTitle(realDt);
     physics.step(dt, (h) => {
       player.fixedUpdate(h);
       this.ai?.fixedUpdate(h);

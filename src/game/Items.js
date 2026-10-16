@@ -1,6 +1,8 @@
 // Key items and tools: chunky, readable from across a room. Keys are 25 cm,
 // one solid bright color with a slow 1 Hz glow. Tools are toy-proportioned.
-import { Group, Mesh, TorusGeometry, SphereGeometry, ConeGeometry } from 'three';
+import { Group, Mesh, TorusGeometry, SphereGeometry, ConeGeometry, Shape, ShapeGeometry, DoubleSide } from 'three';
+import { Events } from '../core/Events.js';
+import { Settings } from '../ui/Settings.js';
 import { makeMat } from '../art/Materials.js';
 import { roundedBox, chamferCylinder } from '../art/Geo.js';
 import { KEY_COLORS } from '../world/Doors.js';
@@ -25,6 +27,24 @@ export const KEY_NAMES = {
   red: 'red key', blue: 'blue key', green: 'green key', yellow: 'yellow key', purple: 'purple key', basement: 'basement key', attic: 'attic key',
 };
 
+// Colorblind-friendly bow shapes: color is never the only cue.
+const KEY_SHAPES = { red: 'circle', blue: 'triangle', green: 'square', attic: 'star', basement: 'heart', yellow: 'diamond', purple: 'hexagon' };
+
+// Calls emit(x, y, i) around a unit-sized outline of the key's shape.
+export function keyShapePath(color, emit) {
+  const kind = KEY_SHAPES[color] ?? 'circle';
+  const pts = [];
+  const poly = (n, r = 1, rot = Math.PI / 2) => { for (let i = 0; i < n; i++) { const a = rot + (i / n) * Math.PI * 2; pts.push([Math.cos(a) * r, Math.sin(a) * r]); } };
+  if (kind === 'circle') poly(20, 0.9);
+  else if (kind === 'triangle') poly(3, 1.05);
+  else if (kind === 'square') poly(4, 1.0, Math.PI / 4);
+  else if (kind === 'diamond') poly(4, 1.0);
+  else if (kind === 'hexagon') poly(6, 0.95);
+  else if (kind === 'star') for (let i = 0; i < 10; i++) { const a = Math.PI / 2 + (i / 10) * Math.PI * 2, r = i % 2 ? 0.45 : 1.05; pts.push([Math.cos(a) * r, Math.sin(a) * r]); }
+  else if (kind === 'heart') for (let i = 0; i < 24; i++) { const t = (i / 24) * Math.PI * 2; pts.push([(16 * Math.sin(t) ** 3) / 17, (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) / 17 + 0.15]); }
+  pts.forEach((p, i) => emit(p[0], p[1], i));
+}
+
 export function buildKey(color) {
   const g = new Group();
   // a unique material per key so its glow can pulse on its own
@@ -39,6 +59,14 @@ export function buildKey(color) {
   const bit2 = mesh(roundedBox(0.02, 0.03, 0.02, 0.006, 1), mat);
   bit2.position.set(0.055, -0.025, 0);
   g.add(bow, shaft, bit1, bit2);
+  // the shape plate inside the bow ring, shown with the accessibility option
+  const sh = new Shape();
+  keyShapePath(color, (x, y, i) => (i ? sh.lineTo(x * 0.026, y * 0.026) : sh.moveTo(x * 0.026, y * 0.026)));
+  const plate = new Mesh(new ShapeGeometry(sh), makeMat('BLACK_SOFT', { side: DoubleSide }));
+  plate.position.set(-0.08, 0, 0);
+  plate.visible = !!Settings.values.colorblindKeys;
+  g.add(plate);
+  Events.on('settings:changed', (e) => { plate.visible = !!e.values.colorblindKeys; });
   g.userData.glowMat = mat;
   g.userData.item = { kind: 'key', color, label: KEY_NAMES[color] ?? 'key' };
   return g;

@@ -4,6 +4,9 @@
 import { Events } from '../core/Events.js';
 import { css } from '../art/Palette.js';
 import { KEY_COLORS } from '../world/Doors.js';
+import { Settings } from './Settings.js';
+import { CONFIG } from '../config.js';
+import { keyShapePath } from '../game/Items.js';
 
 const HIDE_CLASS = { wardrobe: 'wardrobe', underBed: 'under', underTable: 'under', box: 'box', hamper: 'box', trunk: 'box', behind: 'behind', curtain: 'behind' };
 
@@ -19,6 +22,9 @@ export class HUD {
       <div class="hud-note"><canvas width="640" height="460"></canvas><div class="help">E to put it back</div></div>
       <div class="hud-end"><div class="t1">ACT 1 COMPLETE</div><div class="t2">Act 2 coming soon</div><div class="stats"></div><div class="again">Click to play again</div></div>
       <div class="hud-crosshair"></div>
+      <svg class="hud-eye" viewBox="0 0 54 30"><path class="white" d="M3 15 Q27 -6 51 15 Q27 36 3 15Z" fill="#fff8ec" stroke="#2a1e3a" stroke-width="3"/><circle class="iris" cx="27" cy="15" r="7" fill="#2a1e3a"/><path class="lidT" d="M3 15 Q27 -6 51 15 Q27 15 3 15Z" fill="#c9a27a" stroke="#2a1e3a" stroke-width="3"/><path class="lidB" d="M3 15 Q27 36 51 15 Q27 15 3 15Z" fill="#c9a27a" stroke="#2a1e3a" stroke-width="3"/></svg>
+      <div class="hud-captions"></div>
+      <div class="hud-noise"><div></div></div>
       <svg class="hud-hold" viewBox="0 0 46 46"><circle cx="23" cy="23" r="18" fill="none" stroke="rgba(42,30,58,0.5)" stroke-width="6"/><circle class="arc" cx="23" cy="23" r="18" fill="none" stroke="#f2c94c" stroke-width="5" stroke-linecap="round" transform="rotate(-90 23 23)" stroke-dasharray="113" stroke-dashoffset="113"/></svg>
       <div class="hud-prompt"></div>
       <div class="hud-objective"></div>
@@ -42,6 +48,16 @@ export class HUD {
     this.hideEl = q('.hud-hide');
     this.slotEls = [...root.querySelectorAll('.hud-slot')];
     this.cine = q('.hud-cine');
+    this.eyeEl = q('.hud-eye');
+    this.eyeWhite = q('.hud-eye .white');
+    this.lidT = q('.hud-eye .lidT');
+    this.lidB = q('.hud-eye .lidB');
+    this.capEl = q('.hud-captions');
+    this.noiseEl = q('.hud-noise');
+    this.noiseT = 0;
+    Events.on('caption', (e) => this.caption(e.text));
+    Events.on('neighbor:step', (e) => { this.lastStep = e.position; this.noiseT = 0.9; });
+    Events.on('settings:changed', () => { this._keySig = ''; });
     this.monitorEl = q('.hud-monitor');
     this.glowEl = q('.hud-glow');
     this.cardEl = q('.hud-card');
@@ -114,7 +130,9 @@ export class HUD {
       this.prompt.innerHTML = text ? `<kbd>E</kbd>${escapeHtml(text)}` : '';
       this.prompt.classList.toggle('show', !!text);
     }
-    this.cross.classList.toggle('active', !!cur && !player.hiding);
+    this.cross.classList.toggle('hand', !!cur && !player.hiding);
+    this._updateEye(dt, game);
+    this._updateNoise(dt, game);
     this.cross.style.display = player.hiding ? 'none' : '';
     // hold ring
     const hk = ix.holdTarget ? Math.min(1, ix.holdT / ix.holdTarget.hold) : 0;
@@ -145,12 +163,46 @@ export class HUD {
         const c = document.createElement('canvas');
         c.width = c.height = 64;
         d.appendChild(c);
-        drawKey(c.getContext('2d'), css(KEY_COLORS[k] ?? 'BRASS'), 64);
+        drawKey(c.getContext('2d'), css(KEY_COLORS[k] ?? 'BRASS'), 64, Settings.values.colorblindKeys ? k : null);
         this.keysEl.appendChild(d);
       }
     }
   }
 }
+
+// detection eye: opens as his meter fills, red when he's on you
+HUD.prototype._updateEye = function (dt, game) {
+  const ai = game?.ai;
+  const m = ai ? (ai.state === 'chase' || ai.state === 'spot' ? 1 : ai.meter) : 0;
+  this.eyeEl.classList.toggle('show', m > 0.03 && !game.story?.mode);
+  const open = Math.min(1, m) * 14;
+  this.lidT.setAttribute('d', `M3 15 Q27 -6 51 15 Q27 ${(15 - open * 1.3).toFixed(1)} 3 15Z`);
+  this.lidB.setAttribute('d', `M3 15 Q27 36 51 15 Q27 ${(15 + open * 1.3).toFixed(1)} 3 15Z`);
+  this.eyeWhite.setAttribute('fill', m >= 1 ? '#ff6b6b' : '#fff8ec');
+};
+
+// Easy only: which way his footsteps are coming from
+HUD.prototype._updateNoise = function (dt, game) {
+  this.noiseT -= dt;
+  const show = CONFIG.ai.difficulty === 'easy' && this.noiseT > 0 && this.lastStep && game?.player;
+  this.noiseEl.classList.toggle('show', !!show);
+  if (!show) return;
+  const p = game.player;
+  const dx = this.lastStep.x - p.curFeet.x, dz = this.lastStep.z - p.curFeet.z;
+  if (Math.hypot(dx, dz) > 16) { this.noiseEl.classList.remove('show'); return; }
+  const ang = Math.atan2(dx, -dz) + p.yaw;
+  this.noiseEl.style.transform = `rotate(${ang}rad)`;
+};
+
+HUD.prototype.caption = function (text) {
+  if (!Settings.values.subtitles || !text) return;
+  const d = document.createElement('div');
+  d.textContent = text;
+  this.capEl.appendChild(d);
+  while (this.capEl.children.length > 3) this.capEl.firstChild.remove();
+  setTimeout(() => { d.style.opacity = '0'; }, 2600);
+  setTimeout(() => d.remove(), 3200);
+};
 
 function escapeHtml(s) {
   return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -159,7 +211,7 @@ function escapeHtml(s) {
 // --------------------------------------------------------------- icons (2D, chunky, outlined)
 const INK = '#2a1e3a';
 
-function drawKey(x, color, S) {
+function drawKey(x, color, S, shapeFor = null) {
   x.clearRect(0, 0, S, S);
   x.save();
   x.translate(S / 2, S / 2);
@@ -176,6 +228,15 @@ function drawKey(x, color, S) {
   x.strokeRect(-S * 0.06, -S * 0.05, S * 0.36, S * 0.1);
   x.fillRect(S * 0.18, S * 0.04, S * 0.08, S * 0.12);
   x.strokeRect(S * 0.18, S * 0.04, S * 0.08, S * 0.12);
+  if (shapeFor) {
+    x.translate(-S * 0.2, 0);
+    x.rotate(0.6);
+    x.fillStyle = '#2a1e3a';
+    x.beginPath();
+    keyShapePath(shapeFor, (px, py, i) => (i ? x.lineTo(px * S * 0.1, -py * S * 0.1) : x.moveTo(px * S * 0.1, -py * S * 0.1)));
+    x.closePath();
+    x.fill();
+  }
   x.restore();
 }
 

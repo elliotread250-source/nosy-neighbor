@@ -21,22 +21,6 @@
       #app { position: fixed; inset: 0; }
       #app canvas { display: block; width: 100%; height: 100%; outline: none; }
 
-      #overlay {
-        position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        background: radial-gradient(ellipse at center, rgba(42, 30, 58, 0.25), rgba(42, 30, 58, 0.6));
-        cursor: pointer; transition: opacity 0.25s; z-index: 10;
-      }
-      #overlay.hidden { opacity: 0; pointer-events: none; }
-      .overlay-title {
-        font-family: 'Luckiest Guy', 'Nunito', sans-serif; font-size: clamp(42px, 8vw, 96px); color: var(--mustard);
-        letter-spacing: 2px; transform: rotate(-2deg);
-        text-shadow: 4px 5px 0 var(--ink), -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink);
-      }
-      .overlay-sub {
-        margin-top: 18px; padding: 12px 26px; font-weight: 800; font-size: 20px; background: var(--cream);
-        border: 4px solid var(--ink); border-radius: 18px; box-shadow: 5px 6px 0 var(--ink); transform: rotate(1.2deg);
-      }
-      .overlay-help { margin-top: 22px; color: var(--cream); font-weight: 700; font-size: 14px; text-align: center; line-height: 1.6; text-shadow: 0 2px 0 var(--ink); }
 
       #hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
       .hud-crosshair {
@@ -133,6 +117,60 @@
       .hud-end .stats b { display: block; font-family: 'Luckiest Guy', 'Nunito', sans-serif; font-size: 40px; color: var(--cream); }
       .hud-end .again { margin-top: 36px; padding: 10px 22px; background: var(--cream); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--mustard); font-weight: 800; }
 
+      #menus { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+      #menus.open { pointer-events: auto; }
+      #menus.dim { backdrop-filter: blur(7px) saturate(0.35); background: rgba(30, 20, 40, 0.35); }
+      .menu-screen { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; }
+      .menu-screen.show { display: flex; animation: menuIn 0.3s ease-out; }
+      @keyframes menuIn { from { opacity: 0; transform: translateY(12px); } }
+      .title-screen { justify-content: flex-start; align-items: flex-start; padding: 7vh 0 0 6vw; box-sizing: border-box; background: linear-gradient(to right, rgba(42, 30, 58, 0.45), transparent 55%); }
+      .title-screen .menu-buttons { align-items: flex-start; margin-left: 2vw; }
+      .title-help { left: 0; right: 0; }
+      .title-logo { font-family: 'Luckiest Guy', 'Nunito', sans-serif; color: var(--mustard); line-height: 0.92; text-align: center; user-select: none;
+        text-shadow: 5px 6px 0 var(--ink), -3px -3px 0 var(--ink), 3px -3px 0 var(--ink), -3px 3px 0 var(--ink), 0 0 30px rgba(0,0,0,0.25); }
+      .title-logo .w1 { font-size: clamp(64px, 12vw, 150px); transform: rotate(-4deg) translateX(-0.35em); display: flex; align-items: center; justify-content: center; }
+      .title-logo .w2 { font-size: clamp(54px, 10vw, 128px); transform: rotate(2.5deg) translateX(0.3em); color: var(--tomato); }
+      .title-logo .eye { width: 0.82em; height: 0.82em; margin: 0 0.02em; filter: drop-shadow(5px 6px 0 #2a1e3a); }
+      .menu-title { font-family: 'Luckiest Guy', 'Nunito', sans-serif; font-size: clamp(42px, 6vw, 72px); color: var(--mustard); text-shadow: 4px 5px 0 var(--ink); transform: rotate(-2deg); margin-bottom: 18px; }
+      .menu-buttons { display: flex; flex-direction: column; gap: 14px; margin-top: 4vh; align-items: center; }
+      .menu-buttons.row { flex-direction: row; }
+      #menus button { font: 800 20px 'Nunito', sans-serif; color: var(--ink); background: var(--cream); border: 4px solid var(--ink); border-radius: 18px;
+        box-shadow: 5px 6px 0 var(--ink); padding: 10px 30px; min-width: 220px; cursor: pointer; transform: rotate(var(--tilt, 0deg)); transition: transform 0.15s, background 0.15s; }
+      #menus button:hover { transform: rotate(var(--tilt, 0deg)) scale(1.06); background: var(--mustard); animation: wobble 0.5s ease-in-out; }
+      #menus button:active { transform: rotate(var(--tilt, 0deg)) scale(0.97) translate(2px, 3px); box-shadow: 2px 3px 0 var(--ink); }
+      @keyframes wobble { 25% { rotate: -2.5deg; } 50% { rotate: 2deg; } 75% { rotate: -1deg; } }
+      .title-help { position: absolute; bottom: 26px; color: var(--cream); font-weight: 700; font-size: 14px; text-shadow: 0 2px 0 var(--ink); text-align: center; padding: 0 16px; }
+      .version { position: absolute; right: 14px; bottom: 8px; color: var(--cream); font-size: 12px; opacity: 0.75; font-weight: 700; }
+      .options-screen, .credits-screen { background: rgba(30, 20, 40, 0.55); }
+      .tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+      #menus .tabs button { min-width: 0; padding: 6px 16px; font-size: 16px; border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); }
+      #menus .tabs button.on { background: var(--mustard); }
+      .panel { margin-top: 18px; width: min(640px, 92vw); max-height: 52vh; overflow-y: auto; background: var(--cream); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 6px 7px 0 var(--ink); padding: 10px 22px; }
+      .opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 2px dashed rgba(42, 30, 58, 0.18); font-weight: 800; }
+      .opt:last-child { border-bottom: 0; }
+      .opt small { display: block; font-weight: 600; font-size: 12px; opacity: 0.6; }
+      .opt input[type=range] { flex: 1; max-width: 260px; accent-color: #e07a5f; }
+      .opt .val { width: 48px; text-align: right; }
+      #menus .opt .toggle, #menus .opt .choices button { min-width: 74px; padding: 4px 12px; font-size: 15px; border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); border-width: 3px; }
+      #menus .opt .toggle.on, #menus .opt .choices button.on { background: var(--teal); }
+      .opt .choices { display: flex; gap: 8px; }
+      .opt.binds { flex-direction: column; align-items: stretch; }
+      .bindgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+      #menus .bindgrid button { min-width: 0; display: flex; justify-content: space-between; padding: 4px 10px; font-size: 14px; box-shadow: 2px 2px 0 var(--ink); border-width: 3px; border-radius: 10px; }
+      #menus .bindgrid button.listening { background: var(--mustard); }
+      .bindgrid kbd { font: 800 13px 'Nunito', sans-serif; background: #fff; border: 2px solid var(--ink); border-radius: 6px; padding: 0 6px; }
+      .credits { width: min(560px, 90vw); background: var(--cream); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 6px 7px 0 var(--ink); padding: 8px 24px; font-weight: 700; line-height: 1.5; }
+      #hud.titlemode { display: none; }
+      .hud-eye { position: absolute; top: 14px; left: 50%; width: 54px; height: 30px; margin-left: -27px; opacity: 0; transition: opacity 0.4s; }
+      .hud-eye.show { opacity: 1; }
+      .hud-crosshair.hand { width: 26px; height: 26px; margin: -13px 0 0 -13px; background: none; box-shadow: none; }
+      .hud-crosshair.hand::after { content: ''; position: absolute; inset: 0; background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M11 15V6a2 2 0 0 1 4 0v8V4a2 2 0 0 1 4 0v10V6a2 2 0 0 1 4 0v9-5a2 2 0 0 1 4 0v10c0 6-4 10-9 10s-8-3-10-7l-3-6a2 2 0 0 1 3-2l3 4z' fill='%23fff8ec' stroke='%232a1e3a' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+      .hud-captions { position: absolute; bottom: 196px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+      .hud-captions div { background: rgba(20, 14, 26, 0.72); color: var(--cream); font-weight: 800; padding: 3px 12px; border-radius: 8px; font-size: 15px; transition: opacity 0.5s; }
+      .hud-noise { position: absolute; left: 50%; top: 50%; width: 0; height: 0; opacity: 0; transition: opacity 0.3s; }
+      .hud-noise.show { opacity: 0.85; }
+      .hud-noise div { position: absolute; left: -9px; top: -78px; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 16px solid var(--tomato); filter: drop-shadow(0 0 2px #2a1e3a); }
+
       .debug-stats {
         position: fixed; top: 8px; left: 8px; margin: 0; padding: 8px 10px; z-index: 20;
         font: 12px/1.35 ui-monospace, monospace; color: #fff; background: rgba(20, 16, 30, 0.6); border-radius: 6px;
@@ -143,13 +181,7 @@
     <div id="app"></div>
     <div id="hud"></div>
     <div id="debug"></div>
-    <div id="overlay">
-      <div class="overlay-title">Nosy Neighbor</div>
-      <div class="overlay-sub">Click to play</div>
-      <div class="overlay-help">
-        WASD move &middot; Shift sprint &middot; C / Ctrl crouch &middot; Space jump &middot; Q / Z lean &middot; Esc pause
-      </div>
-    </div>
+    <div id="menus"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
