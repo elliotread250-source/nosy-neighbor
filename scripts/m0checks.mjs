@@ -62,7 +62,7 @@ note(`dynamic bodies after the intro: ${before.length}`);
 // clicked. Look at the mantel to show what is (and is not) on it.
 const lookAtMantel = async () => {
   await page.evaluate(() => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(-5.6, 0.62, -17.2), Math.PI / 2); });
-  for (let i = 0; i < 10; i++) await page.evaluate(() => { nn.player.yaw = Math.PI / 2; nn.player.pitch = 0.12; nn.simulate(0.1); });
+  for (let i = 0; i < 10; i++) await page.evaluate(() => { nn.player.yaw = Math.PI / 2; nn.player.pitch = -0.3; nn.simulate(0.1); });
   note(`  mantel camera at ${JSON.stringify(await page.evaluate(() => nn.engine.camera.position.toArray().map((v) => +v.toFixed(2))))}`);
 };
 await lookAtMantel();

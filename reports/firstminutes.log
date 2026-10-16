@@ -1,0 +1,34 @@
+[0.6s] CONSOLE.warning using deprecated parameters for the initialization function; pass a single object instead
+[23.4s] title ready, state=title error=null
+[28.5s] play clicked, story.mode=intro
+[52.6s] intro + title card ended after 12.0 s of game time
+[52.6s] spawn {"x":2.4,"y":0.32,"z":17.6,"g":true,"caught":false,"state":"play"}
+[52.6s] dynamic bodies at start: 78
+[61.7s] reached "bedroom middle" in 0.4s game at {"x":2.4,"y":0.32,"z":19.09,"g":true,"caught":false,"state":"play"}
+[76.3s] reached "partition doorway (bedroom side)" in 0.2s game at {"x":1.1,"y":0.32,"z":20.29,"g":true,"caught":false,"state":"play"}
+[88.0s] reached "partition doorway (living side)" in 0.4s game at {"x":-0.29,"y":0.32,"z":20,"g":true,"caught":false,"state":"play"}
+[96.5s] reached "living room toward front door" in 1.4s game at {"x":-1.02,"y":0.32,"z":16.06,"g":true,"caught":false,"state":"play"}
+[109.7s] reached "front door" in 0.8s game at {"x":-1.2,"y":0.32,"z":13.34,"g":true,"caught":false,"state":"play"}
+[120.5s] reached "front path" in 1.0s game at {"x":-1.2,"y":0.02,"z":9.61,"g":true,"caught":false,"state":"play"}
+[136.8s] reached "south sidewalk" in 1.6s game at {"x":-1.19,"y":0.17,"z":4.11,"g":true,"caught":false,"state":"play"}
+[148.1s] reached "middle of the road" in 1.8s game at {"x":3.05,"y":0,"z":-0.05,"g":true,"caught":false,"state":"play"}
+[158.1s] reached "north sidewalk at the gate" in 2.0s game at {"x":7.71,"y":0.16,"z":-4.67,"g":true,"caught":false,"state":"play"}
+[166.5s] reached "through the picket gate" in 0.8s game at {"x":8,"y":0,"z":-7.62,"g":true,"caught":false,"state":"play"}
+[181.8s] reached "front lawn" in 1.8s game at {"x":2.34,"y":0.17,"z":-9.78,"g":true,"caught":false,"state":"play"}
+[210.6s] stuck 1.0s (game) near {"x":-3.5,"y":0.02,"z":-10.88,"g":true,"caught":false,"state":"play"} heading to "porch in front of the broken window", pressed E
+[211.1s] still stuck at {"x":-3.5,"y":0.01,"z":-10.88,"g":true,"caught":false,"state":"play"}, jumped
+[211.3s] reached "porch in front of the broken window" in 4.0s game at {"x":-3.5,"y":1.5,"z":-11.25,"g":true,"caught":false,"state":"play"}
+[226.0s] reached "at the broken window sill" in 0.6s game at {"x":-3.5,"y":0.62,"z":-13.02,"g":true,"caught":false,"state":"play"}
+[247.1s] stuck 1.2s (game) near {"x":-3.5,"y":1.37,"z":-13.56,"g":true,"caught":false,"state":"play"} heading to "inside the living room", pressed E
+[247.3s] STUCK for 3 s (game) at {"x":-3.5,"y":1.36,"z":-13.55,"g":true,"caught":false,"state":"play"} heading to "inside the living room" (1.65 m away)
+[248.1s] MISSED  "inside the living room" in 5.4s game at {"x":-3.5,"y":1.28,"z":-13.52,"g":true,"caught":false,"state":"play"}
+[273.3s]   teleported to "inside the living room" to continue
+[277.3s] reached "living room middle" in 0.2s game at {"x":-3.2,"y":0.62,"z":-16.23,"g":true,"caught":false,"state":"play"}
+[295.6s] stuck 1.2s (game) near {"x":-1.88,"y":0.62,"z":-16.5,"g":true,"caught":false,"state":"play"} heading to "door to the hall", pressed E
+[295.8s] reached "door to the hall" in 1.8s game at {"x":-1.42,"y":0.62,"z":-16.34,"g":true,"caught":false,"state":"play"}
+[315.4s] stuck 1.2s (game) near {"x":-0.26,"y":0.62,"z":-16.89,"g":true,"caught":false,"state":"play"} heading to "front hallway", pressed E
+[316.6s] still stuck at {"x":-0.26,"y":0.62,"z":-16.89,"g":true,"caught":false,"state":"play"}, jumped
+[317.6s] reached "front hallway" in 3.0s game at {"x":0.24,"y":1.79,"z":-17.56,"g":false,"caught":false,"state":"play"}
+[337.0s] reached "hall north end" in 0.8s game at {"x":0.39,"y":0.62,"z":-20.23,"g":true,"caught":false,"state":"play"}
+[437.4s] dynamic bodies at end: 78
+[437.4s] total wall time 437s, game time 0.0
