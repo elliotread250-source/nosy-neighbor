@@ -1,13 +1,14 @@
 {
   "name": "nosy-neighbor",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "shots": "node scripts/screenshots.mjs"
+    "shots": "node scripts/screenshots.mjs",
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=20"
