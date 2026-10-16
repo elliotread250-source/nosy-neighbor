@@ -74,7 +74,7 @@ export class OpeningsView {
       g.add(leaf);
       e.leaf = leaf;
       e.leafCollider = this._solid(e, e.w, e.h, 0.08, 0, 0, 0, { kind: 'door', state });
-      if (state === 'sealed') this._sealed(e);
+      if (state === 'sealed') { g.userData.keep = true; this._sealed(e); }
       return;
     }
     if (e.type === 'window') {

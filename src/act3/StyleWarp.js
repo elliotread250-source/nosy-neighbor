@@ -28,9 +28,9 @@ export function bboxOf(pos) {
 // moves the top sideways by at most half the cap times the footprint, the
 // taper changes it by 30 % and the bulge by 15 % of the cap, so no bounding
 // dimension grows or shrinks by more than the cap.
-export function warpProp(pos, seed, cap = DESIGN.styleWarpCap) {
+export function warpProp(pos, seed, cap = DESIGN.styleWarpCap, box = null) {
   const out = new Float32Array(pos);
-  const b = bboxOf(pos);
+  const b = box ?? bboxOf(pos);
   const sx = b.max[0] - b.min[0], sy = b.max[1] - b.min[1], sz = b.max[2] - b.min[2];
   if (sy < 1e-6) return out;
   const r = rand(seed);

@@ -15,7 +15,7 @@
       .a3-badge .zero { color: #c0182b; font-weight: 800; }
       .a3-hint { position: absolute; top: 52px; left: 50%; transform: translateX(-50%); background: rgba(20,28,40,0.85); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 14px; opacity: 0; transition: opacity 0.2s; }
       .a3-hint.show { opacity: 1; }
-      .a3-keys { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.8); padding: 4px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; }
+      .a3-keys { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.8); padding: 4px 10px; border-radius: 6px; font-size: 11px; max-width: calc(100vw - 40px); text-align: center; }
       .a3-measure { position: fixed; z-index: 6; transform: translate(-50%, -130%); background: #1c2430; color: #fff; padding: 4px 8px; border-radius: 5px; font: 13px ui-monospace, monospace; pointer-events: none; display: none; text-align: center; }
       .a3-measure small { opacity: 0.75; font-size: 11px; }
       .a3-panel { position: absolute; display: none; margin: 0; background: rgba(20,28,40,0.9); color: #e8eef4; padding: 10px 12px; border-radius: 6px; font: 12px/1.4 ui-monospace, monospace; white-space: pre; overflow: auto; }
@@ -41,6 +41,32 @@
       .a3-alarm.show { display: block; animation: a3blink 0.5s steps(2) infinite; }
       @keyframes a3blink { 50% { opacity: 0.4; } }
       @media (prefers-reduced-motion: reduce) { .a3-alarm.show { animation: none; } }
+      .a3-auditui, .a3-compare { position: fixed; z-index: 8; top: 48px; left: 10px; max-height: calc(100vh - 100px); overflow: auto; background: rgba(16,22,30,0.95); color: #e8eef4; padding: 10px 12px; border-radius: 6px; font: 12px/1.35 ui-monospace, monospace; display: none; }
+      .a3-auditui { right: 10px; }
+      .a3-compare { width: 360px; }
+      .a3-auditui.show, .a3-compare.show { display: block; }
+      .a3-auditui table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+      .a3-auditui th, .a3-auditui td { border-bottom: 1px solid #2a3440; padding: 2px 6px; text-align: right; white-space: nowrap; }
+      .a3-auditui td:first-child, .a3-auditui th:first-child { text-align: left; }
+      .a3-auditui tr.floor td { color: #ffd166; font-weight: 700; border-top: 1px solid #556; }
+      .a3-auditui tr.room { cursor: pointer; }
+      .a3-auditui tr.room:hover td { background: #24303d; }
+      .a3-auditui tr.total td { font-weight: 800; border-top: 2px solid #889; }
+      .a3-auditui .bar { position: relative; height: 22px; background: #2a1a1e; border-radius: 4px; margin-top: 8px; }
+      .a3-auditui .bar div { position: absolute; inset: 0 auto 0 0; background: #3fa66b; border-radius: 4px; }
+      .a3-auditui .bar span { position: relative; padding: 0 8px; line-height: 22px; font-weight: 700; }
+      .a3-auditui .zero { color: #ff6b7a; }
+      .a3-auditui ol { padding-left: 22px; margin: 4px 0; }
+      .a3-auditui li { margin: 3px 0; }
+      .a3-auditui .tag { color: #ff9f9f; }
+      .a3-auditui .shot { color: #9fb2c4; }
+      .a3-auditui .notes { color: #b8c2cc; }
+      .a3-auditui h3 { margin: 8px 0 2px; font-size: 13px; }
+      .a3-auditui button, .a3-compare button { font: inherit; background: #24303d; color: #e8eef4; border: 1px solid #445; border-radius: 4px; padding: 2px 8px; cursor: pointer; margin: 2px 0; }
+      .a3-compare label { display: block; margin: 6px 0; }
+      .a3-compare .muted { color: #9fb2c4; margin-top: 6px; }
+      .a3-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; object-fit: cover; pointer-events: none; z-index: 4; display: none; opacity: 0.5; }
+      .a3-overlay.show { display: block; }
       #a3-menu { position: fixed; inset: 0; z-index: 11; display: flex; align-items: center; justify-content: center; background: rgba(28,36,48,0.6); }
       #a3-menu.hidden { display: none; }
       #a3-menu .card { background: #fff8ec; color: #1c2430; border-radius: 16px; padding: 22px 26px; min-width: 320px; box-shadow: 0 8px 0 #c8b89a; font-family: system-ui, sans-serif; }

@@ -14,15 +14,15 @@ export function colorOf(name) {
 }
 
 const survey = new Map(), style = new Map();
-const NEUTRAL = new Color('#b9b9b3');
+export const NEUTRAL = new Color('#b9b9b3');
 
 // survey: the color pulled most of the way to neutral grey, so objects still
 // read apart without the palette carrying meaning
 export function surveyMat(name, o = {}) {
-  const k = `${name}|${o.side ?? 0}|${o.emissive ?? ''}|${o.opacity ?? 1}`;
+  const k = `${name}|${o.side ?? 0}|${o.emissive ?? ''}|${o.opacity ?? 1}|${o.vertexColors ? 1 : 0}|${o.keep ? 1 : 0}`;
   if (!survey.has(k)) {
     const c = colorOf(name).lerp(NEUTRAL, o.keep ? 0 : 0.6);
-    const m = new MeshLambertMaterial({ color: c, side: o.side ?? 0, transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1 });
+    const m = new MeshLambertMaterial({ color: c, side: o.side ?? 0, transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1, vertexColors: !!o.vertexColors });
     if (o.emissive) { m.emissive = colorOf(o.emissive); m.emissiveIntensity = 0.8; }
     survey.set(k, m);
   }
@@ -30,10 +30,10 @@ export function surveyMat(name, o = {}) {
 }
 
 export function styleMat(name, o = {}) {
-  const k = `${name}|${o.side ?? 0}|${o.emissive ?? ''}|${o.opacity ?? 1}|${o.map?.uuid ?? ''}`;
+  const k = `${name}|${o.side ?? 0}|${o.emissive ?? ''}|${o.opacity ?? 1}|${o.map?.uuid ?? ''}|${o.vertexColors ? 1 : 0}`;
   if (!style.has(k)) {
     const c = colorOf(name);
-    const m = makeMat(c, { unique: true, side: o.side ?? 0, transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1, map: o.map ?? null, ...(o.emissive ? { emissive: colorOf(o.emissive), emissiveIntensity: 1 } : {}) });
+    const m = makeMat(c, { unique: true, vertexColors: !!o.vertexColors, side: o.side ?? 0, transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1, map: o.map ?? null, ...(o.emissive ? { emissive: colorOf(o.emissive), emissiveIntensity: 1 } : {}) });
     style.set(k, m);
   }
   return style.get(k);

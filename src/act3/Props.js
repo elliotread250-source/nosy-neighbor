@@ -4,11 +4,11 @@
 // handheld items (keycard), never to furniture or to the climbable rail and
 // lamp, whose colliders match the visible geometry within 1 cm (section 18.4).
 import {
-  Group, Mesh, BoxGeometry, CylinderGeometry, SphereGeometry, Vector3, Quaternion, Euler, InstancedMesh, Matrix4, Object3D, PointLight, ConeGeometry,
+  Group, Mesh, BoxGeometry, CylinderGeometry, SphereGeometry, Vector3, Quaternion, Euler, InstancedMesh, Matrix4, Object3D, PointLight, ConeGeometry, Float32BufferAttribute,
 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { val } from './Spec.js';
-import { look } from './Look.js';
+import { look, colorOf } from './Look.js';
 
 const DEG = Math.PI / 180;
 const box = (w, h, d, x, y, z, c, o = {}) => ({ s: 'box', w, h, d, x, y, z, c, ...o });
@@ -101,9 +101,27 @@ function partGeometry(p) {
   return g.index ? g.toNonIndexed() : g;
 }
 
-// Group parts by color into one mesh per color.
-export function partsMesh(parts) {
+// Group parts by color into one mesh per color, or (single) into one mesh
+// with vertex colors: one draw call for a whole moving prop.
+export function partsMesh(parts, { single = false } = {}) {
   const group = new Group();
+  if (single && parts.length) {
+    const geos = parts.map((p) => {
+      const g = partGeometry(p);
+      const c = colorOf(p.c);
+      const col = new Float32Array(g.attributes.position.count * 3);
+      for (let i = 0; i < col.length; i += 3) col.set([c.r, c.g, c.b], i);
+      g.setAttribute('color', new Float32BufferAttribute(col, 3));
+      for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'color'].includes(k)) g.deleteAttribute(k);
+      return g;
+    });
+    const m = new Mesh(mergeGeometries(geos));
+    look(m, '#ffffff', { vertexColors: true });
+    m.castShadow = true;
+    m.receiveShadow = true;
+    group.add(m);
+    return group;
+  }
   const by = new Map();
   for (const p of parts) {
     const k = `${p.c}|${p.emissive ?? ''}|${p.opacity ?? 1}|${p.name ?? ''}`;
@@ -165,7 +183,9 @@ export class PropsView {
     if (spec.balloons) return this._balloons(f, entry);
     if (spec.guard) return this._guard(f, entry, spec.guard);
 
-    const g = partsMesh(spec.parts);
+    const moving = spec.collide === 'dynamic' && f.physics !== false;
+    const g = partsMesh(spec.parts, { single: moving });
+    if (moving && Math.max(w, d ?? w, h ?? w) < 1.0) g.traverse((o) => { if (o.isMesh) o.castShadow = false; });
     g.position.copy(pos);
     g.rotation.y = rot;
     if (spec.lean) g.rotation.z = spec.lean * DEG;
@@ -173,6 +193,8 @@ export class PropsView {
     if (f.knocked) { g.rotation.x = Math.PI / 2; g.position.y += (d ?? w) / 2; }
     g.name = f.id;
     g.userData.feature = f.id;
+    // things that move or animate are not batched
+    if (['button_post', 'lever_box', 'fault_light', 'disco_ball'].includes(f.kind)) g.userData.keep = true;
     this.root.add(g);
     entry.group = g;
 
@@ -302,22 +324,24 @@ export class PropsView {
   _balloons(f, entry) {
     const n = f.count ?? 12, r = val(f.size?.[0], 0.25) / 2;
     const cols = ['RED_TOY', 'YELLOW_TOY', 'BLUE_TOY', 'BUBBLEGUM'];
-    const g = new Group();
     let s = 5;
     const rr = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+    const parts = [];
     for (let i = 0; i < n; i++) {
-      const m = partsMesh([ball(r, 0, 0, 0, cols[i % 4]), cyl(0.003, 0.5, 0, -0.5, 0, 'WHITE')]);
-      m.position.set(entry.pos.x + (rr() - 0.5) * 5.5, entry.pos.y + rr() * 0.6, entry.pos.z + (rr() - 0.5) * 3.8);
-      m.userData.bob = rr() * 6;
-      g.add(m);
+      const x = (rr() - 0.5) * 5.5, y = rr() * 0.6, z = (rr() - 0.5) * 3.8;
+      parts.push(ball(r, x, y, z, cols[i % 4]), cyl(0.003, 0.5, x, y - 0.5, z, 'WHITE'));
     }
+    const g = partsMesh(parts, { single: true });
+    g.position.copy(entry.pos);
+    g.userData.keep = true;
+    g.userData.y0 = entry.pos.y;
     this.root.add(g);
     entry.group = g;
     this.balloons = g;
   }
 
   update(t) {
-    if (this.balloons) for (const b of this.balloons.children) b.position.y += Math.sin(t * 1.3 + b.userData.bob) * 0.0006;
+    if (this.balloons) this.balloons.position.y = this.balloons.userData.y0 + Math.sin(t * 1.3) * 0.03;
   }
 }
 

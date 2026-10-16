@@ -27,6 +27,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         classic: resolve(import.meta.dirname, 'classic.html'),
         measure: resolve(import.meta.dirname, 'tools/measure.html'),
+        floorplan: resolve(import.meta.dirname, 'tools/floorplan.html'),
       },
     },
   },

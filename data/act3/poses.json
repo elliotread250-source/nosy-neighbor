@@ -1,0 +1,12 @@
+{
+ "schemaVersion": 1,
+ "note": "Saved camera poses for compare mode (K) and the golden screenshots. Each names the reference screenshot it should match; images stay in reference/ (git-ignored). Eye position in meters, yaw and pitch in degrees.",
+ "poses": [
+  { "name": "street-front", "image": "reference/street-front.png", "pose": { "x": 7, "y": 1.6, "z": -9, "yaw": 180, "pitch": 6, "fov": 80 }, "tag": "design" },
+  { "name": "foyer-north", "image": "reference/foyer-north.png", "pose": { "x": 6.0, "y": 1.1, "z": 0.6, "yaw": -160, "pitch": -5, "fov": 80 }, "tag": "design" },
+  { "name": "hall-gate-route", "image": "reference/hall-gate-route.png", "pose": { "x": 5.0, "y": 5.0, "z": 5.0, "yaw": -40, "pitch": -15, "fov": 80 }, "tag": "design" },
+  { "name": "stair-hall", "image": "reference/stair-hall.png", "pose": { "x": 6.5, "y": 1.1, "z": 10.3, "yaw": 60, "pitch": 10, "fov": 80 }, "tag": "design" },
+  { "name": "basement-door", "image": "reference/basement-door.png", "pose": { "x": 4.1, "y": 1.1, "z": 8.97, "yaw": 90, "pitch": -5, "fov": 80 }, "tag": "design" },
+  { "name": "roof-aerial", "image": "reference/roof-aerial.png", "pose": { "x": -8, "y": 16, "z": -9, "yaw": -135, "pitch": -40, "fov": 80 }, "tag": "design" }
+ ]
+}

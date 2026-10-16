@@ -29,7 +29,7 @@ export function mannequinMesh(h = 1.75, o = {}) {
     { s: 'box', w: 0.08 * k, h: 0.5 * k, d: 0.08 * k, x: -0.25 * k, y: 0.95 * k, z: 0, c },
     { s: 'cyl', r: 0.05 * k, h: 0.08 * k, x: 0, y: 1.47 * k, z: 0, c },
     { s: 'ball', r: 0.11 * k, x: 0, y: 1.53 * k, z: 0, c },
-  ]);
+  ], { single: true });
   if (o.bag) {
     const bag = new Mesh(new BoxGeometry(0.55 * k, 1.8 * k, 0.4 * k).translate(0, 0.9 * k, 0));
     look(bag, '#c8d4dc', { opacity: 0.45 });

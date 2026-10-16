@@ -1,12 +1,56 @@
-# Nosy Neighbor
+# Act 3 House Study
 
-A browser-based, first-person stealth-horror-comedy about the man across the street and his locked basement. Every mesh, texture, sound and note of music is generated in code at load time: no downloaded assets. The full design spec lives in `NOSY_NEIGHBOR_PROMPT.md`.
+A scale-accurate, data-driven study of a fan-remembered three-story house, walked at child height in the browser. The house is generated from a tagged spec, so correcting one measurement moves everything attached to it. Every mesh, texture and sound is generated in code. The site root serves the study; the original Nosy Neighbor game is at `/classic.html`.
+
+Right now no reference screenshots have been ingested, so the house is 0 percent measured: a plausible stand-in built from proportion rules, not a reconstruction. The audit says so in red until real measurements arrive.
 
 ## Run it
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:5173 (the study), /classic.html (the game)
+npm test           # Vitest: tag checks, geometry, headroom, jump route, track, audit, property and round-trip tests
+npm run audit      # print the audit, write reports/audit-YYYYMMDD.json
+npm run ingest     # hash new images in reference/, apply data/act3/measurements.json, print the diff (--write to apply)
+npm run golden     # golden screenshots (1 percent tolerance) and the draw-call / triangle budget
+npm run route      # drive the player through the whole route with simulated keys
+npm run puzzle     # the puzzle chain end to end: bolts, keycard, train, mannequins, save
+npm run build && npm start   # production build served on $PORT
+```
+
+URL flags: `?house=test` the one-room test house, `?reset=1` clear the saved puzzle state, `?golden=1` frozen deterministic render.
+
+## Controls
+
+WASD move, Shift sprint, Space jump, C crouch, E use (hold E for bolts and the keycard), G drop (or the grid when your hands are empty), left click throws a held object, Esc pause menu.
+
+Scale tools: R ruler (click two points), H height gauge (the exact player height, with 10 cm ticks and the eye line), G grid (1 m with 10 cm minor lines), F7 freecam ([ and ] change its speed), V survey or style mode, F10 audit, K compare mode, N the navigation graph, F3 performance panel.
+
+## The tag system
+
+Every number in `data/act3/*.json` is an object with a value and a tag: measured, measured-rough, documented, documented-weak, fan-plan, standard, design, assumed, assumed-from-standard or conflict. The builder refuses a plain number and names its exact JSON path. Assumed values record the rule in `src/act3/assumptions.js` that produced them, documented ones point at an entry in `data/act3/sources.json`. Measurements come from `tools/measure.html` and upgrade tags automatically, but a value already measured is never replaced by one that disagrees: that becomes a conflict for you to decide.
+
+## The audit screen
+
+Press F10. It lists, per floor and per room, wall length and floor area by measured, documented and assumed, the conflicts, a bar for the overall measured share, and the 20 assumed dimensions whose replacement would help most, each with the screenshot that would replace it. Click a room to fly there with its assumed walls outlined in red. The same report prints with `npm run audit`. Floor plans with dimension lines, colored by tag: `/tools/floorplan.html`.
+
+## Feeding it real measurements
+
+Drop screenshots into `reference/` (git-ignored, so nothing copyrighted is ever committed), measure them in `/tools/measure.html` (straight-on with a ruler, or four corners of a known rectangle), merge the export into `data/act3/measurements.json`, then `npm run ingest -- --write`. `PROGRESS.md` and `data/act3/CHANGELOG.md` keep the history.
+
+## Legal note
+
+This is a fan reconstruction of another studio's level layout. Everything here is generated from scratch in code, with no ripped models, textures, sounds or music, and the original game's name and characters are not used; the neighbor is Mr. Grimsby from the main project. A faithful copy of a commercial game's level layout is still a derivative work even when every asset is original: a private study is low risk, a public release is higher risk.
+
+## The classic game (/classic.html)
+
+A browser-based, first-person stealth-horror-comedy about the man across the street and his locked basement. Every mesh, texture, sound and note of music is generated in code at load time: no downloaded assets. The full design spec lives in `NOSY_NEIGHBOR_PROMPT.md`.
+
+### Run it
+
+```bash
+npm install
+npm run dev        # http://localhost:5173/classic.html
 npm run build      # production build into dist/
 npm start          # serve dist/ on $PORT (default 3000)
 ```
@@ -15,17 +59,17 @@ URL flags: `?debug=1` debug tools, `?gfx=low|medium|high` graphics preset, `?dif
 
 Debug keys (with `?debug=1`): F3 stats, F4 nav graph and path, F5 vision cone and meter, F6 freeze the neighbor, F7 noclip, F8 every key and tool, F9 dump the learning brain. `window.nn` is the live game.
 
-## Controls
+### Controls
 
 WASD move, Shift sprint, C or Ctrl crouch, Space jump, Q and Z lean, E or left click interact, hold left click to charge a throw, F use the held item (alarm clock, TV remote, flashlight), right click or G drop, 1 to 4 or the wheel to switch slots, Esc pause. Keys can be rebound in Options. Gamepad works.
 
-## What's in it
+### What's in it
 
 The street and both houses, Mr. Harold Grimsby built from primitives with expressions, eye tracking and spring motion, a procedural animation system, and an AI with sight (detection meter), hearing (wall attenuation), patrol activities, chase, property-line stare, hide-spot search and the catch. A learning brain that answers repeated behavior with bear traps, security cameras, boarded entries and glue, capped so the house stays beatable, and shows you a short "he learned something" shot after a catch. Inventory, throwing, carrying and stacking, hiding, keys, tools (crowbar, wrench, magnet gun, flashlight) and lures (TV, radio, kettle, toaster, alarm clock).
 
 Act 1 is complete from the dusk intro to the ending, with the washing machine puzzle, the caged key and the final unlock. There is a dream sequence (caught three times in five minutes), a gnome with ideas, and a mail slot you shouldn't look through. Audio is all Web Audio synthesis: spatial SFX with occlusion, formant-synth voice, a sequenced score with sneak, suspicion and chase layers, and ambience. Title screen, pause, options (graphics, audio, controls with rebinding, gameplay, accessibility), subtitles for sounds, colorblind key shapes, and autosave with Continue.
 
-## Tests and visual checks
+### Tests and visual checks
 
 Headless Chromium scripts, run with a dev server up (`scripts/with-server.sh` starts one for the duration of a command):
 
@@ -40,6 +84,6 @@ scripts/with-server.sh node scripts/hudshot.mjs       # in-play screenshots into
 scripts/with-server.sh node scripts/perf.mjs          # draw calls and triangles per preset
 ```
 
-## Deploy
+### Deploy
 
 GitHub to Railway: `railway.json` builds the `Dockerfile` (Node build, then `server.js`, a dependency-free static server with brotli/gzip, immutable caching for hashed assets, `application/wasm`, and `/healthz`).

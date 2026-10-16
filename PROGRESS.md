@@ -35,6 +35,6 @@ How to attach: paste or drag images into this chat, or commit them to `reference
 | 5 | Upper floors, ladder, train, roof | Done: gallery ladder and hatch, F2 box, crawl hole, track holes, terrace and parapet, train on kinematic bodies with platform carry, button then lever, box ladder, gable roof, windmill |
 | 6 | Security and puzzle items | Done: 12 cameras with sweeping cones, 4 laser beams, alarm events, crowbar, keycard, 5 mannequins, birthday pads, save with ?reset=1 |
 | 7 | Exterior shell and style mode | Done: siding per floor, trim, plinth with vents, porch, hanging shutter, downspouts, fenced yard; style mode (V) with wallpaper and floor skins, toon materials, painted sky, outlines, bloom and grade, nearest-8 lamps, prop warps capped at 4 percent (tested) |
-| 8 | Audit, compare, floor plans, full tests | pending |
+| 8 | Audit, compare, floor plans, full tests | Done: F10 audit table (click a room to fly there, assumed walls in red), compare mode (K) with data/act3/poses.json, nav graph view (N), tools/floorplan.html, npm run audit, 102 Vitest tests (tests 1 to 9, 60 seeded property tests, floor plan round trip, conflict, rescale, migration, style cap), golden screenshots (0.00 percent drift), performance 285 draw calls and 109k triangles worst case, CI workflow |
 | 9 | Deployment | pending |
 - 2026-10-16: "Add it to open arcade": Act 3 House Study gets its own card on the Open Arcade hub, linking to nosy-neighbor-production.up.railway.app.

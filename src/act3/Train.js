@@ -7,6 +7,7 @@ import { Group, Mesh, BoxGeometry, CylinderGeometry, SphereGeometry, Vector3, Qu
 import { RAPIER } from '../core/Physics.js';
 import { val } from './Spec.js';
 import { look } from './Look.js';
+import { partsMesh } from './Props.js';
 import { trackCurve } from './Roof.js';
 
 const UP = new Vector3(0, 1, 0);
@@ -33,27 +34,13 @@ export class Train {
     let back = 0;
     for (const [i, d] of defs.entries()) {
       const [l, w, h] = d.size.map((x) => val(x));
-      const g = new Group();
-      const body = new Mesh(new BoxGeometry(w, h * 0.8, l).translate(0, h * 0.4 + 0.1, 0));
-      look(body, d.color);
-      body.castShadow = true;
-      g.add(body);
-      const stripe = new Mesh(new BoxGeometry(w + 0.01, 0.06, l + 0.01).translate(0, h * 0.5, 0));
-      look(stripe, 'YELLOW_TOY');
-      g.add(stripe);
-      for (const sz of [-1, 1]) for (const sx of [-1, 1]) {
-        const wh = new Mesh(new CylinderGeometry(0.09, 0.09, 0.05, 12).rotateZ(Math.PI / 2).translate(sx * (w / 2 - 0.02), 0.1, sz * (l / 2 - 0.15)));
-        look(wh, 'BLACK_SOFT');
-        g.add(wh);
-      }
-      if (d.engine) {
-        const ch = new Mesh(new CylinderGeometry(0.07, 0.09, 0.25, 12).translate(0, h + 0.05, l * 0.3));
-        look(ch, d.chimney ?? 'YELLOW_TOY');
-        g.add(ch);
-        const cab = new Mesh(new BoxGeometry(w * 0.9, 0.25, l * 0.35).translate(0, h * 0.8 + 0.1 + 0.12, -l * 0.25));
-        look(cab, d.color);
-        g.add(cab);
-      }
+      const parts = [
+        { s: 'box', w, h: h * 0.8, d: l, x: 0, y: 0.1, z: 0, c: d.color },
+        { s: 'box', w: w + 0.01, h: 0.06, d: l + 0.01, x: 0, y: h * 0.5 - 0.03, z: 0, c: 'YELLOW_TOY' },
+        ...[-1, 1].flatMap((sz) => [-1, 1].map((sx) => ({ s: 'box', w: 0.05, h: 0.18, d: 0.18, x: sx * (w / 2 - 0.02), y: 0.01, z: sz * (l / 2 - 0.15), c: 'BLACK_SOFT' }))),
+        ...(d.engine ? [{ s: 'cyl', r: 0.08, h: 0.25, x: 0, y: h * 0.8 + 0.1, z: l * 0.3, c: d.chimney ?? 'YELLOW_TOY' }, { s: 'box', w: w * 0.9, h: 0.25, d: l * 0.35, x: 0, y: h * 0.8 + 0.1, z: -l * 0.25, c: d.color }] : []),
+      ];
+      const g = partsMesh(parts, { single: true });
       scene.add(g);
       const rb = physics.world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased());
       const top = h * 0.8 + 0.1;

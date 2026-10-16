@@ -11,7 +11,11 @@
     "start": "node server.js",
     "test": "vitest run",
     "audit": "node tools/act3/audit.mjs",
-    "ingest": "node tools/act3/ingest.mjs"
+    "ingest": "node tools/act3/ingest.mjs",
+    "golden": "scripts/with-server.sh node scripts/act3golden.mjs",
+    "route": "scripts/with-server.sh node scripts/act3route.mjs",
+    "puzzle": "scripts/with-server.sh node scripts/act3puzzle.mjs",
+    "bootstrap": "node tools/act3/bootstrap.mjs"
   },
   "engines": {
     "node": ">=20"

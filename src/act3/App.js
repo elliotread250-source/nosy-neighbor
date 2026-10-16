@@ -22,6 +22,8 @@ import { SurveyLighting, StyleLighting } from './Scene.js';
 import { SkinsView } from './Skins.js';
 import { warpProp } from './StyleWarp.js';
 import { PostFX } from '../art/PostFX.js';
+import { Panels } from './Panels.js';
+import { batchStatic } from './Batch.js';
 import paletteData from '../../data/act3/palette.json';
 import { Tools } from './Tools.js';
 import { audit, auditText } from './Audit.js';
@@ -89,6 +91,7 @@ export class App {
     const sp = this.spec.spawn?.at ?? this.spec.spawn ?? { x: 2.5, y: 0, z: 2 };
     this.player.spawn(new Vector3(val(sp.x), val(sp.y, 0), val(sp.z)), val(this.spec.spawn?.yaw, 0));
     this.tools = new Tools(this);
+    this.panels = new Panels(this);
     if (this.full) {
       this.interact = new Interact(this);
       this.interact.build(puzzleData, this.plan);
@@ -99,6 +102,11 @@ export class App {
     this.frame = 0;
     this.loop = this.loop.bind(this);
     window.addEventListener('keydown', (e) => { if (['F3', 'F7', 'F10'].includes(e.code)) e.preventDefault(); });
+    // a click on the canvas while a panel is open goes back to playing
+    this.engine.canvas.addEventListener('click', () => { if (!this.input.locked && document.getElementById('a3-start')?.classList.contains('hidden')) { this.audio.unlock(); this.input.requestLock(); } });
+    // golden mode: settle the physics on fixed steps, then freeze everything
+    // that moves, so screenshots are deterministic (spec 29)
+    if (qs.has('golden')) { this.simulate(2); this.frozen = true; }
     requestAnimationFrame(this.loop);
     window.a3 = this;
   }
@@ -120,6 +128,7 @@ export class App {
       this.roof = new RoofView(this.engine.scene, this.physics).build(this.spec, this.plan, trainData);
       this.security = new Security(this.engine.scene, securityData, this.plan, this.house.meshes);
       this.skins = new SkinsView(this.engine.scene, this.physics).build(this.spec, this.plan, paletteData);
+      this.batch = batchStatic(this.engine.scene, [this.props.root, this.openings.root, this.roof.root, this.skins.shell, this.security.statics], { warpRoots: [this.props.root] });
       for (const l of [...this.props.ladders, ...this.roof.ladders]) {
         const b = new Box3(l.min, l.max);
         b.userData = l;
@@ -141,7 +150,7 @@ export class App {
       <div class="a3-alarm">ALARM</div>
       <pre class="a3-panel a3-audit"></pre>
       <pre class="a3-panel a3-stats"></pre>
-      <div class="a3-keys">WASD move · Shift sprint · Space jump · C crouch · E use · G drop/grid · R ruler · H height gauge · V survey/style · F7 freecam ([ ] speed) · F10 audit · F3 stats · Esc menu</div>`;
+      <div class="a3-keys">WASD move · Shift sprint · Space jump · C crouch · E use · G drop/grid · R ruler · H height gauge · V survey/style · F7 freecam ([ ] speed) · F10 audit · K compare · N nav graph · F3 stats · Esc menu</div>`;
     this.badge = hud.querySelector('.a3-badge');
     this.hintEl = hud.querySelector('.a3-hint');
     this.subEl = hud.querySelector('.a3-sub');
@@ -171,10 +180,9 @@ export class App {
     this._subT = setTimeout(() => this.subEl.classList.remove('show'), 2200);
   }
 
-  toggleAudit(on = !this.auditEl.classList.contains('show')) {
-    this.auditEl.textContent = auditText(this.audit);
-    this.auditEl.classList.toggle('show', on);
-    window.a3Audit?.(on);
+  toggleAudit(on) {
+    this.panels.toggleAudit(on);
+    window.a3Audit?.(this.panels.el.classList.contains('show'));
   }
 
   setMode(m) {
@@ -195,11 +203,11 @@ export class App {
   // style warps on the props (lean, taper, bulge, capped at 4 percent);
   // survey puts the exact positions back
   _warp(on) {
-    const root = this.props?.root;
-    if (!root) return;
+    // the static props were batched with a warped twin; the moving ones
+    // (physics props) are warped here
     let seed = 1;
-    root.traverse((o) => {
-      if (!o.isMesh || o.isInstancedMesh) return;
+    for (const d of this.props?.dynamics ?? []) d.mesh.traverse((o) => {
+      if (!o.isMesh) return;
       const pos = o.geometry.attributes.position;
       if (on) {
         if (!o.userData.surveyPos) o.userData.surveyPos = pos.array.slice();
@@ -274,6 +282,7 @@ export class App {
     this.input.onLockChange = (locked) => {
       if (locked) { ov?.classList.add('hidden'); menu?.classList.add('hidden'); return; }
       if (ov && !ov.classList.contains('hidden')) return;
+      if (this.panels?.el.classList.contains('show') || this.panels?.cmp.classList.contains('show')) return;
       menu?.classList.remove('hidden');
       this._menuLabels();
     };
@@ -324,6 +333,8 @@ export class App {
     if (k('BracketLeft')) { CONFIG.player.noclipSpeed = Math.max(0.5, CONFIG.player.noclipSpeed / 1.5); this.hint(`Freecam speed ${CONFIG.player.noclipSpeed.toFixed(1)} m/s`); }
     if (k('F10')) this.toggleAudit();
     if (k('F3')) this.statsEl.classList.toggle('show');
+    if (k('KeyK')) this.panels.toggleCompare();
+    if (k('KeyN')) this.panels.toggleNav();
     if (this.tools.mode === 'ruler' && k('Mouse0')) this.tools.clickRuler();
   }
 
@@ -366,6 +377,20 @@ export class App {
 
   loop() {
     if (this.paused) { requestAnimationFrame(this.loop); return; }
+    if (this.frozen) {
+      this.engine.tick();
+      this._keys();
+      this.player.update(0, 1);
+      this.player.hands.visible = false;
+      if (this.security) this.security.update(0, this.player, []);
+      this.engine.render(0);
+      this._stats();
+      this.input.endFrame();
+      this.frame++;
+      if (this.frame === 5) window.__a3Ready = true;
+      requestAnimationFrame(this.loop);
+      return;
+    }
     const dt = this.engine.tick();
     this.dt = dt;
     this.input.pollGamepad();

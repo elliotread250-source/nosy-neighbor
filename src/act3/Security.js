@@ -8,6 +8,7 @@ import { Group, Mesh, BoxGeometry, ConeGeometry, CylinderGeometry, Vector3, Rayc
 import { Events } from '../core/Events.js';
 import { val } from './Spec.js';
 import { look } from './Look.js';
+import { partsMesh } from './Props.js';
 
 const DEG = Math.PI / 180;
 const _v = new Vector3(), _d = new Vector3();
@@ -38,6 +39,8 @@ export class Security {
     this.root = new Group();
     this.root.name = 'act3-security';
     scene.add(this.root);
+    this.statics = new Group();
+    scene.add(this.statics);
     const elev = Object.fromEntries(plan.floors.map((f) => [f.id, f.floorSlab.y1]));
     this.cameras = [];
     this.lasers = [];
@@ -50,17 +53,15 @@ export class Security {
       const g = new Group();
       g.position.set(c.at.x, y0 + c.at.y, c.at.z);
       const [bw, bh, bd] = (c.body || []).map((v) => val(v));
-      const arm = new Mesh(new BoxGeometry(0.03, 0.03, val(c.arm, 0.25)).translate(0, 0, val(c.arm, 0.25) / 2));
-      look(arm, 'METAL_DARK');
-      g.add(arm);
+      const arm = partsMesh([{ s: 'box', w: 0.03, h: 0.03, d: val(c.arm, 0.25), x: 0, y: -0.015, z: val(c.arm, 0.25) / 2, c: 'METAL_DARK' }], { single: true });
+      arm.position.copy(g.position);
+      this.statics.add(arm);
       const head = new Group();
-      const body = new Mesh(new BoxGeometry(bw || 0.1, bh || 0.1, bd || 0.2).translate(0, 0, -(bd || 0.2) / 2));
-      look(body, 'WHITE');
-      const lens = new Mesh(new CylinderGeometry(0.03, 0.03, 0.03, 12).rotateX(Math.PI / 2).translate(0, 0, -(bd || 0.2)));
-      look(lens, 'BLACK_SOFT');
-      const led = new Mesh(new BoxGeometry(0.015, 0.015, 0.015).translate(0.03, 0.04, -0.15));
-      look(led, '#ff2020', { emissive: '#ff2020', keep: true });
-      head.add(body, lens, led);
+      // body and lens in one mesh
+      const bodyM = partsMesh([{ s: 'box', w: bw || 0.1, h: bh || 0.1, d: bd || 0.2, x: 0, y: -(bh || 0.1) / 2, z: -(bd || 0.2) / 2, c: 'WHITE' }, { s: 'box', w: 0.06, h: 0.06, d: 0.03, x: 0, y: -0.03, z: -(bd || 0.2) - 0.015, c: 'BLACK_SOFT' }], { single: true });
+      bodyM.traverse((o) => { if (o.isMesh) o.castShadow = false; });
+      head.add(bodyM);
+      const led = bodyM;
       // the cone: tip at the lens, opening along -z
       const range = val(c.range, 10), fov = val(c.fov, 70) * DEG;
       const cone = new Mesh(coneGeometry(fov / 2), coneMaterial());
@@ -74,7 +75,7 @@ export class Security {
         const sw = new Mesh(new BoxGeometry(0.12, 0.16, 0.06));
         look(sw, '#c0392b', { keep: true });
         sw.position.set(c.switchAt.x, y0 + c.switchAt.y, c.switchAt.z);
-        this.root.add(sw);
+        this.statics.add(sw);
         cam.switch = sw;
       }
       this.cameras.push(cam);
@@ -92,7 +93,7 @@ export class Security {
         const e = new Mesh(new BoxGeometry(val(data.emitter, 0.06), val(data.emitter, 0.06), val(data.emitter, 0.06)));
         look(e, 'METAL_DARK');
         e.position.copy(p);
-        this.root.add(e);
+        this.statics.add(e);
       }
       this.lasers.push({ id: l.id, a, b, mesh: m, active: true, cool: 0 });
     }
@@ -126,7 +127,7 @@ export class Security {
     let tracking = false;
     for (const c of this.cameras) {
       const a = this.aim(c, this.t);
-      c.head.rotation.set(a.pitch, a.yaw, 0, 'YXZ');
+      c.head.rotation.set(c.dead ? -1.1 : a.pitch, c.dead ? c.head.rotation.y : a.yaw, 0, 'YXZ');
       c.cone.visible = c.active;
       if (!c.active) continue;
       // the cone stops at the first wall it meets
@@ -178,7 +179,7 @@ export class Security {
     const c = this.cameras.find((x) => x.id === id);
     if (!c || !c.active) return;
     c.active = false;
-    c.led.visible = false;
+    c.dead = true; // the head droops
     Events.emit('camera:disabled', { id });
   }
 

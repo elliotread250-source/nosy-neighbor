@@ -193,6 +193,7 @@ export class RoofView {
     }
     g.add(hub);
     g.position.set(x, base, z);
+    g.userData.keep = true;
     this.root.add(g);
     this.windmill = { group: g, hub, rps: val(wm.blades.rps, 0.3), rpsClimbing: val(wm.blades.rpsClimbing, 0.1), hubWorld: new Vector3(x, base + hubY, z + hubZ), topY: base + H, base };
     // collider: the tower as a box, the platform on top
