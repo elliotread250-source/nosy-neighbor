@@ -27,6 +27,33 @@ await page.evaluate(() => {
   window.give = (kind) => { const e = nn.physics.dynamics.find((d) => d.data?.item === kind && !d.held); if (e) nn.interaction.inv.addProp(e); return !!e; };
 });
 const SCENES = {
+  adapt: () => {
+    const b = nn.brain;
+    const ent = (id) => b.entries.find((e) => e.id === id);
+    for (const [t, id] of [['trap', 'd-kitchen'], ['camera', 'd-kitchen'], ['glue', 'w-kitchen'], ['board', 'w-kitchen']]) { const j = b._makeJob(t, ent(id)); if (j) b.install(j); }
+    const e = ent('d-kitchen');
+    const eye = e.center.clone().addScaledVector(e.inward, 3.4).add(new V(-1.2, 0, 0)).setY(0.6);
+    const tr = b.traps[0].pos;
+    aim(eye.toArray(), [tr.x, tr.y + 0.2, tr.z]);
+  },
+  trapClose: () => {
+    const tr = nn.brain.traps[0].pos;
+    const e = nn.brain.entries.find((x) => x.id === 'd-kitchen');
+    const eye = tr.clone().addScaledVector(e.inward, 1.3).add(new V(0, 0, 0.5));
+    aim([eye.x, 0.6, eye.z], [tr.x, tr.y, tr.z]);
+    nn.player.pitch -= 0.15;
+  },
+  cameraView: () => {
+    const c = nn.brain.cameras[0].obj;
+    const p = c.getWorldPosition(new V());
+    const e = nn.brain.entries.find((x) => x.id === 'd-kitchen');
+    const eye = p.clone().addScaledVector(e.inward, 3.0).setY(0.6);
+    aim(eye.toArray(), [p.x, p.y - 0.4, p.z]);
+  },
+  establish: () => {
+    nn.ai.frozen = false;
+    nn.brain.startShot(nn.brain._makeJob('board', nn.brain.entries.find((x) => x.id === 'w-living1')));
+  },
   keyPrompt: () => {
     give('mug'); nn.devices.spawnTool && nn.interaction.inv.addProp(nn.devices.spawnTool('wrench', new V(0, 1, 0)));
     nn.interaction.inv.addKey('blue');

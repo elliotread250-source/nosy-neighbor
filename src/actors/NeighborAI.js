@@ -248,6 +248,16 @@ export class NeighborAI {
     this.setState(S.HEAR);
   }
 
+  // Something told him exactly where to look (a camera, a sprung trap): he hurries over.
+  alert(pos) {
+    if (this.frozen || [S.CHASE, S.SPOT, S.CATCH, S.STUNNED, S.STARE].includes(this.state)) return;
+    this.investigateTarget = pos.clone();
+    this.lastSeen = { pos: pos.clone(), t: this.time };
+    this.activity = null;
+    this.setState(S.INVESTIGATE, { urgent: true });
+    Events.emit('voice', { line: 'hey', position: this.curFeet.clone() });
+  }
+
   countWalls(a, b) {
     const dir = b.clone().sub(a);
     let len = dir.length();
@@ -498,7 +508,8 @@ export class NeighborAI {
 
   tickInvestigate(dt) {
     const t = this.investigateTarget;
-    this.targetSpeed = A.investigateSpeed;
+    const urgent = this.stateData.urgent;
+    this.targetSpeed = urgent ? this.diff.runSpeed * 0.85 : A.investigateSpeed;
     this.anim.headTarget = null;
     if (this.stateData.arrived) {
       this.targetSpeed = 0;
@@ -510,8 +521,9 @@ export class NeighborAI {
       }
       return;
     }
-    if (this.anim.clip !== 'walk') this.anim.play('walk');
-    if (this.followPath(dt, t, 1.0)) {
+    const gait = urgent ? 'run' : 'walk';
+    if (this.anim.clip !== gait) this.anim.play(gait);
+    if (this.followPath(dt, t, 1.0, urgent)) {
       this.stateData.arrived = true;
       this.stateTime = 0;
     }
@@ -566,6 +578,15 @@ export class NeighborAI {
     }
     const target = this.canSee ? p.curFeet : this.lastSeen?.pos ?? p.curFeet;
     this.followPath(dt, target, 0.2, true);
+    // Hard: lob a glue jar where you're headed
+    const brain = this.game.brain;
+    if (this.diff.throws && brain && this.canSee && dist > 4.5 && dist < 12 && this.time - (this.lastGlueThrow ?? -99) > CONFIG.brain.glueThrowEvery) {
+      this.lastGlueThrow = this.time;
+      const lead = p.curFeet.clone().addScaledVector(p.vel.clone().setY(0), 0.8);
+      brain.throwGlue(this.n.bones.handR.getWorldPosition(new Vector3()), lead);
+      this.anim.play('throw', 0.1);
+    }
+    if (this.anim.clip === 'throw' && this.anim.clipDone) this.anim.play('run', 0.15);
   }
 
   // ---------------------------------------------------------------- search

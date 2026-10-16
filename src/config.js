@@ -79,6 +79,31 @@ export const CONFIG = {
     climbSpeed: 2.6,
   },
 
+  brain: {
+    trapAt: 2, // entries through the same opening before a bear trap goes in
+    cameraAt: 3,
+    boardAt: 4,
+    hideAt: 3, // uses of one hiding spot before he always checks it first
+    glueAt: 3, // windows broken
+    lureIgnoreAt: 3, // the third time a lure type is used, he ignores it
+    roomBiasSeconds: 25, // seconds in a room per extra patrol weight
+    installDistance: 16, // he only installs things when you're this far away (or outside)
+    maxTraps: 6,
+    maxCameras: 4,
+    maxBoards: 3,
+    maxGlue: 4,
+    trapRadius: 0.34,
+    trapHold: 3, // seconds stuck
+    trapMash: 0.35, // seconds off per key mash
+    cameraRange: 6.5,
+    cameraFov: 52,
+    cameraCooldown: 5,
+    glueSlow: 0.3,
+    glueJarLife: 14,
+    glueThrowEvery: 7,
+    shotLength: 2.2,
+  },
+
   interact: {
     reach: 2.2,
     chargeTime: 0.8, // seconds to a full-power throw

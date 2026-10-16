@@ -12,6 +12,7 @@ export class HUD {
     this.root = root;
     root.innerHTML = `
       <div class="hud-hide"></div>
+      <div class="hud-cine"><div></div><div></div></div>
       <div class="hud-crosshair"></div>
       <svg class="hud-hold" viewBox="0 0 46 46"><circle cx="23" cy="23" r="18" fill="none" stroke="rgba(42,30,58,0.5)" stroke-width="6"/><circle class="arc" cx="23" cy="23" r="18" fill="none" stroke="#f2c94c" stroke-width="5" stroke-linecap="round" transform="rotate(-90 23 23)" stroke-dasharray="113" stroke-dashoffset="113"/></svg>
       <div class="hud-prompt"></div>
@@ -35,6 +36,8 @@ export class HUD {
     this.staminaFill = q('.hud-stamina-fill');
     this.hideEl = q('.hud-hide');
     this.slotEls = [...root.querySelectorAll('.hud-slot')];
+    this.cine = q('.hud-cine');
+    Events.on('cinematic', (e) => { this.cine.classList.toggle('show', e.on); root.classList.toggle('cinematic', e.on); });
     this._objTimer = 0;
     this._hintTimer = 0;
     this._nameTimer = 0;

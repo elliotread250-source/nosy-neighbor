@@ -102,6 +102,13 @@
       .hud-hide.box { background: radial-gradient(ellipse 46% 16% at 50% 52%, transparent 70%, rgba(40, 28, 16, 0.97) 100%); }
       .hud-hide.behind { background: radial-gradient(ellipse at center, transparent 40%, rgba(20, 12, 20, 0.7) 100%); }
 
+      .hud-cine { position: absolute; inset: 0; }
+      .hud-cine div { position: absolute; left: 0; right: 0; height: 0; background: #120c18; transition: height 0.35s; }
+      .hud-cine div:first-child { top: 0; }
+      .hud-cine div:last-child { bottom: 0; }
+      .hud-cine.show div { height: 11vh; }
+      #hud.cinematic .hud-slots, #hud.cinematic .hud-keys, #hud.cinematic .hud-crosshair, #hud.cinematic .hud-prompt, #hud.cinematic .hud-itemname { opacity: 0 !important; }
+
       .debug-stats {
         position: fixed; top: 8px; left: 8px; margin: 0; padding: 8px 10px; z-index: 20;
         font: 12px/1.35 ui-monospace, monospace; color: #fff; background: rgba(20, 16, 30, 0.6); border-radius: 6px;

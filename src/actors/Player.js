@@ -162,6 +162,7 @@ export class Player {
     const inp = this.input;
     if (this.externalCamera) {
       inp.consumeLook(dt);
+      this.hands.visible = false;
       return;
     }
     if (this.enabled) {
@@ -234,6 +235,8 @@ export class Player {
 
     let speed = this.crouching ? P.crouchSpeed : this.sprinting ? P.sprintSpeed : P.walkSpeed;
     if (this.carrying) speed *= P.carrySpeedMul;
+    speed *= this.speedMul ?? 1;
+    if (this.trapped) speed = 0;
 
     _fwd.set(-Math.sin(this.yaw), 0, -Math.cos(this.yaw));
     _right.set(Math.cos(this.yaw), 0, -Math.sin(this.yaw));
@@ -247,7 +250,7 @@ export class Player {
     // jumping with coyote time + buffer
     this.coyote = this.grounded ? P.coyoteTime : Math.max(0, this.coyote - dt);
     if (this.jumpBuffer > 0) this.jumpBuffer -= dt;
-    if (this.jumpBuffer > 0 && this.coyote > 0 && !this.crouching) {
+    if (this.jumpBuffer > 0 && this.coyote > 0 && !this.crouching && !this.trapped) {
       this.vel.y = P.jumpVelocity;
       this.jumpBuffer = 0;
       this.coyote = 0;

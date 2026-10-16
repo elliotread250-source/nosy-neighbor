@@ -25,6 +25,7 @@ import { CatchSequence } from './CatchSequence.js';
 import { Interaction } from './Interaction.js';
 import { Devices } from './Devices.js';
 import { Impacts } from './Impacts.js';
+import { NeighborBrain } from './NeighborBrain.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
 import { HUD } from '../ui/HUD.js';
 import { DebugOverlay } from '../ui/DebugOverlay.js';
@@ -80,6 +81,7 @@ export class Game {
       this.devices = new Devices(this);
       this.impacts = new Impacts(this);
     }
+    if (this.ai) this.brain = new NeighborBrain(this);
     this.timeScale = 1;
     this.state = 'play';
     this.catches = 0;
@@ -182,6 +184,7 @@ export class Game {
     this.interaction?.update(dt);
     this.devices?.update(dt);
     this.impacts?.update(dt);
+    this.brain?.update(dt);
   }
 
   // ------------------------------------------------------------ frame
