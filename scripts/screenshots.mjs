@@ -3,7 +3,7 @@
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/classic.html';
 const shots = (process.argv[3] || 'porch,street,playerFront,aerial,bedroom,living,flanking,eastEnd').split(',');
 const extra = process.argv[4] || '';
 const outDir = 'screenshots';

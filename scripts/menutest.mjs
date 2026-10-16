@@ -8,7 +8,7 @@ let fails = 0;
 const check = (n, ok, x = '') => { console.log(`${ok ? 'PASS' : 'FAIL'}  ${n}${x ? '  ' + x : ''}`); if (!ok) fails++; };
 const ready = () => page.waitForFunction(() => window.__nnReady, null, { timeout: 240000 });
 const frames = async (n = 4) => { const f0 = await page.evaluate(() => nn.frame); await page.waitForFunction((f) => nn.frame > f, f0 + n, { timeout: 60000 }); };
-await page.goto('http://localhost:5173/?debug=1');
+await page.goto('http://localhost:5173/classic.html?debug=1');
 await ready();
 await page.evaluate(() => localStorage.clear());
 check('title state', await page.evaluate(() => nn.state === 'title'));
@@ -36,7 +36,7 @@ check('resume', await page.evaluate(() => !nn.paused));
 // progress, autosave, reload, continue
 await page.evaluate(() => { nn.devices.collectKey(nn.devices.keyRed); nn.giveAll(); nn.interaction.inv.keys.delete('basement'); nn.saveGame.save(); });
 check('autosave written', await page.evaluate(() => !!localStorage.getItem('nosy-neighbor-save-v1')));
-await page.goto('http://localhost:5173/?debug=1');
+await page.goto('http://localhost:5173/classic.html?debug=1');
 await ready();
 check('continue offered', await page.isVisible('.title-screen button[data-act=continue]'));
 await page.click('.title-screen button[data-act=continue]');

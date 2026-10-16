@@ -3,3 +3,8 @@ dist/
 screenshots/
 *.log
 .DS_Store
+reference/
+reports/*
+!reports/sample-audit.json
+.env
+.env.*

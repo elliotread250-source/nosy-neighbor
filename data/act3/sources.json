@@ -1,0 +1,86 @@
+[
+  {
+    "id": "src_0001",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor Act 3 Complete Walkthrough",
+    "publisher": "GameSkinny",
+    "url": "https://www.gameskinny.com/tips/hello-neighbor-act-3-complete-walkthrough/",
+    "accessed": "2026-10-16",
+    "claim": "The way in is a broken window; stairs are near a cluttered hallway.",
+    "reliability": "medium",
+    "quote": "",
+    "note": "Relayed by the project owner in ACT3_HOUSE_PROMPT.md section 1; the page itself was not fetched in this session."
+  },
+  {
+    "id": "src_0002",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor Act 3 Complete Walkthrough",
+    "publisher": "GameSkinny",
+    "url": "https://www.gameskinny.com/tips/hello-neighbor-act-3-complete-walkthrough/",
+    "accessed": "2026-10-16",
+    "claim": "A gated or blocked second-floor section is passed by jumping onto a railing, then onto a lamp.",
+    "reliability": "medium",
+    "quote": "",
+    "note": "Relayed in ACT3_HOUSE_PROMPT.md section 1."
+  },
+  {
+    "id": "src_0003",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor: Act 3",
+    "publisher": "GamePressure",
+    "url": "https://guides.gamepressure.com/helloneighbor/",
+    "accessed": "2026-10-16",
+    "claim": "The basement entrance is blocked by boards held with bolts, removed with a crowbar, plus an electronic lock that needs a keycard.",
+    "reliability": "medium",
+    "quote": "",
+    "note": "Relayed in ACT3_HOUSE_PROMPT.md section 1. Exact URL path for the Act 3 page not confirmed in this session."
+  },
+  {
+    "id": "src_0004",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor Act 3 Complete Walkthrough",
+    "publisher": "GameSkinny",
+    "url": "https://www.gameskinny.com/tips/hello-neighbor-act-3-complete-walkthrough/",
+    "accessed": "2026-10-16",
+    "claim": "A ladder climbs to the second-highest floor, where a train track and a hole lead to another room; a button and a lever start a train that runs around the roof.",
+    "reliability": "medium",
+    "quote": "",
+    "note": "Relayed in ACT3_HOUSE_PROMPT.md section 1."
+  },
+  {
+    "id": "src_0005",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor Act 3 (various)",
+    "publisher": "unspecified",
+    "url": "",
+    "accessed": "2026-10-16",
+    "claim": "A windmill sits on the roof; the player climbs it to retrieve a mannequin for the birthday room.",
+    "reliability": "low",
+    "quote": "",
+    "note": "Marked documented-weak by the project owner. A claim with only low sources would be demoted to assumed; kept as documented-weak at the owner's instruction (section 1)."
+  },
+  {
+    "id": "src_0006",
+    "kind": "walkthrough",
+    "title": "Hello Neighbor Act 3 (various)",
+    "publisher": "GameSkinny / GamePressure",
+    "url": "",
+    "accessed": "2026-10-16",
+    "claim": "Act 3 adds boarded-up rooms, new security cameras and laser grids; the house has multiple floors, hidden areas and secret passages; a birthday room needs several mannequins placed.",
+    "reliability": "medium",
+    "quote": "",
+    "note": "Relayed in ACT3_HOUSE_PROMPT.md section 1."
+  },
+  {
+    "id": "src_0007",
+    "kind": "wiki",
+    "title": "Fan wiki pages on the neighbor's house and rooms (earlier builds)",
+    "publisher": "fan wiki",
+    "url": "",
+    "accessed": "2026-10-16",
+    "claim": "Style hints only (earlier builds). Not used for any dimension.",
+    "reliability": "low",
+    "quote": "",
+    "note": "Section 1: use only for style hints."
+  }
+]

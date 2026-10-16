@@ -8,7 +8,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "shots": "node scripts/screenshots.mjs",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "vitest run",
+    "audit": "node tools/act3/audit.mjs",
+    "ingest": "node tools/act3/ingest.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -19,6 +22,7 @@
   },
   "devDependencies": {
     "playwright": "1.56.1",
-    "vite": "7.3.5"
+    "vite": "7.3.5",
+    "vitest": "3.2.4"
   }
 }

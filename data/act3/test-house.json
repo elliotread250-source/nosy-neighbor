@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "units": "m",
+  "polygonConvention": "centerline",
+  "name": "One-room test house (Milestone 1)",
+  "playerHeight": { "value": 1.2, "tag": "assumed", "rule": "player_height_default", "note": "child, unconfirmed" },
+  "floors": [
+    {
+      "id": "F0",
+      "label": "Ground",
+      "elevation": { "value": 0, "tag": "assumed", "rule": "ground_zero" },
+      "ceiling": { "value": 3.4, "tag": "assumed", "rule": "ceiling_default" },
+      "slab": { "value": 0.3, "tag": "assumed", "rule": "slab" },
+      "rooms": [
+        {
+          "id": "test_room",
+          "label": "Test room",
+          "polygon": [[0, 0], [5, 0], [5, 4], [0, 4]],
+          "polygonTag": "assumed",
+          "walls": [
+            { "from": 0, "to": 1, "thickness": { "value": 0.3, "tag": "assumed", "rule": "wall_exterior" },
+              "openings": [
+                { "id": "test_door", "type": "door", "offset": { "value": 2.0, "tag": "assumed", "rule": "design_center" }, "width": { "value": 0.95, "tag": "assumed", "rule": "door_width" }, "height": { "value": 2.6, "tag": "assumed", "rule": "door_height" } }
+              ] },
+            { "from": 1, "to": 2, "thickness": { "value": 0.3, "tag": "assumed", "rule": "wall_exterior" },
+              "openings": [
+                { "id": "test_window", "type": "window", "offset": { "value": 1.5, "tag": "assumed", "rule": "design_center" }, "width": { "value": 0.9, "tag": "assumed", "rule": "window_width" }, "height": { "value": 1.5, "tag": "assumed", "rule": "window_height" }, "sill": { "value": 0.9, "tag": "assumed", "rule": "window_sill" } }
+              ] }
+          ],
+          "documented": []
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "features": []
+}

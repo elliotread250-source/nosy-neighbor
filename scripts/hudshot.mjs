@@ -7,7 +7,7 @@ const scenes = (process.argv[2] || 'keyPrompt,throwArc,wardrobe,underBed,carry,f
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 page.on('pageerror', (e) => console.log('[pageerror]', e.message));
-await page.goto('http://localhost:5173/?debug=1&notitle');
+await page.goto('http://localhost:5173/classic.html?debug=1&notitle');
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 240000 });
 await page.evaluate(() => {
   window.V = nn.engine.camera.position.constructor;

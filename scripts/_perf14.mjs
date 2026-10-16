@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
-await page.goto('http://localhost:5173/?shot=porch&debug=1&gfx=low');
+await page.goto('http://localhost:5173/classic.html?shot=porch&debug=1&gfx=low');
 await page.waitForFunction(() => window.__nnReady, null, { timeout: 180000 });
 console.log(await page.evaluate(() => {
   const groups = {};

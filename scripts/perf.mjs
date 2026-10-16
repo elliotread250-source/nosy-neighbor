@@ -6,7 +6,7 @@ const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--ena
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
 page.on('pageerror', (e) => console.log('[pageerror]', e.message));
 for (const s of shots) {
-  await page.goto(`http://localhost:5173/?shot=${s}&debug=1${extra ? '&' + extra : ''}`);
+  await page.goto(`http://localhost:5173/classic.html?shot=${s}&debug=1${extra ? '&' + extra : ''}`);
   await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 180000 });
   await page.waitForTimeout(800);
   const r = await page.evaluate(() => {
