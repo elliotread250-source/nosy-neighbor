@@ -24,6 +24,8 @@ import { warpProp } from './StyleWarp.js';
 import { PostFX } from '../art/PostFX.js';
 import { Panels } from './Panels.js';
 import { batchStatic } from './Batch.js';
+import { TouchControls, isTouchDevice } from './Touch.js';
+import { deviceInfo, QUALITY, Governor, Lifecycle, applyTextureCap, toast } from './Mobile.js';
 import paletteData from '../../data/act3/palette.json';
 import { Tools } from './Tools.js';
 import { audit, auditText } from './Audit.js';
@@ -74,9 +76,22 @@ export class App {
 
   async init() {
     configurePlayer();
+    this.dev = deviceInfo();
+    this._loading(5, 'Starting the renderer');
+    // phones and tablets: pick a quality before anything is built (desktop
+    // keeps its existing defaults unless the player changes them)
+    const saved = (() => { try { return JSON.parse(localStorage.getItem('act3-quality-v1') || 'null'); } catch { return null; } })();
+    this.quality = saved?.quality ?? (this.dev.touch ? (this.dev.lowEnd ? 'low' : 'medium') : 'medium');
+    this.renderScale = saved?.renderScale ?? 1;
+    this.fpsCap = saved?.fpsCap ?? false;
+    if (this.dev.touch) { applyTextureCap(this.quality); this._pixelCaps(); }
     this.specs = { test: testHouse, main: mainHouse };
     this.engine = new Engine(document.getElementById('app'));
+    this._loading(15, 'Loading the physics engine');
+    await new Promise((r) => setTimeout(r, 0));
     this.physics = await Physics.init();
+    this._loading(40, 'Building the house');
+    await new Promise((r) => setTimeout(r, 0));
     this.input = new Input(this.engine.canvas);
     this.lighting = new SurveyLighting(this.engine.scene);
     this.house = new HouseView(this.engine.scene, this.physics);
@@ -85,6 +100,7 @@ export class App {
     this.audio = new Act3Audio((t) => this.subtitle(t));
     this._hud();
     this.load(this.specs[this.specName] ?? mainHouse);
+    this._loading(85, 'Placing the puzzle');
     this.player = new Player(this.engine, this.physics, this.input);
     this.player.hands.visible = false;
     this.player.ladders = this.ladders;
@@ -97,13 +113,23 @@ export class App {
       this.interact.build(puzzleData, this.plan);
       this.interact.load();
     }
+    this.touch = new TouchControls(this);
+    if (isTouchDevice()) this.input.device = 'touch';
+    this.input.onDeviceChange = (d) => this._device(d);
+    this.governor = new Governor(this, { enabled: saved?.auto ?? this.dev.touch });
+    this.lifecycle = new Lifecycle(this);
+    this.suspendReasons = new Set();
+    if (qs.has('debug')) document.body.classList.add('debug');
     this._lock();
     this._events();
+    if (this.dev.touch || saved) this.setQuality(this.quality, { quiet: true });
+    this.checkOrientation();
+    this._loading(100, this.input.device === 'touch' ? 'Tap to start' : 'Click to explore');
     this.frame = 0;
     this.loop = this.loop.bind(this);
     window.addEventListener('keydown', (e) => { if (['F3', 'F7', 'F10'].includes(e.code)) e.preventDefault(); });
     // a click on the canvas while a panel is open goes back to playing
-    this.engine.canvas.addEventListener('click', () => { if (!this.input.locked && document.getElementById('a3-start')?.classList.contains('hidden')) { this.audio.unlock(); this.input.requestLock(); } });
+    this.engine.canvas.addEventListener('click', () => { if (this.input.device === 'touch') return; if (!this.input.locked && document.getElementById('a3-start')?.classList.contains('hidden')) { this.audio.unlock(); this.input.requestLock(); } });
     // golden mode: settle the physics on fixed steps, then freeze everything
     // that moves, so screenshots are deterministic (spec 29)
     if (qs.has('golden')) { this.simulate(2); this.frozen = true; }
@@ -225,7 +251,7 @@ export class App {
     const cam = this.engine.camera.position;
     if (this.frame % 15 === 0) {
       const ls = [...this.props.lights].sort((a, b) => a.position.distanceToSquared(cam) - b.position.distanceToSquared(cam));
-      ls.forEach((l, i) => { l.visible = i < 8; });
+      ls.forEach((l, i) => { l.visible = i < (this.maxLights ?? 8); });
     }
     for (const l of this.props.lights) {
       if (!l.visible) continue;
@@ -266,10 +292,44 @@ export class App {
   _lock() {
     const ov = document.getElementById('a3-start');
     const menu = document.getElementById('a3-menu');
-    const go = () => { this.audio.unlock(); this.input.requestLock(); this.engine.canvas.focus(); };
+    const go = () => {
+      this.audio.unlock();
+      if (this.input.device === 'touch') { this.startTouch(); return; }
+      this.input.requestLock(); this.engine.canvas.focus();
+    };
     ov?.addEventListener('click', go);
     const on = (a, ev, fn) => menu?.querySelector(`[data-a=${a}]`)?.addEventListener(ev, fn);
     on('resume', 'click', go);
+    // touch options
+    const ts = this.touch.s;
+    const set = (a, v, prop = 'value') => { const el = menu?.querySelector(`[data-a=${a}]`); if (el) el[prop] = v; };
+    set('tsens', ts.sens); set('tsize', ts.size); set('tleft', ts.leftHanded, 'checked'); set('tgyro', ts.gyro, 'checked'); set('thapt', ts.haptics, 'checked');
+    set('rscale', this.renderScale); set('cap30', this.fpsCap, 'checked'); set('auto', this.governor.enabled, 'checked'); set('gfx', this.quality);
+    set('inv', CONFIG.player.invertY, 'checked');
+    on('tsens', 'input', (e) => this.touch.set('sens', +e.target.value));
+    on('tsize', 'input', (e) => this.touch.set('size', +e.target.value));
+    on('tleft', 'change', (e) => this.touch.set('leftHanded', e.target.checked));
+    on('tgyro', 'change', (e) => this.touch.set('gyro', e.target.checked));
+    on('thapt', 'change', (e) => this.touch.set('haptics', e.target.checked));
+    on('rscale', 'change', (e) => { this.renderScale = +e.target.value; this.setQuality(this.quality); });
+    on('cap30', 'change', (e) => { this.fpsCap = e.target.checked; this._saveQuality(); });
+    on('auto', 'change', (e) => { this.governor.enabled = e.target.checked; this._saveQuality(); });
+    // tools and debug buttons (the F-key tools, for fingers)
+    const tool = (t) => {
+      const T = this.tools;
+      ({
+        ruler: () => T.toggleRuler(), gauge: () => T.toggleGauge(),
+        grid: () => { this.house.setGrid(!this.house.gridOn); this.hint(this.house.gridOn ? 'Grid: 1 m lines, 10 cm minor' : 'Grid off'); },
+        audit: () => this.toggleAudit(true), stats: () => this.statsEl.classList.toggle('show'),
+        compare: () => this.panels.toggleCompare(true), nav: () => this.panels.toggleNav(),
+        mode: () => { this.setMode(this.mode === 'survey' ? 'style' : 'survey'); this._menuLabels(); },
+        freecam: () => { this.player.setNoclip(!this.player.noclip); this.hint(this.player.noclip ? 'Freecam: joystick flies, Jump up, Crouch down' : 'Walking'); },
+      })[t]?.();
+      // panels stay open over the paused game; the rest goes back to play
+      if (!['audit', 'compare'].includes(t)) go();
+    };
+    menu?.querySelectorAll('[data-t]').forEach((b) => b.addEventListener('click', () => tool(b.dataset.t)));
+    this.statsEl.addEventListener('click', () => this.statsEl.classList.remove('show'));
     on('reset', 'click', () => this.interact?.reset());
     on('mode', 'click', () => { this.setMode(this.mode === 'survey' ? 'style' : 'survey'); this._menuLabels(); });
     on('quit', 'click', () => { location.href = '/classic.html'; });
@@ -278,7 +338,7 @@ export class App {
     on('inv', 'change', (e) => { CONFIG.player.invertY = e.target.checked; });
     on('bob', 'change', (e) => { CONFIG.player.headBob = e.target.checked; });
     on('subs', 'change', (e) => { this.subsOn = e.target.checked; this.audio.subs = e.target.checked; });
-    on('gfx', 'change', (e) => this.setGraphics(e.target.value));
+    on('gfx', 'change', (e) => this.setQuality(e.target.value));
     this.input.onLockChange = (locked) => {
       if (locked) { ov?.classList.add('hidden'); menu?.classList.add('hidden'); return; }
       if (ov && !ov.classList.contains('hidden')) return;
@@ -303,6 +363,105 @@ export class App {
     if (this.mode === 'style') this.engine.setPostFX(q === 'low' ? null : this.postfx);
     this.engine.renderer.setPixelRatio(Math.min(devicePixelRatio, q === 'low' ? 0.75 : q === 'high' ? 2 : 1));
     this.engine.resize?.();
+  }
+
+  // ------------------------------------------------------------ phones and tablets
+  _loading(p, text) {
+    const ov = document.getElementById('a3-start');
+    const bar = ov?.querySelector('.a3-load i');
+    if (bar) bar.style.width = `${p}%`;
+    const sub = ov?.querySelector('.sub');
+    if (sub && text) sub.textContent = text;
+    if (p >= 100) ov?.querySelector('.a3-load')?.remove();
+  }
+
+  // devicePixelRatio caps: 1.5 on phones, 2 on tablets, times the render scale
+  _pixelCaps() {
+    const g = CONFIG.graphics.presets[CONFIG.graphics.preset] || CONFIG.graphics.presets.medium;
+    g.maxPixelRatio = Math.min(this.dev.maxDpr, QUALITY[this.quality]?.dprCap ?? 1.5);
+    g.renderScale = this.renderScale;
+  }
+
+  setQuality(q, { auto = false, quiet = false } = {}) {
+    this.quality = q;
+    const Q = QUALITY[q];
+    const sun = this.lighting.sun;
+    sun.castShadow = Q.shadows;
+    this.engine.renderer.shadowMap.enabled = Q.shadows;
+    sun.shadow.mapSize.set(Q.shadowMap, Q.shadowMap);
+    sun.shadow.map?.dispose();
+    sun.shadow.map = null;
+    if (this.styleLights) { const s2 = this.styleLights.lighting.sun; s2.castShadow = Q.shadows; s2.shadow.mapSize.set(Q.shadowMap, Q.shadowMap); s2.shadow.map?.dispose(); s2.shadow.map = null; }
+    this.graphics = q;
+    if (this.mode === 'style') this.engine.setPostFX(Q.post ? this.postfx : null);
+    this.maxLights = Q.lights;
+    // shorter draw distance on Low
+    this.engine.camera.far = Q.far;
+    this.engine.camera.updateProjectionMatrix();
+    if (this.engine.scene.fog && this.mode === 'survey') { this.engine.scene.fog.near = Math.min(60, Q.far * 0.5); this.engine.scene.fog.far = Q.far; }
+    if (this.dev.touch || this.renderScale !== 1) this._pixelCaps();
+    this.engine.resize();
+    if (!auto) this._saveQuality();
+    if (!quiet && !auto) toast(`Quality: ${q}`);
+    const sel = document.querySelector('#a3-menu [data-a=gfx]');
+    if (sel) sel.value = q;
+  }
+
+  _saveQuality() {
+    try { localStorage.setItem('act3-quality-v1', JSON.stringify({ quality: this.quality, renderScale: this.renderScale, fpsCap: this.fpsCap, auto: this.governor?.enabled })); } catch { /* storage blocked */ }
+  }
+
+  _device(d) {
+    this.touch.setVisible(d === 'touch' && this.playing && !this.suspended);
+    if (d !== 'touch') document.body.classList.remove('touch-mode');
+    else if (!this.playing) document.body.classList.add('touch-mode');
+  }
+
+  // tap to start: fullscreen where allowed, sound on, keep the screen awake
+  startTouch() {
+    this.audio.unlock();
+    this.lifecycle.fullscreen();
+    this.lifecycle.requestWake();
+    this.playing = true;
+    document.getElementById('a3-start')?.classList.add('hidden');
+    document.getElementById('a3-menu')?.classList.add('hidden');
+    this.resume('menu');
+    this.touch.setVisible(true);
+    this.checkOrientation();
+  }
+
+  openMenu() {
+    if (this.input.locked) { this.input.exitLock(); return; }
+    document.getElementById('a3-menu')?.classList.remove('hidden');
+    this._menuLabels();
+    this.touch.releaseAll();
+    this.touch.setVisible(false);
+    document.body.classList.add('touch-mode');
+    this.suspend('menu');
+  }
+
+  suspend(why) {
+    this.suspendReasons.add(why);
+    this.suspended = true;
+    this.touch?.releaseAll();
+  }
+
+  resume(why) {
+    this.suspendReasons.delete(why);
+    this.suspended = this.suspendReasons.size > 0;
+    if (!this.suspended) this.engine.timer.reset?.();
+    if (!this.suspended && this.playing && this.input.device === 'touch' && document.getElementById('a3-menu')?.classList.contains('hidden')) this.touch.setVisible(true);
+  }
+
+  // landscape only on phones: portrait shows the rotate overlay and pauses
+  checkOrientation() {
+    const portrait = this.dev.touch && innerHeight > innerWidth;
+    document.getElementById('a3-rotate')?.classList.toggle('show', portrait);
+    if (portrait) { this.suspend('portrait'); this.touch?.setVisible(false); } else this.resume('portrait');
+  }
+
+  saveNow() {
+    try { this.interact?.save(); } catch { /* never let saving break the game */ }
   }
 
   _events() {
@@ -391,8 +550,24 @@ export class App {
       requestAnimationFrame(this.loop);
       return;
     }
+    // paused (menu on touch, portrait, hidden tab): keep a still frame, no simulation
+    if (this.suspended) {
+      this.engine.tick();
+      if (this.frame++ % 30 === 0 && !document.hidden) this.engine.render(0);
+      if (this.frame > 20) window.__a3Ready = true;
+      this.input.endFrame();
+      requestAnimationFrame(this.loop);
+      return;
+    }
+    // 30 fps cap: skip every other display frame
+    if (this.fpsCap) {
+      const now = performance.now();
+      if (now - (this._lastFrame ?? 0) < 1000 / 30 - 2) { requestAnimationFrame(this.loop); return; }
+      this._lastFrame = now;
+    }
     const dt = this.engine.tick();
     this.dt = dt;
+    this.governor?.frame(dt);
     this.input.pollGamepad();
     this._keys();
     this.physics.step(dt, (h) => {
@@ -410,6 +585,7 @@ export class App {
     this.interact?.update(dt);
     if (this.train?.running && this.frame % 20 === 0) this.audio.chuff(this.train.v);
     this.tools.update(dt);
+    this.touch?.update();
     this.lightsUpdate?.(dt);
     this.engine.render(dt);
     this._stats();

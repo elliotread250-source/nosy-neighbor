@@ -8,6 +8,7 @@ import {
 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { pointInPolygon } from './Slabs.js';
+import { textureCap } from '../art/CanvasTextures.js';
 
 // A box with world-space positions and UVs (1 UV unit = 1 m), flat normals.
 export function boxGeometry(x0, x1, y0, y1, z0, z1) {
@@ -33,6 +34,7 @@ export function boxGeometry(x0, x1, y0, y1, z0, z1) {
 const texCache = new Map();
 function canvasTex(key, draw, px = 512) {
   if (texCache.has(key)) return texCache.get(key);
+  px = Math.min(px, textureCap());
   const c = document.createElement('canvas');
   c.width = c.height = px;
   draw(c.getContext('2d'), px);

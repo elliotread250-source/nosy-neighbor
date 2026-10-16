@@ -39,8 +39,17 @@ export class Input {
     this.locked = false;
     this.gamepad = { move: [0, 0], look: [0, 0], buttons: [], prev: [] };
     this.onLockChange = null;
+    // on-screen touch controls feed this: a move vector, and look deltas into
+    // lookX/lookY; buttons press and release key codes through press()/release()
+    this.touchMove = [0, 0];
+    // which device the player is using right now: 'kbm', 'touch' or 'pad'
+    this.device = 'kbm';
+    this.onDeviceChange = null;
+    window.addEventListener('pointerdown', (e) => this._setDevice(e.pointerType === 'touch' || e.pointerType === 'pen' ? 'touch' : 'kbm'), true);
+    window.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse' && (Math.abs(e.movementX) + Math.abs(e.movementY) > 2)) this._setDevice('kbm'); }, true);
 
     window.addEventListener('keydown', (e) => {
+      this._setDevice('kbm');
       if (GAME_KEYS.has(e.code) && this.locked) e.preventDefault();
       if (DEBUG_KEYS.has(e.code) && CONFIG.debug) e.preventDefault();
       if (e.repeat) return;
@@ -87,6 +96,16 @@ export class Input {
     if (document.pointerLockElement) document.exitPointerLock();
   }
 
+  _setDevice(d) {
+    if (d === this.device) return;
+    this.device = d;
+    this.onDeviceChange?.(d);
+  }
+
+  // virtual key presses from on-screen buttons
+  press(code) { this._press(code); }
+  release(code) { this._release(code); }
+
   _press(code) {
     if (!this.held.has(code)) this.pressedThisFrame.add(code);
     this.held.add(code);
@@ -126,8 +145,8 @@ export class Input {
     if (this.down('back')) y -= 1;
     if (this.down('right')) x += 1;
     if (this.down('left')) x -= 1;
-    x += this.gamepad.move[0];
-    y += this.gamepad.move[1];
+    x += this.gamepad.move[0] + this.touchMove[0];
+    y += this.gamepad.move[1] + this.touchMove[1];
     const l = Math.hypot(x, y);
     if (l > 1) { x /= l; y /= l; }
     return [x, y];
@@ -165,6 +184,7 @@ export class Input {
     gp.move = [dz(p.axes[0] || 0), -dz(p.axes[1] || 0)];
     gp.look = [dz(p.axes[2] || 0), dz(p.axes[3] || 0)];
     gp.buttons = p.buttons.map((b) => b.pressed);
+    if (gp.buttons.some(Boolean) || Math.abs(gp.move[0]) + Math.abs(gp.move[1]) + Math.abs(gp.look[0]) + Math.abs(gp.look[1]) > 0.3) this._setDevice('pad');
     if (p.buttons[7]?.pressed) gp.buttons[2] = true; // RT also interacts
   }
 

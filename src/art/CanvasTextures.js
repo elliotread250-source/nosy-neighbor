@@ -7,11 +7,21 @@ import { mulberry32, seedFrom, valueNoise3 } from './Warp.js';
 
 const cache = new Map();
 
-function canvas(size, sizeY = size) {
+// Low-memory devices cap texture size (256 on the Low preset): the canvas is
+// made smaller and the context scaled, so every painter still draws in its
+// own S x S units.
+let texCap = Infinity;
+export function setTextureCap(n) { texCap = n || Infinity; }
+export function textureCap() { return texCap; }
+
+function canvas(size, sizeY = size, capped = true) {
   const c = document.createElement('canvas');
-  c.width = size;
-  c.height = sizeY;
-  return [c, c.getContext('2d')];
+  const k = capped ? Math.min(1, texCap / Math.max(size, sizeY)) : 1;
+  c.width = Math.round(size * k);
+  c.height = Math.round(sizeY * k);
+  const g = c.getContext('2d');
+  if (k < 1) g.scale(k, k);
+  return [c, g];
 }
 
 function finishTex(c, meters, metersY = meters) {
@@ -237,7 +247,7 @@ export function checker(a = 'FLOOR_TILE_A', b = 'FLOOR_TILE_B') {
 export function grass() {
   return cached('grass', () => {
     const S = 512;
-    const [c, g] = canvas(S);
+    const [c, g] = canvas(S, S, false);
     const r = mulberry32(seedFrom('grass'));
     g.fillStyle = css('GRASS');
     g.fillRect(0, 0, S, S);

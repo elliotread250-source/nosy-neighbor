@@ -90,7 +90,8 @@ async function open(file) {
 
 const pos = (e) => { const b = cv.getBoundingClientRect(); return [(e.clientX - b.left) * (cv.width / b.width), (e.clientY - b.top) * (cv.height / b.height)]; };
 cv.addEventListener('click', (e) => { if (!img || pts.length >= MODES[mode()].length) return; pts.push(pos(e)); refresh(); });
-cv.addEventListener('mousemove', (e) => {
+cv.addEventListener('pointermove', (e) => {
+  if (e.pointerType !== 'mouse') return;
   if (!img) return;
   const [x, y] = pos(e);
   loupe.style.display = 'block';

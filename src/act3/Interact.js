@@ -326,6 +326,12 @@ export class Interact {
     e.body.setBodyType(2, true); // kinematic position based
   }
 
+  // touch Throw button: held for t seconds, from a gentle toss to a hard throw
+  throwCharged(t) {
+    if (!this.held) { this.app.hint('Pick up something light first (Use on it)'); return; }
+    this._throw(3 + Math.min(1, t) * 7);
+  }
+
   _throw(strength = 7) {
     const e = this.held;
     if (!e) return;
@@ -371,7 +377,8 @@ export class Interact {
       const along = _v.dot(dir);
       if (along < 0.1 || along > REACH || along > wallD + 0.15) continue;
       const perp = _v.addScaledVector(dir, -along).length();
-      if (perp > t.radius) continue;
+      // thumbs aim less precisely than a mouse: small targets are wider on touch
+      if (perp > t.radius * (A.input.device === 'touch' ? 1.6 : 1)) continue;
       if (perp + along * 0.05 < bd) { bd = perp + along * 0.05; best = t; }
     }
     this.target = best;
@@ -380,9 +387,11 @@ export class Interact {
     if (best) {
       const miss = this._missing(best);
       ok = !miss;
-      text = miss ? `${best.prompt()}  (${miss})` : `E  ${best.prompt()}`;
-    } else if (this.carried) text = 'G  set the mannequin down';
-    else if (this.held) text = 'Click to throw  ·  G drop';
+      // on touch the prompt shows the button to press, not a key
+      const t = inp.device === 'touch';
+      text = miss ? `${best.prompt()}  (${miss})` : `${t ? '✋' : 'E'}  ${best.prompt()}${t && best.hold ? ' (hold)' : ''}`;
+    } else if (this.carried) text = inp.device === 'touch' ? '⇣  set the mannequin down' : 'G  set the mannequin down';
+    else if (this.held) text = inp.device === 'touch' ? '➶ hold to charge, release to throw  ·  ⇣ drop' : 'Click to throw  ·  G drop';
     this.ui.prompt.textContent = text;
     this.ui.prompt.classList.toggle('show', !!text);
     this.ui.prompt.classList.toggle('blocked', !!best && !ok);
@@ -391,13 +400,18 @@ export class Interact {
     if (A.tools.mode === 'ruler') return;
     // timed and instant actions
     const eDown = inp.held.has('KeyE');
+    // a timed action survives the target flickering out for a moment (a
+    // shaky thumb, head bob): keep the last one for 0.3 s while E is held
+    if (best && best.hold) { this._holdTarget = best; this._holdLost = 0; }
+    else if (this._holdTarget && eDown && (this._holdLost += dt) < 0.3) { best = this._holdTarget; ok = !this._missing(best); }
+    else this._holdTarget = null;
     if (best && ok && best.hold) {
       if (eDown) {
         this.holdT += dt;
         this.ui.ring.style.setProperty('--p', `${Math.min(1, this.holdT / best.hold) * 100}%`);
         this.ui.ring.classList.add('show');
         if (best.id.startsWith('basement_bolt') && Math.floor(this.holdT * 6) !== Math.floor((this.holdT - dt) * 6)) A.audio?.creak?.();
-        if (this.holdT >= best.hold) { this.holdT = 0; best.act(); }
+        if (this.holdT >= best.hold) { this.holdT = 0; this._holdTarget = null; best.act(); }
       } else { this.holdT = 0; this.ui.ring.classList.remove('show'); }
     } else {
       this.holdT = 0;

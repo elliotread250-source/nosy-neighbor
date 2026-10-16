@@ -11,25 +11,36 @@ export class Act3Audio {
     this.ctx = null;
     this.volume = 0.6;
     this.subs = true;
+    // fewer simultaneous voices on phones
+    this.maxVoices = (matchMedia?.('(pointer: coarse)').matches ?? false) ? 6 : 16;
+    this.voices = 0;
   }
 
   unlock() {
-    if (this.ctx) { this.ctx.resume?.(); return; }
+    if (this.ctx) { if (this.ctx.state !== 'running') this.ctx.resume?.(); return; }
     try {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
       this.out = this.ctx.createGain();
       this.out.gain.value = this.volume;
       this.out.connect(this.ctx.destination);
+      this.ctx.resume?.();
+      // iOS can leave the context 'interrupted' after a call: retry on the next touch
+      this.ctx.onstatechange = () => { if (this.ctx.state !== 'running') window.addEventListener('pointerdown', () => this.ctx.resume?.(), { once: true }); };
     } catch { this.ctx = null; }
   }
+
+  // phone calls and tab switches suspend the context; resume on the way back
+  suspend() { try { this.ctx?.suspend(); } catch { /* ignore */ } }
 
   setVolume(v) { this.volume = v; if (this.out) this.out.gain.value = v; }
 
   tone(freq, dur, type = 'sine', gain = 0.3, slide = 0, delay = 0) {
     const c = this.ctx;
-    if (!c) return;
+    if (!c || c.state !== 'running' || this.voices >= this.maxVoices) return;
+    this.voices++;
     const t = c.currentTime + delay;
     const o = c.createOscillator(), g = c.createGain();
+    o.onended = () => { this.voices--; };
     o.type = type;
     o.frequency.setValueAtTime(freq, t);
     if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(20, freq + slide), t + dur);
@@ -43,7 +54,9 @@ export class Act3Audio {
 
   noise(dur, gain = 0.2, freq = 1200) {
     const c = this.ctx;
-    if (!c) return;
+    if (!c || c.state !== 'running' || this.voices >= this.maxVoices) return;
+    this.voices++;
+    setTimeout(() => { this.voices--; }, dur * 1000 + 50);
     const b = c.createBuffer(1, Math.ceil(c.sampleRate * dur), c.sampleRate);
     const d = b.getChannelData(0);
     for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);

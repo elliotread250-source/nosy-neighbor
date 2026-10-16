@@ -2,13 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#1c2430" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
     <title>Act 3 House Study</title>
     <link rel="icon" href="/favicon.svg" />
     <style>
-      html, body { margin: 0; height: 100%; overflow: hidden; background: #c9d3dc; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #1c2430; }
+      html, body { margin: 0; height: 100%; height: 100dvh; overflow: hidden; background: #c9d3dc; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #1c2430; overscroll-behavior: none; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
       #app { position: fixed; inset: 0; }
-      #app canvas { display: block; width: 100%; height: 100%; outline: none; }
+      #app canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
+      :root { --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px); --st: env(safe-area-inset-top, 0px); --sb: env(safe-area-inset-bottom, 0px); }
       #hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
       .a3-cross { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1.5px #1c2430; }
       .a3-badge { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.88); padding: 6px 10px; border-radius: 6px; font-size: 13px; }
@@ -67,6 +74,62 @@
       .a3-compare .muted { color: #9fb2c4; margin-top: 6px; }
       .a3-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; object-fit: cover; pointer-events: none; z-index: 4; display: none; opacity: 0.5; }
       .a3-overlay.show { display: block; }
+      /* ---- phones and tablets ---- */
+      .a3-load { margin-top: 16px; width: min(320px, 70vw); height: 8px; border-radius: 4px; background: rgba(255,255,255,0.25); overflow: hidden; }
+      .a3-load i { display: block; height: 100%; width: 0; background: #ffd166; transition: width 0.2s; }
+      #a3-rotate { position: fixed; inset: 0; z-index: 30; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #1c2430; color: #fff; font: 700 20px system-ui, sans-serif; text-align: center; padding: 24px; }
+      #a3-rotate.show { display: flex; }
+      #a3-rotate .phone { width: 46px; height: 80px; border: 4px solid #ffd166; border-radius: 10px; animation: a3rot 2s ease-in-out infinite; }
+      @keyframes a3rot { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+      .a3-toast { position: fixed; z-index: 25; left: 50%; top: calc(54px + var(--st)); transform: translateX(-50%); background: rgba(20,28,40,0.9); color: #fff; padding: 6px 12px; border-radius: 8px; font: 13px system-ui, sans-serif; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+      .a3-toast.show { opacity: 1; }
+      #touch { position: fixed; inset: 0; z-index: 6; display: none; --tb: 64px; font-family: system-ui, sans-serif; }
+      #touch.on { display: block; }
+      #touch .tc-layer { position: absolute; inset: 0; touch-action: none; }
+      #touch .tc-stick { position: absolute; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; background: rgba(255,255,255,0.14); border: 3px solid rgba(255,255,255,0.45); display: none; pointer-events: none; }
+      #touch .tc-stick.on { display: block; }
+      #touch .tc-knob { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; border-radius: 50%; background: rgba(255,209,102,0.85); box-shadow: 0 3px 0 rgba(0,0,0,0.25); transform: translate(-50%, -50%); }
+      #touch .tc-buttons { position: absolute; right: calc(14px + var(--sr)); bottom: calc(14px + var(--sb)); width: calc(var(--tb) * 3.4); height: calc(var(--tb) * 3.2); pointer-events: none; }
+      #touch .tc-btn, #touch .tc-pause, #touch .tc-mark, #touch .tc-slot { pointer-events: auto; touch-action: none; border: 0; color: #1c2430; background: rgba(255,248,236,0.62); box-shadow: 0 4px 0 rgba(0,0,0,0.22); font: 800 12px system-ui, sans-serif; transition: opacity 0.4s, transform 0.08s; }
+      #touch .tc-btn { position: absolute; width: var(--tb); height: var(--tb); min-width: 48px; min-height: 48px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      #touch .tc-btn span { font-size: calc(var(--tb) * 0.4); line-height: 1; }
+      #touch .tc-btn small { font-size: 10px; margin-top: 2px; }
+      #touch .tc-btn.down { transform: scale(0.92); background: rgba(255,209,102,0.92); }
+      #touch .tc-btn.latched { background: rgba(255,209,102,0.85); }
+      #touch .tc-btn.ready { background: rgba(255,209,102,0.8); }
+      #touch .tc-btn.dim { opacity: 0.4; }
+      #touch .tc-ring { position: absolute; inset: -5px; border-radius: 50%; background: conic-gradient(#ff7518 var(--p, 0%), transparent 0); -webkit-mask: radial-gradient(circle, transparent 62%, #000 64%); mask: radial-gradient(circle, transparent 62%, #000 64%); pointer-events: none; }
+      /* a thumb arc: use is the big one in the corner */
+      #touch .tc-use { right: 0; bottom: 0; width: calc(var(--tb) * 1.3); height: calc(var(--tb) * 1.3); }
+      #touch .tc-jump { right: calc(var(--tb) * 1.5); bottom: 0; }
+      #touch .tc-crouch { right: calc(var(--tb) * 2.45); bottom: calc(var(--tb) * 0.55); }
+      #touch .tc-throw { right: calc(var(--tb) * 0.15); bottom: calc(var(--tb) * 1.5); }
+      #touch .tc-drop { right: calc(var(--tb) * 1.25); bottom: calc(var(--tb) * 1.95); }
+      #touch .tc-pause { position: absolute; top: calc(10px + var(--st)); right: calc(12px + var(--sr)); width: 52px; height: 52px; border-radius: 14px; font-size: 18px; }
+      #touch .tc-mark { position: absolute; display: none; right: calc(var(--tb) * 3.8 + 20px + var(--sr)); bottom: calc(18px + var(--sb)); height: 52px; padding: 0 16px; border-radius: 26px; font-size: 15px; }
+      #touch .tc-mark.show { display: block; }
+      #touch .tc-slots { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(10px + var(--sb)); display: flex; gap: 8px; }
+      #touch .tc-slot { min-width: 64px; height: 48px; border-radius: 12px; padding: 0 10px; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+      #touch.idle .tc-btn, #touch.idle .tc-slot, #touch.idle .tc-mark { opacity: 0.28; }
+      #touch.idle .tc-pause { opacity: 0.5; }
+      #touch.left-handed .tc-buttons { right: auto; left: calc(14px + var(--sl)); transform: scaleX(-1); }
+      #touch.left-handed .tc-btn span, #touch.left-handed .tc-btn small { transform: scaleX(-1); }
+      #touch.left-handed .tc-pause { right: auto; left: calc(12px + var(--sl)); }
+      #touch.left-handed .tc-mark { right: auto; left: calc(var(--tb) * 3.8 + 20px + var(--sl)); }
+      body.touch-mode .a3-keys, body.touch-mode .a3-cross.hand + * { display: none; }
+      body.touch-mode .a3-badge { top: calc(10px + var(--st)); left: calc(10px + var(--sl)); font-size: 11px; padding: 4px 8px; }
+      body.touch-mode .a3-items { display: none; }
+      body.touch-mode .a3-prompt { top: auto; bottom: calc(var(--tb) * 3.4 + 24px + var(--sb)); font-size: 15px; }
+      body.touch-mode .a3-hint { top: calc(60px + var(--st)); max-width: 70vw; white-space: normal; text-align: center; }
+      body.touch-mode .a3-stats { top: calc(70px + var(--st)); right: auto; left: calc(10px + var(--sl)); pointer-events: auto; }
+      body.touch-mode .a3-auditui, body.touch-mode .a3-compare { top: calc(8px + var(--st)); left: calc(8px + var(--sl)); right: calc(8px + var(--sr)); bottom: calc(8px + var(--sb)); max-height: none; width: auto; font-size: 13px; pointer-events: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+      body.touch-mode .a3-auditui tr.room td { padding: 9px 6px; }
+      body.touch-mode .a3-auditui button, body.touch-mode .a3-compare button { min-height: 44px; padding: 6px 14px; font-size: 14px; }
+      .touch-only { display: none !important; }
+      body.touch-mode .touch-only { display: block !important; }
+      body.touch-mode label.touch-only { display: flex !important; }
+      .debug-only { display: none !important; }
+      body.debug .debug-only { display: grid !important; }
       #a3-menu { position: fixed; inset: 0; z-index: 11; display: flex; align-items: center; justify-content: center; background: rgba(28,36,48,0.6); }
       #a3-menu.hidden { display: none; }
       #a3-menu .card { background: #fff8ec; color: #1c2430; border-radius: 16px; padding: 22px 26px; min-width: 320px; box-shadow: 0 8px 0 #c8b89a; font-family: system-ui, sans-serif; }
@@ -74,14 +137,30 @@
       #a3-menu button { display: block; width: 100%; margin: 6px 0; padding: 9px; border-radius: 10px; border: 0; background: #ffd166; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 3px 0 #c9a227; }
       #a3-menu label { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 7px 0; font-size: 14px; }
       #a3-menu .note { font-size: 12px; opacity: 0.7; margin-top: 10px; max-width: 320px; }
+      #a3-menu .card { max-height: calc(100dvh - 24px - var(--st) - var(--sb)); overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+      #a3-menu h3 { margin: 12px 0 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+      #a3-menu .row { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
+      #a3-menu .row button { margin: 0; }
+      @media (pointer: coarse) {
+        #a3-menu .card { min-width: min(560px, calc(100vw - 32px - var(--sl) - var(--sr))); padding: 16px 20px; }
+        #a3-menu button { min-height: 48px; font-size: 16px; }
+        #a3-menu label { min-height: 48px; font-size: 16px; }
+        #a3-menu input[type=range] { width: 50%; height: 32px; }
+        #a3-menu input[type=checkbox] { width: 28px; height: 28px; }
+        #a3-menu select { min-height: 44px; font-size: 16px; }
+        #a3-start .t { font-size: 26px; }
+        #a3-start .warn { font-size: 12px; padding: 0 16px; }
+      }
     </style>
   </head>
   <body>
     <div id="app"></div>
     <div id="hud"></div>
+    <div id="a3-rotate"><div class="phone"></div><div>Turn your phone sideways to play</div><div style="font-size:14px;font-weight:400;opacity:0.8">The house is paused until then.</div></div>
     <div id="a3-start">
       <div class="t">ACT 3 HOUSE STUDY</div>
-      <div class="sub">Click to explore</div>
+      <div class="sub">Loading…</div>
+      <div class="a3-load"><i></i></div>
       <div class="warn">A scale study of a fan-remembered house layout. Every dimension carries a source tag; press F10 for the audit. Nothing here is measured yet, so treat it as a plausible stand-in, not a reconstruction.</div>
     </div>
     <div id="a3-menu" class="hidden">
@@ -95,6 +174,24 @@
         <label>Invert Y <input data-a="inv" type="checkbox" /></label>
         <label>Head bob <input data-a="bob" type="checkbox" checked /></label>
         <label>Subtitles <input data-a="subs" type="checkbox" checked /></label>
+        <h3>Tools</h3>
+        <div class="row">
+          <button data-t="ruler">Ruler (R)</button><button data-t="gauge">Height gauge (H)</button><button data-t="grid">Grid (G)</button><button data-t="audit">Audit (F10)</button>
+        </div>
+        <h3 class="touch-only">Touch</h3>
+        <label class="touch-only">Look sensitivity <input data-a="tsens" type="range" min="0.3" max="2.5" step="0.1" value="1" /></label>
+        <label class="touch-only">Button size <input data-a="tsize" type="range" min="0.75" max="1.5" step="0.05" value="1" /></label>
+        <label class="touch-only">Left-handed layout <input data-a="tleft" type="checkbox" /></label>
+        <label class="touch-only">Gyro aiming <input data-a="tgyro" type="checkbox" /></label>
+        <label class="touch-only">Vibration <input data-a="thapt" type="checkbox" checked /></label>
+        <h3>Performance</h3>
+        <label>Render scale <input data-a="rscale" type="range" min="0.5" max="1" step="0.05" value="1" /></label>
+        <label>Auto quality <input data-a="auto" type="checkbox" /></label>
+        <label>30 fps cap (saves battery) <input data-a="cap30" type="checkbox" /></label>
+        <h3 class="debug-only" style="display:block">Debug</h3>
+        <div class="row debug-only">
+          <button data-t="freecam">Freecam (F7)</button><button data-t="stats">Stats (F3)</button><button data-t="compare">Compare (K)</button><button data-t="nav">Nav graph (N)</button><button data-t="mode">Survey / style (V)</button>
+        </div>
         <button data-a="reset">Reset house</button>
         <button data-a="quit">Quit to the classic game</button>
         <div class="note">Tools: R ruler, H height gauge, G grid, F7 freecam, F10 audit, F3 stats. Floor plans: <a href="/tools/floorplan.html">tools/floorplan.html</a>. Measuring: <a href="/tools/measure.html">tools/measure.html</a>.</div>

@@ -352,10 +352,15 @@ export class Player {
       this.camera.updateProjectionMatrix();
     }
     // landing dip: critically damped spring
+    // (substepped at 60 Hz: on a slow frame a single big step goes unstable
+    // and the camera bounces; at 60 fps this is one step, as before)
     const kSpring = 120, kDamp = 18;
-    this.landVel += (-kSpring * this.landDip - kDamp * this.landVel) * dt;
-    this.landDip += this.landVel * dt * 6;
-    this.landDip = MathUtils.clamp(this.landDip, -P.landDipMax, 0.05);
+    const n = Math.max(1, Math.ceil(dt * 60 - 1e-6)), h = dt / n;
+    for (let i = 0; i < n; i++) {
+      this.landVel += (-kSpring * this.landDip - kDamp * this.landVel) * h;
+      this.landDip += this.landVel * h * 6;
+      this.landDip = MathUtils.clamp(this.landDip, -P.landDipMax, 0.05);
+    }
   }
 
   _applyLeanAndBob(dt) {

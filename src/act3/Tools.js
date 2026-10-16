@@ -61,7 +61,7 @@ export class Tools {
     this.points = [];
     this.markers.forEach((m) => { m.visible = false; });
     this.line.visible = false;
-    this.app.hint(this.mode ? 'Ruler: click two points (R to close)' : 'Ruler off');
+    this.app.hint(this.mode ? (this.app.input.device === 'touch' ? 'Ruler: aim the dot and tap Mark, twice' : 'Ruler: click two points (R to close)') : 'Ruler off');
   }
 
   clickRuler() {

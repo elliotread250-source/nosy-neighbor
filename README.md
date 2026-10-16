@@ -26,6 +26,10 @@ WASD move, Shift sprint, Space jump, C crouch, E use (hold E for bolts and the k
 
 Scale tools: R ruler (click two points), H height gauge (the exact player height, with 10 cm ticks and the eye line), G grid (1 m with 10 cm minor lines), F7 freecam ([ and ] change its speed), V survey or style mode, F10 audit, K compare mode, N the navigation graph, F3 performance panel.
 
+## Phones and tablets
+
+Open the site, turn the phone sideways and tap to start (it goes fullscreen where the browser allows and turns the sound on). Left thumb: a joystick appears wherever you touch, push it all the way forward to sprint. Right thumb: drag to look. Buttons: Use (hold it for bolts and the keycard, a ring shows progress), Jump, Crouch (tap to toggle), Throw (hold to charge, release), Drop, and pause at the top. The pause menu has the tools (ruler, height gauge, grid, audit), touch options (look sensitivity, button size, left-handed layout, gyro aiming, vibration) and performance options (quality, render scale, auto quality, a 30 fps cap). Phones start on Low; the auto-quality governor steps down under 45 fps and back up when there is headroom. Add `?debug=1` for the freecam, stats, compare and nav graph buttons. Keyboard, mouse and gamepad still work the moment you use them. Tests: `scripts/with-server.sh node scripts/act3mobile.mjs` (emulated phones and tablets) and `scripts/with-server.sh node scripts/act3desktop.mjs`.
+
 ## The tag system
 
 Every number in `data/act3/*.json` is an object with a value and a tag: measured, measured-rough, documented, documented-weak, fan-plan, standard, design, assumed, assumed-from-standard or conflict. The builder refuses a plain number and names its exact JSON path. Assumed values record the rule in `src/act3/assumptions.js` that produced them, documented ones point at an entry in `data/act3/sources.json`. Measurements come from `tools/measure.html` and upgrade tags automatically, but a value already measured is never replaced by one that disagrees: that becomes a conflict for you to decide.
