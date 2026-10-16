@@ -6,5 +6,7 @@ screenshots/
 reference/
 reports/*
 !reports/sample-audit.json
+!reports/*.md
+!reports/shots/
 .env
 .env.*
