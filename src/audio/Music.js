@@ -42,7 +42,7 @@ export class Music {
   }
 
   request(name) {
-    const map = { intro: 'title', explore: 'sneak', tension: 'tension', ending: 'ending', silence: 'silence', title: 'title', chase: 'chase', sneak: 'sneak' };
+    const map = { dream: 'dream', intro: 'title', explore: 'sneak', tension: 'tension', ending: 'ending', silence: 'silence', title: 'title', chase: 'chase', sneak: 'sneak' };
     const t = map[name] ?? name;
     if (!this.audio.ready) { this.pending = t; return; }
     if (t !== 'chase') this.base = t;
@@ -123,7 +123,7 @@ export class Music {
       this.main.gain.setTargetAtTime(hush ? 0.0001 : 1, now, 0.6);
     }
     // schedule ahead
-    const bpm = { sneak: 90, tension: 96, chase: 160, title: 62 }[this.track];
+    const bpm = { sneak: 90, tension: 96, chase: 160, title: 62, dream: 48 }[this.track];
     if (!bpm) return;
     const sixteenth = 60 / bpm / 4;
     if (this.next < now) this.next = now + 0.02;
@@ -138,14 +138,15 @@ export class Music {
     const c = this.audio.ctx;
     const m = this.main;
     const l = this.layer;
-    if (track === 'sneak' || track === 'tension' || track === 'title') {
-      const slow = track === 'title';
+    if (track === 'sneak' || track === 'tension' || track === 'title' || track === 'dream') {
+      const slow = track === 'title' || track === 'dream';
+      const woozy = track === 'dream' ? Math.sin(t * 0.7) * 45 : 0;
       if (step % 2 === 0) {
         const e = (step / 2) % 32;
         const note = SNEAK_MEL[e];
         if (note) {
           // slightly wrong: some notes drift flat
-          const cents = (e % 7 === 3 ? -35 : 0) + (Math.random() - 0.5) * 14;
+          const cents = (e % 7 === 3 ? -35 : 0) + (Math.random() - 0.5) * 14 + woozy;
           S.pluck(c, m, t, H(note) * Math.pow(2, cents / 1200), { dur: slow ? 1.4 : 0.7, gain: 0.11, bright: 0.35 });
         }
         if (!slow && e % 4 === 0) S.pluck(c, m, t, H(SNEAK_BASS[Math.floor(e / 4) % 8]), { dur: 0.35, gain: 0.16, type: 'sine' });
@@ -153,7 +154,7 @@ export class Music {
       }
       if (!slow && step % 2 === 1) S.shaker(c, m, t, step % 8 === 3 ? 0.05 : 0.025);
       // suspicion layer: a pad per bar and ticking hats
-      if (track !== 'title') {
+      if (track !== 'title' && track !== 'dream') {
         if (step % 16 === 0) {
           const chord = PAD[(step / 16) % 4];
           for (const n of chord) for (const det of [-9, 9]) {

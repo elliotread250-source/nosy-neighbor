@@ -6,7 +6,8 @@ import { buildNeighborYard } from './NeighborYard.js';
 import { DoorManager } from './Doors.js';
 import { WindowManager } from './Windows.js';
 import { buildNeighborInterior } from './NeighborInterior.js';
-import { CONFIG } from '../config.js';
+import { CONFIG, gfx } from '../config.js';
+import { WALLS } from './NeighborPlan.js';
 import { bakeStatic, bakeDeep } from '../art/Bake.js';
 
 export function buildWorld(scene, physics, lights, zones) {
@@ -41,13 +42,19 @@ export function buildWorld(scene, physics, lights, zones) {
   const NEAR = { F0: ['F0', 'F1', 'UG'], F1: ['F0', 'F1', 'F2', 'TR'], F2: ['F1', 'F2', 'TR', 'TW'], TR: ['F1', 'F2', 'TR'], TW: ['F2', 'TW'], UG: ['UG', 'F0'] };
   const ALL_ABOVE = ['F0', 'F1', 'F2', 'TR', 'TW'];
   const houseCenter = new Vector3(0, 4, -20);
+  // interior doors hide with their floor; exterior ones always show
+  const extDoors = new Set();
+  for (const w of WALLS) if (w.kind === 'ext') for (const o of w.openings || []) if (o.id) extDoors.add(o.id);
+  const innerDoors = [...doors.doors.values()].filter((d) => d.o.floor && !extDoors.has(d.id));
+  const cullDist = gfx().interiorCull ?? CONFIG.interior.cullDistance;
   function updateCulling(camPos) {
     const z = zones.at(camPos);
     let show;
     if (camPos.y < 0.2 && Math.abs(camPos.x) < 8.5 && camPos.z < -13.8 && camPos.z > -26.5) show = NEAR.UG;
     else if (z && z.house === 'neighbor') show = NEAR[z.room.floor] || ALL_ABOVE;
-    else show = camPos.distanceTo(houseCenter) < CONFIG.interior.cullDistance ? ALL_ABOVE : [];
+    else show = camPos.distanceTo(houseCenter) < cullDist ? ALL_ABOVE : [];
     for (const [k, g] of Object.entries(interior.floors)) g.visible = show.includes(k);
+    for (const d of innerDoors) d.pivot.visible = show.includes(d.o.floor);
   }
   updaters.push(() => {});
 

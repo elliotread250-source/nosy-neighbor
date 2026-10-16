@@ -18,6 +18,7 @@ export class HUD {
       <div class="hud-cine"><div></div><div></div></div>
       <div class="hud-monitor"><div class="scan"></div><div class="lbl"></div><div class="rec">&#9679; REC</div><div class="help">E next camera &middot; Space leave</div></div>
       <div class="hud-glow"></div>
+      <div class="hud-mailslot"><div class="slit"><svg class="mseye" viewBox="0 0 200 80"><ellipse cx="100" cy="40" rx="90" ry="34" fill="#f6efe0" stroke="#2a1e3a" stroke-width="6"/><path d="M30 30 Q60 34 80 38 M120 38 Q150 30 170 26" stroke="#d3485a" stroke-width="2" fill="none"/><circle cx="100" cy="42" r="22" fill="#3b6e8f"/><circle cx="100" cy="42" r="8" fill="#120c18"/><circle cx="108" cy="34" r="5" fill="#fff"/><path d="M8 18 Q100 -14 192 14" stroke="#2a1e3a" stroke-width="14" fill="none" stroke-linecap="round"/></svg></div></div>
       <div class="hud-card"></div>
       <div class="hud-note"><canvas width="640" height="460"></canvas><div class="help">E to put it back</div></div>
       <div class="hud-end"><div class="t1">ACT 1 COMPLETE</div><div class="t2">Act 2 coming soon</div><div class="stats"></div><div class="again">Click to play again</div></div>
@@ -65,6 +66,9 @@ export class HUD {
     this.endEl = q('.hud-end');
     Events.on('monitor', (e) => { this.monitorEl.classList.toggle('show', e.on); if (e.on) this.monitorEl.querySelector('.lbl').textContent = e.name; root.classList.toggle('cinematic', e.on); });
     Events.on('glow', (e) => this.glowEl.classList.toggle('show', e.on));
+    this.slotEl = q('.hud-mailslot');
+    Events.on('mailslot', (e) => { this.slotEl.classList.toggle('show', e.on); this.slotEl.classList.remove('eye'); root.classList.toggle('cinematic', e.on); });
+    Events.on('mailslot:eye', () => this.slotEl.classList.add('eye'));
     Events.on('titlecard', (e) => { this.cardEl.textContent = e.text ?? ''; this.cardEl.classList.toggle('show', !!e.text); });
     Events.on('note', (e) => { if (e.open) drawNote(this.noteEl.querySelector('canvas'), e.code); this.noteEl.classList.toggle('show', e.open); });
     Events.on('act:complete', (e) => {

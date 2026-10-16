@@ -171,6 +171,12 @@
       .hud-noise.show { opacity: 0.85; }
       .hud-noise div { position: absolute; left: -9px; top: -78px; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 16px solid var(--tomato); filter: drop-shadow(0 0 2px #2a1e3a); }
 
+      .hud-mailslot { position: absolute; inset: 0; opacity: 0; display: flex; align-items: center; justify-content: center; }
+      .hud-mailslot.show { opacity: 1; }
+      .hud-mailslot .slit { width: 46vw; height: 9vw; border-radius: 1.2vw; box-shadow: 0 0 0 200vmax #140d12, inset 0 0 3vw rgba(0,0,0,0.85); position: relative; overflow: hidden; }
+      .hud-mailslot .mseye { position: absolute; left: 50%; top: 50%; width: 52vw; transform: translate(140%, -50%); transition: transform 0.12s cubic-bezier(.2,1.6,.4,1); }
+      .hud-mailslot.eye .mseye { transform: translate(-50%, -48%); }
+
       .debug-stats {
         position: fixed; top: 8px; left: 8px; margin: 0; padding: 8px 10px; z-index: 20;
         font: 12px/1.35 ui-monospace, monospace; color: #fff; background: rgba(20, 16, 30, 0.6); border-radius: 6px;

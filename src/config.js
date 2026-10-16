@@ -11,9 +11,9 @@ export const CONFIG = {
   graphics: {
     preset: params.get('gfx') || 'medium', // low | medium | high
     presets: {
-      low: { renderScale: 0.75, shadowMapSize: 512, shadows: true, bevelSegments: 2, maxPixelRatio: 1, msaa: 0, bloom: false, outlineScale: 0.8, grassCount: 2000 },
-      medium: { renderScale: 1.0, shadowMapSize: 1024, shadows: true, bevelSegments: 3, maxPixelRatio: 1.5, msaa: 4, bloom: true, outlineScale: 1, grassCount: 4000 },
-      high: { renderScale: 1.0, shadowMapSize: 2048, shadows: true, bevelSegments: 3, maxPixelRatio: 2, msaa: 4, bloom: true, outlineScale: 1.15, grassCount: 6000 },
+      low: { renderScale: 0.75, shadowMapSize: 512, shadows: true, bevelSegments: 2, maxPixelRatio: 1, msaa: 0, bloom: false, outlineScale: 0.8, grassCount: 2000, interiorCull: 20, shadowEvery: 2, interiorShadows: false, propShadows: false, instanceShadows: false },
+      medium: { renderScale: 1.0, shadowMapSize: 1024, shadows: true, bevelSegments: 3, maxPixelRatio: 1.5, msaa: 4, bloom: true, outlineScale: 1, grassCount: 4000, shadowEvery: 1, interiorShadows: false, propShadows: true, instanceShadows: true },
+      high: { renderScale: 1.0, shadowMapSize: 2048, shadows: true, bevelSegments: 3, maxPixelRatio: 2, msaa: 4, bloom: true, outlineScale: 1.15, grassCount: 6000, shadowEvery: 1, interiorShadows: true, propShadows: true, instanceShadows: true },
     },
   },
 
@@ -41,7 +41,7 @@ export const CONFIG = {
     crouchHeight: 1.1,
     radius: 0.3,
     walkSpeed: 3.2,
-    sprintSpeed: 5.2,
+    sprintSpeed: 5.8, // faster than him on Easy/Normal (5.0/5.6), slower than Hard (6.0); stamina decides it
     crouchSpeed: 1.6,
     carrySpeedMul: 0.7,
     groundAccel: 40,

@@ -95,7 +95,7 @@ export class Voice {
     const ai = this.game.ai;
     if (!ai || ai.frozen) return;
     // hums while pottering about
-    if (ai.state === 'activity' && ai.activity?.id !== 'tv') {
+    if (ai.state === 'activity' && ai.activity?.id !== 'tv' && !ai.activity?.quiet) {
       this.humT -= dt;
       if (this.humT <= 0) {
         this.humT = 9 + Math.random() * 10;

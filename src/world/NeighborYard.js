@@ -121,7 +121,7 @@ export function buildNeighborYard(scene, physics, { doors }) {
   // ---------------------------------------------------- front yard details
   const gnome = S.gnome();
   gnome.scale.setScalar(1.25);
-  gnome.position.set(-5.5, 0, -10.6);
+  gnome.position.set(-1.9, 0, -9.5); // on the open lawn by the steps, where you'll notice it turning
   gnome.userData.noBake = true;
   root.add(gnome);
   const mat = S.doormat('GO AWAY');

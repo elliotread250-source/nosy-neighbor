@@ -46,7 +46,7 @@ export class NeighborBrain {
     Events.on('player:throw', () => { this.throwCount++; });
     Events.on('window:broken', (e) => { this.windowBreaks++; this.lastBroken = e.id; this._consider(); });
     Events.on('lure:start', (e) => { this.lureUses[e.kind] = (this.lureUses[e.kind] || 0) + 1; });
-    Events.on('catch:end', () => { if (this.pendingShot) this.startShot(this.pendingShot); });
+    Events.on('catch:end', () => { if (this.pendingShot && !this.game.dream?.wants()) this.startShot(this.pendingShot); });
   }
 
   get adapt() {

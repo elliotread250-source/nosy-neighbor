@@ -11,7 +11,7 @@ await page.goto('http://localhost:5173/?debug=1&notitle');
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 240000 });
 await page.evaluate(() => {
   window.V = nn.engine.camera.position.constructor;
-  document.getElementById('overlay').classList.add('hidden');
+  nn.menus.hide();
   document.getElementById('debug').style.display = 'none';
   nn.input.locked = true;
   nn.ai.frozen = true;
@@ -27,6 +27,18 @@ await page.evaluate(() => {
   window.give = (kind) => { const e = nn.physics.dynamics.find((d) => d.data?.item === kind && !d.held); if (e) nn.interaction.inv.addProp(e); return !!e; };
 });
 const SCENES = {
+  dream: () => { nn.dream.start(); nn.simulate(1.5); const p = nn.player; p.yaw = 0; p.pitch = 0.12; },
+  dreamUp: () => { nn.simulate(12); const p = nn.player; p.yaw = 0.25; p.pitch = 0.45; },
+  dreamEnd: () => { nn.dream.end(); nn.simulate(0.5); },
+  mailslot: () => {
+    const ex = nn.extras;
+    ex.scareUsed = false; ex.peeks = 5;
+    const d = nn.world.doors.get('d-front').worldCenter(new V());
+    aim([d.x, 0.6, d.z + 1.0], [d.x, 1.6, d.z]);
+    ex.peek(); nn.simulate(1.7);
+  },
+  mat: () => { nn.extras._endPeek(); aim([0.3, 0.6, -12.2], [0, 0.6, -13.45]); nn.player.pitch = -1.0; },
+  gnome: () => { const g = nn.world.yard.gnome.getWorldPosition(new V()); aim([g.x + 1.8, 0.05, g.z + 1.6], [g.x, 0.5, g.z]); },
   introWalk: () => { nn.ai.frozen = false; nn.story.startIntro(); nn.simulate(4); },
   introStare: () => { nn.simulate(4.6); },
   introCard: () => { nn.simulate(3.0); },

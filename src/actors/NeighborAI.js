@@ -32,6 +32,8 @@ const ACTIVITIES = [
   { id: 'backYard', pos: [3.0, 0, -29.0], face: [5, 0.3, -29.5], anim: 'idle', dur: [4, 7], expr: 'suspicious', w: 1 },
   { id: 'sideYard', pos: [12.5, 0, -21.0], face: [12.5, 1, -14], anim: 'idle', dur: [3, 6], expr: 'suspicious', w: 1 },
   { id: 'kitchen', pos: [4.4, NH.F0.y, -24.6], face: [4.6, 1.2, -26], anim: 'idle', dur: [3, 5], expr: 'curious', w: 1 },
+  // the quiet one: he stands by the little bed in the kid's room for a while, and he looks so sad
+  { id: 'kidRoom', pos: [6.0, NH.F1.y, -21.4], face: [7.35, 5.0, -22.55], anim: 'idle', dur: [9, 14], expr: 'sad', w: 0.7, quiet: true },
 ];
 
 export class NeighborAI {

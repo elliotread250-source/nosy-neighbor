@@ -1,6 +1,6 @@
 // The game: owns every system and runs the frame in a fixed order.
-import { Vector3, MathUtils } from 'three';
-import { CONFIG } from '../config.js';
+import { Vector3, MathUtils, Box3 } from 'three';
+import { CONFIG, gfx } from '../config.js';
 import { Engine } from '../core/Engine.js';
 import { Input } from '../core/Input.js';
 import { Physics } from '../core/Physics.js';
@@ -35,6 +35,8 @@ import { Ambience } from '../audio/Ambience.js';
 import { Settings } from '../ui/Settings.js';
 import { Menus } from '../ui/Menus.js';
 import { SaveGame } from './SaveGame.js';
+import { Extras } from './Extras.js';
+import { Dream } from './Dream.js';
 import { SaveSystem } from '../core/SaveSystem.js';
 import { PLAYER_HOUSE as PH } from '../world/PlayerHouse.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
@@ -110,6 +112,9 @@ export class Game {
     this.debug = new DebugOverlay(document.getElementById('debug'), { engine: this.engine, physics: this.physics, player: this.player, input: this.input, game: this });
     this.debugViz = new DebugViz(this);
     if (this.story) this.saveGame = new SaveGame(this);
+    if (this.interaction && this.world.yard) this.extras = new Extras(this);
+    if (this.ai && this.world.interior) this.dream = new Dream(this);
+    this._shadowBudget();
     Settings.apply(this);
     Events.on('debug:giveAll', () => this.giveAll());
     this._setupScreens();
@@ -202,6 +207,23 @@ export class Game {
     if (this.audio.ready) this.audio.applyVolumes();
   }
 
+  // Who casts sun shadows, per graphics preset. Small clutter never does.
+  _shadowBudget() {
+    const g = gfx();
+    const w = this.world;
+    if (w.interior && !g.interiorShadows) w.interior.root.traverse((m) => { if (m.isMesh) m.castShadow = false; });
+    for (const e of this.physics.dynamics) {
+      const box = new Box3().setFromObject(e.mesh);
+      const size = box.getSize(new Vector3());
+      const small = Math.max(size.x, size.y, size.z) < 0.45;
+      if (small || !g.propShadows) e.mesh.traverse((m) => { if (m.isMesh) m.castShadow = false; });
+    }
+    if (!g.instanceShadows) this.engine.scene.traverse((m) => { if (m.isInstancedMesh && m.count > 200) m.castShadow = false; });
+    const r = this.engine.renderer;
+    if (g.shadowEvery > 1) r.shadowMap.autoUpdate = false;
+    this.shadowEvery = g.shadowEvery || 1;
+  }
+
   // Debug F8: every key and tool.
   giveAll() {
     const ix = this.interaction;
@@ -217,6 +239,7 @@ export class Game {
   startCatch(opts = {}) {
     if (!this.catchSeq || this.catchSeq.active) return;
     this.story?.beforeCatch();
+    this.extras?.beforeCatch();
     this.catchSeq.start(opts);
   }
 
@@ -265,6 +288,8 @@ export class Game {
     this.impacts?.update(dt);
     this.brain?.update(dt);
     this.story?.update(dt);
+    this.extras?.update(dt);
+    this.dream?.update(dt);
   }
 
   // ------------------------------------------------------------ frame
@@ -313,6 +338,7 @@ export class Game {
     this.hud.update(realDt, player, this);
     this.debug.update(realDt);
     this.debugViz.update(realDt);
+    if (this.shadowEvery > 1 && this.frame % this.shadowEvery === 0) engine.renderer.shadowMap.needsUpdate = true;
     engine.render(realDt);
     input.endFrame();
     this.frame++;
