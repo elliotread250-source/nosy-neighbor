@@ -3,6 +3,7 @@
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Vector3, Quaternion, Box3, Matrix4 } from 'three';
 import { CONFIG } from '../config.js';
+import { Events } from './Events.js';
 
 export { RAPIER };
 
@@ -54,6 +55,13 @@ export class Physics {
       onFixed?.(h);
       this.world.step(this.eventQueue);
       this.stepCount++;
+      this.eventQueue.drainContactForceEvents((ev) => {
+        const h1 = ev.collider1(), h2 = ev.collider2();
+        Events.emit('contact', {
+          a: this.colliderData.get(h1) ?? null, b: this.colliderData.get(h2) ?? null, h1, h2,
+          force: ev.totalForceMagnitude(), dir: ev.maxForceDirection(),
+        });
+      });
       for (const d of this.dynamics) {
         const t = d.body.translation();
         const r = d.body.rotation();
@@ -220,9 +228,9 @@ export class Physics {
   // ---------- Queries ----------
 
   // Ray from origin along unit dir. Returns { point, normal, toi, collider, data } or null.
-  raycast(origin, dir, maxDist, excludeCollider = null, filterGroups = undefined) {
+  raycast(origin, dir, maxDist, excludeCollider = null, filterGroups = undefined, predicate = undefined) {
     const ray = new RAPIER.Ray(origin, dir);
-    const hit = this.world.castRayAndGetNormal(ray, maxDist, true, undefined, filterGroups, excludeCollider ?? undefined);
+    const hit = this.world.castRayAndGetNormal(ray, maxDist, true, undefined, filterGroups, excludeCollider ?? undefined, undefined, predicate);
     if (!hit) return null;
     const p = ray.pointAt(hit.timeOfImpact);
     return {

@@ -207,7 +207,7 @@ export function buildNeighborInterior(scene, physics, { doors, windows, lights, 
     const ball = new Mesh(new SphereGeometry(0.11, 12, 10), makeMat('WOOD_MID', { spec: 0.4 }));
     ball.position.set(-0.33, FLOOR_Y.F0 + 1.22, -17.05);
     floors.F0.add(ball);
-    physics.addStaticBox(new Vector3(-0.27, FLOOR_Y.F0 + 2.4, -19.55), new Vector3(0.04, 2.4, 2.35));
+    physics.addStaticBox(new Vector3(-0.25, FLOOR_Y.F0 + 2.4, -19.6), new Vector3(0.025, 2.4, 2.3));
   }
   // F1 railing around the stair hole
   const railRun = (bld, x0, z0, x1, z1, y) => {

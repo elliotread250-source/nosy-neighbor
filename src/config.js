@@ -161,6 +161,66 @@ export const CONFIG = {
     towardAmount: 0.5,
   },
 
+  ai: {
+    difficulty: params.get('difficulty') || 'normal', // easy | normal | hard
+    difficulties: {
+      easy: { runSpeed: 5.0, sight: 0.85, detect: 0.7, hearing: 0.8, adapt: 1.4, throws: false },
+      normal: { runSpeed: 5.6, sight: 1.0, detect: 1.0, hearing: 1.0, adapt: 1.0, throws: false },
+      hard: { runSpeed: 6.0, sight: 1.15, detect: 1.3, hearing: 1.25, adapt: 0.75, throws: true },
+    },
+    height: 2.0,
+    radius: 0.34,
+    walkSpeed: 1.4,
+    sneakSpeed: 1.0,
+    investigateSpeed: 1.9,
+    accel: 6, // m/s^2 at walking speeds
+    runAccelTime: 0.6, // seconds from walk to full run
+    runTurnAccel: 11, // lower = wider skids on corners
+    turnRate: 7, // rad/s for facing
+    fov: 110,
+    peripheral: 25, // outer degrees of the cone that fill the meter slowly
+    peripheralRate: 0.35,
+    rangeDay: 22,
+    rangeIndoor: 14,
+    rangeDark: 8,
+    detectRate: 1.7, // meter units/s at point blank, fully visible, moving
+    detectDecay: 0.3,
+    suspicious: 0.22,
+    hearingThreshold: 0.12,
+    noiseRange: 16, // meters a loudness-1 sound carries
+    wallAttenuation: 0.5,
+    memory: 20,
+    loseSightTime: 4,
+    catchDistance: 1.1,
+    stareTime: 5,
+    searchMin: 2,
+    searchMax: 4,
+    searchSkip: 0.3,
+    searchRadius: 9,
+    stunTime: 1,
+    hearReactTime: 0.5,
+    doorOpenDist: 1.3,
+    repathInterval: 0.4,
+    investigateLook: [4, 8],
+  },
+
+  catch: {
+    slowTo: 0.3,
+    slowIn: 0.15,
+    wrench: 0.2,
+    cutAt: 1.05, // seconds (real time) until the hard cut to black
+    blackFor: 0.45,
+    colorBack: 1.5,
+    reducedScare: params.has('gentle'),
+  },
+
+  storyClock: {
+    perCatch: 0.2,
+    sunElevationEnd: 13,
+    sunAzimuthEnd: 262,
+    blendTime: 3,
+  },
+
   godRays: {
     opacity: 0.15,
     motesPerWindow: 40,

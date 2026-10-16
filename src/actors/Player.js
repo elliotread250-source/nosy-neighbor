@@ -50,6 +50,10 @@ export class Player {
     this.noclip = false;
     this.enabled = true;
     this.ladders = []; // Box3 volumes: inside one, W/S climb
+    this.hiding = false;
+    this.hideSpot = null;
+    this.externalCamera = false;
+    this.horizSpeed = 0;
     this.onLadder = false;
 
     this.standHalf = P.height / 2 - P.radius;
@@ -156,6 +160,10 @@ export class Player {
 
   update(dt, alpha) {
     const inp = this.input;
+    if (this.externalCamera) {
+      inp.consumeLook(dt);
+      return;
+    }
     if (this.enabled) {
       const [lx, ly] = inp.consumeLook(dt);
       const sens = P.mouseSensitivity;

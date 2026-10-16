@@ -40,7 +40,7 @@ export function furnishGroundFloor(ctx) {
   const tv = place(F.tv('liv-tv'), -4.75, -14.6, PI, { noBake: true, interact: { kind: 'tv', label: 'Turn TV on', lure: 'tv', on: true }, room: 'living' });
   ctx.house.tv = tv;
   place(F.sofa('liv-sofa', 'RETRO_ORANGE', 3), -4.75, -17.95, 0, { hide: { kind: 'behind', room: 'living' } });
-  const arm = place(F.armchair('liv-armchair', 'SOFA_GREEN'), -2.55, -17.1, 0.55);
+  const arm = place(F.armchair('liv-armchair', 'SOFA_GREEN'), -3.05, -18.35, 0.45);
   ctx.house.armchair = arm;
   place(F.table('liv-coffee', { w: 1.2, d: 0.62, h: 0.45, color: 'WOOD_LIGHT', turnedLegs: false }), -4.75, -16.25, 0);
   loose('mug', -4.4, -16.2, { dy: 0.45, room: 'living', color: 'TOMATO' });

@@ -205,6 +205,16 @@ export class Door {
     return true;
   }
 
+  // The neighbor has every key: locks don't stop him, boards and chains do.
+  forceOpen(from, bang = false) {
+    if (this.boards > 0 || this.chains > 0) return false;
+    const lock = this.lock;
+    this.lock = null;
+    const ok = this.open(from, bang);
+    this.lock = lock;
+    return ok;
+  }
+
   close() {
     this.target = 0;
     this.speed = 3.2;

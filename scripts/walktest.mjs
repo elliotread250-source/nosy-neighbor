@@ -20,7 +20,7 @@ await page.waitForTimeout(400);
 await walkUntil(['KeyW'], () => nn.player.curFeet.y > 4.4 || nn.player.curFeet.z < -23);
 console.log('main stairs ->', await st(), '(want y~4.5)');
 // 2) back stairs: open door, west up flight 1, turn, east up flight 2
-await page.evaluate(() => nn.level.doors.get('d-stair2').open(new nn.engine.camera.position.constructor(0, 5, -24.3)));
+await page.evaluate(() => nn.world.doors.get('d-stair2').open(new nn.engine.camera.position.constructor(0, 5, -24.3)));
 await tp(-1.8, 4.5, -24.25, Math.PI / 2);
 await page.waitForTimeout(800);
 await walkUntil(['KeyW'], () => nn.player.curFeet.x < -6.2, 45000);
@@ -31,7 +31,7 @@ await page.evaluate(() => { nn.player.yaw = -Math.PI / 2; });
 await walkUntil(['KeyW'], () => nn.player.curFeet.x > -2.2, 45000);
 console.log('flight 2 ->', await st(), '(want y~8.2)');
 // 3) ladder shaft from the mudroom up to the purple room
-await page.evaluate(() => { nn.level.interior.hatches.find((h) => h.id === 'h-purple').open(); });
+await page.evaluate(() => { nn.world.interior.hatches.find((h) => h.id === 'h-purple').open(); });
 await tp(-0.45, 0.6, -22.95, 0);
 await page.waitForTimeout(500);
 await walkUntil(['KeyW'], () => nn.player.curFeet.y > 8.0, 45000);
