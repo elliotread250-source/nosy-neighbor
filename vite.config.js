@@ -26,6 +26,7 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         classic: resolve(import.meta.dirname, 'classic.html'),
+        measure: resolve(import.meta.dirname, 'tools/measure.html'),
       },
     },
   },

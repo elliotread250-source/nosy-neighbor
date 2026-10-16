@@ -121,7 +121,7 @@ export class Tools {
 
   // ------------------------------------------------------------ per frame
   update() {
-    if (this.gauge.visible) {
+    if (this.gauge.visible && !this.gaugePinned) {
       const hit = this.pick();
       if (hit) {
         // stand on the floor below the hit point, a little out from walls

@@ -5,3 +5,7 @@ Every change to a dimension in house.json lands here with its old value, new val
 ## rev 1 (Milestone 1)
 
 Added test-house.json: one 5 x 4 m room, 3.4 m ceiling, one door (0.95 x 2.6) and one window (0.9 x 1.5, sill 0.9). Every value is tagged assumed and points at a rule in src/act3/assumptions.js. Overall measured: 0 percent.
+
+## Milestone 2 (no data change)
+
+Measurement pipeline in place: data/act3/measurements.json (empty), npm run ingest, npm run audit. No reference images received, so no value changed and the house is still 0 percent measured.

@@ -29,7 +29,7 @@ How to attach: paste or drag images into this chat, or commit them to `reference
 |---|-----------|--------|
 | 0 | Reference request | Done (no material yet; continuing all-assumed) |
 | 1 | Scale foundation | Done: tagged spec, walls, slabs, stairs, audit, ruler, gauge, grid, freecam, F10, F3, test room. Shots in screenshots/act3/m1-*.png |
-| 2 | Measure tool | pending |
+| 2 | Measure tool | Done: tools/measure.html (straight-on, four-corner homography, loupe, SHA-256 provenance, export), src/act3/Measure.js, measurements.json, npm run ingest / audit, conflict, rescale and migration tests. Tool check on our own render: test door 2.575 ± 0.060 m (true 2.6). No game screenshots yet, so nothing measured. |
 | 3 | Ground floor | pending |
 | 4 | Second floor and gated section | pending |
 | 5 | Upper floors, ladder, train, roof | pending |

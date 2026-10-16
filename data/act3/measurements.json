@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "note": "Output of tools/measure.html. One record per measurement; npm run ingest applies them to house.json. Empty until reference screenshots arrive.",
+  "images": [],
+  "measurements": []
+}
