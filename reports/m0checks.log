@@ -1,0 +1,23 @@
+at the title screen: 85 dynamic bodies; windows broken: none
+  shards at the title screen: shard@-7.9,2.1,-17.6 | shard@-7.9,2.2,-17.7 | shard@-7.9,2.1,-17.7 | shard@-7.9,2.2,-17.6 | shard@-7.9,2.1,-17.7 | shard@-6.4,0.6,-17.5 | shard@-7.9,2.1,-17.7
+  snow globe at the title screen: MISSING
+  snow globe after the intro: MISSING
+windows already broken/open after the intro: none
+dynamic bodies after the intro: 78
+  mantel camera at [-5.6,2.22,-17.2]
+after 30 s of game time with the player idle in their bedroom: 78 dynamic bodies
+vanished (0): none
+moved > 0.5 m on their own (1): can@7.69,0.63,-25.06 -> 7.65,0.63,-23.83
+fell below y -1: none
+window "walk standing": end [-3.5,0.62,-13.5,false], furthest z -13.50, highest feet y 0.62 -> still outside
+window "walk + jump": end [-3.5,0.62,-13.5,false], furthest z -13.56, highest feet y 1.37 -> still outside
+window "jump onto box, then hold crouch and keep walking": end [-3.5,0.62,-13.5,false], furthest z -13.56, highest feet y 1.37 -> still outside
+window "crouch-jump (jump, crouch in the air) while walking": end [-3.5,0.62,-13.5,false], furthest z -13.56, highest feet y 1.37 -> still outside
+window "hold crouch, then try to jump": end [-3.5,0.62,-13.5,false], furthest z -13.51, highest feet y 0.62 -> still outside
+window summary (glass intact): {"walk":false,"jump":false,"crouchOnBox":false,"crouchJump":false,"crouchFirst":false}
+broke w-living2 with breakGlass(): broken=true
+window "[broken] walk standing": end [-3.47,0.62,-13.5,false], furthest z -13.50, highest feet y 0.62 -> still outside
+window "[broken] walk + jump": end [-3.5,1.4,-13.57,false], furthest z -13.58, highest feet y 1.40 -> still outside
+window "[broken] jump onto box, then hold crouch and keep walking": end [-3.5,0.62,-17.14,false], furthest z -17.14, highest feet y 1.40 -> GOT INSIDE
+window "[broken] crouch-jump (crouch in the air) while walking": end [-3.5,0.62,-17.14,false], furthest z -17.14, highest feet y 1.49 -> GOT INSIDE
+window summary (glass broken): {"walk":false,"jump":false,"crouchOnBox":true,"crouchJump":true}

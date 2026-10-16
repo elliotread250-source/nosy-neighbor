@@ -29,12 +29,12 @@ await page.goto(`${base}?debug=1&gfx=low`);
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 240000 });
 note(`title ready, state=${await page.evaluate(() => nn.state)} error=${await page.evaluate(() => window.__nnError || null)}`);
 await page.evaluate(() => { try { localStorage.clear(); } catch {} });
-await page.screenshot({ path: `${outDir}/00-title.png` });
+await page.screenshot({ timeout: 180000, path: `${outDir}/00-title.png` });
 await page.click('.title-screen button[data-act=play]');
 await page.waitForFunction(() => nn.state === 'play', null, { timeout: 60000 });
 note(`play clicked, story.mode=${await page.evaluate(() => nn.story.mode)}`);
 await page.waitForTimeout(4000);
-await page.screenshot({ path: `${outDir}/01-intro.png` });
+await page.screenshot({ timeout: 180000, path: `${outDir}/01-intro.png` });
 // Let the intro play out in game time (software frames are ~1 s each, and the
 // frame delta is capped, so wall time is meaningless here).
 let introGameT = 0;
@@ -45,7 +45,7 @@ await page.evaluate(() => { nn.input.locked = true; });
 const st = () => page.evaluate(() => { const p = nn.player, f = p.curFeet; return { x: +f.x.toFixed(2), y: +f.y.toFixed(2), z: +f.z.toFixed(2), g: p.grounded, caught: nn.catchSeq?.active || false, state: nn.state }; });
 note(`spawn ${JSON.stringify(await st())}`);
 note(`dynamic bodies at start: ${await page.evaluate(() => { let n = 0; nn.physics.world.forEachRigidBody((b) => { if (b.isDynamic()) n++; }); return n; })}`);
-await page.screenshot({ path: `${outDir}/02-wake.png` });
+await page.screenshot({ timeout: 180000, path: `${outDir}/02-wake.png` });
 
 // Route: [x, z, label, opts]. opts.jump: press space on the way; opts.crouch.
 const route = [
@@ -94,7 +94,7 @@ for (const [x, z, label, opts = {}] of route) {
   await page.keyboard.up('KeyW');
   const s = await st();
   note(`${reached ? 'reached' : 'MISSED '} "${label}" in ${gameT.toFixed(1)}s game at ${JSON.stringify(s)}`);
-  await page.screenshot({ path: `${outDir}/${String(shot++).padStart(2, '0')}-${label.replace(/[^a-z0-9]+/gi, '-')}.png` });
+  await page.screenshot({ timeout: 180000, path: `${outDir}/${String(shot++).padStart(2, '0')}-${label.replace(/[^a-z0-9]+/gi, '-')}.png` });
   if (!reached) {
     // Recover so the rest of the walk still gets looked at: teleport to the waypoint.
     await page.evaluate(([x, z]) => { const V = nn.engine.camera.position.constructor; const y = nn.player.curFeet.y; nn.player.spawn(new V(x, y + 0.3, z), nn.player.yaw); }, [x, z]);
@@ -107,7 +107,7 @@ for (let i = 0; i < 4; i++) {
   await page.evaluate((i) => { nn.player.yaw = i * Math.PI / 2; nn.player.pitch = 0; }, i);
   await page.evaluate(() => nn.simulate(0.1));
   await page.waitForTimeout(500);
-  await page.screenshot({ path: `${outDir}/${String(shot++).padStart(2, '0')}-hall-look-${i}.png` });
+  await page.screenshot({ timeout: 180000, path: `${outDir}/${String(shot++).padStart(2, '0')}-hall-look-${i}.png` });
 }
 note(`dynamic bodies at end: ${await page.evaluate(() => { let n = 0; nn.physics.world.forEachRigidBody((b) => { if (b.isDynamic()) n++; }); return n; })}`);
 note(`total wall time ${((Date.now() - T0) / 1000).toFixed(0)}s, game time ${await page.evaluate(() => (nn.time ?? 0).toFixed?.(1))}`);
