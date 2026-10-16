@@ -57,12 +57,16 @@ note(`  snow globe after the intro: ${(await page.evaluate(() => nn.physics.dyna
 note(`windows already broken/open after the intro: ${wins.join(' | ') || 'none'}`);
 const before = await bodies();
 note(`dynamic bodies after the intro: ${before.length}`);
-const shardSpot = before.find((b) => /shard/i.test(b.label)) || before.find((b) => b.x < -7 && b.z < -17);
-if (shardSpot) {
-  await page.evaluate(([x, y, z]) => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(x + 2.2, 0.7, z), Math.PI / 2); nn.player.pitch = -0.35; }, [shardSpot.x, shardSpot.y, shardSpot.z]);
-  await page.evaluate(() => nn.simulate(0.1));
-  await snap('shards-on-floor-right-after-the-intro');
-}
+// The snow globe on the living-room mantel (GroundFloor.js, x -7.6 z -17.65)
+// is the only breakable prop near the shards that exist before Play is even
+// clicked. Look at the mantel to show what is (and is not) on it.
+const lookAtMantel = async () => {
+  await page.evaluate(() => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(-5.6, 0.62, -17.2), Math.PI / 2); });
+  for (let i = 0; i < 10; i++) await page.evaluate(() => { nn.player.yaw = Math.PI / 2; nn.player.pitch = 0.12; nn.simulate(0.1); });
+  note(`  mantel camera at ${JSON.stringify(await page.evaluate(() => nn.engine.camera.position.toArray().map((v) => +v.toFixed(2))))}`);
+};
+await lookAtMantel();
+await snap('mantel-snow-globe-already-gone-toy-train-still-there');
 // stand the player in their own bedroom so nothing nearby is touched
 await page.evaluate(() => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(2.4, 0.5, 19.2), 0); });
 for (let t = 0; t < 30; t += 0.5) await page.evaluate(() => nn.simulate(0.5));
@@ -75,11 +79,6 @@ const fmt = (b) => `${b.label}@${b.x},${b.y},${b.z}`;
 note(`vanished (${gone.length}): ${gone.map(fmt).join(' | ') || 'none'}`);
 note(`moved > 0.5 m on their own (${moved.length}): ${moved.map((b) => `${fmt(b)} -> ${byH.get(b.h).x},${byH.get(b.h).y},${byH.get(b.h).z}`).join(' | ') || 'none'}`);
 note(`fell below y -1: ${after.filter((b) => b.y < -1).map(fmt).join(' | ') || 'none'}`);
-if (shardSpot) {
-  await page.evaluate(([x, y, z]) => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(x + 2.2, 0.7, z), Math.PI / 2); nn.player.pitch = -0.35; }, [shardSpot.x, shardSpot.y, shardSpot.z]);
-  await page.evaluate(() => nn.simulate(0.1));
-  await snap('same-spot-30s-later-shards-gone');
-}
 
 // ---------------------------------------------------------------- 2. window
 // w-living2: x -3.5, wall face z -14, sill y 1.5, top y 3.1, 0.9 m wide.
@@ -115,7 +114,30 @@ results.crouchJump = await attempt('crouch-jump (jump, crouch in the air) while 
 await snap('window-after-crouch-jump');
 results.crouchFirst = await attempt('hold crouch, then try to jump', async (kb, step) => { await kb.down('KeyC'); await kb.down('KeyW'); await step(6); await kb.down('Space'); await step(1); await kb.up('Space'); await step(30); });
 
-note(`window summary: ${JSON.stringify(results)}`);
+note(`window summary (glass intact): ${JSON.stringify(results)}`);
+
+// ---------------------------------------------------------------- 3. window, glass broken
+// The pane is intact at the start ("Shut tight (break it?)"), so the real
+// question is whether the opening is passable once the glass is gone.
+await page.evaluate(() => nn.world.windows.breakGlass('w-living2'));
+note(`broke w-living2 with breakGlass(): broken=${await page.evaluate(() => nn.world.windows.get('w-living2').broken)}`);
+const broken = {};
+broken.walk = await attempt('[broken] walk standing', async (kb, step) => { await kb.down('KeyW'); await step(30); });
+broken.jump = await attempt('[broken] walk + jump', async (kb, step) => { await kb.down('KeyW'); await step(6); await kb.down('Space'); await step(1); await kb.up('Space'); await step(30); });
+await snap('broken-window-jump-stops-on-flower-box');
+broken.crouchOnBox = await attempt('[broken] jump onto box, then hold crouch and keep walking', async (kb, step) => {
+  await kb.down('KeyW'); await step(6); await kb.down('Space'); await step(1); await kb.up('Space'); await step(15);
+  await kb.down('KeyC'); await step(2);
+  await snap('broken-window-crouched-on-flower-box');
+  await step(30);
+});
+await snap('broken-window-after-crouch-attempt');
+broken.crouchJump = await attempt('[broken] crouch-jump (crouch in the air) while walking', async (kb, step) => {
+  await kb.down('KeyW'); await step(6); await kb.down('Space'); await step(1); await kb.up('Space'); await step(1);
+  await kb.down('KeyC'); await step(30);
+});
+await snap('broken-window-after-crouch-jump');
+note(`window summary (glass broken): ${JSON.stringify(broken)}`);
 writeFileSync('reports/m0checks.log', log.join('\n') + '\n');
 await browser.close();
 server.kill();
