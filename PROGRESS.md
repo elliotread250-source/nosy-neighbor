@@ -7,6 +7,10 @@ Spec: `ACT3_HOUSE_PROMPT.md`. Read this file, `data/act3/CHANGELOG.md` and the s
 - Current milestone: all of 0 to 9 done. Measured: 0 percent (no reference material yet). Next: ingest screenshots (see the request below).
 - Overall measured: **0 percent**. No reference material has been supplied yet, so the whole house is a plausible stand-in built from the Part III house bible, not a reconstruction.
 
+## V2 deployment
+
+- 2026-10-16: New Railway project `nosy-neighbor-v2` (project f877e1ce-b87e-449d-8070-75c7f0e859f4, service 919c9a9a-5a95-4f50-90de-551a5b5d558f) auto-deploys the `v2` branch to https://nosy-neighbor-v2-production.up.railway.app. The old `nosy-neighbor` project is untouched. `NODE_ENV=production`, no secrets.
+
 ## Decisions made by the owner
 
 - 2026-10-16: "Keep going through all the milestones without stopping to ask me." Milestone 0's reference request is recorded below and in the milestone report; the build continues all-assumed (spec section 30.1) until material arrives.
