@@ -25,14 +25,14 @@ page.on('pageerror', (e) => note(`PAGEERROR ${e.message}`));
 await page.goto(`${base}?debug=1&gfx=low`);
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 240000 });
 await page.evaluate(() => { try { localStorage.clear(); } catch {} });
-const titleBodies = await page.evaluate(() => { const out = []; nn.physics.world.forEachRigidBody((b) => { if (b.isDynamic()) { const p = b.translation(); out.push(`${p.x.toFixed(1)},${p.y.toFixed(1)},${p.z.toFixed(1)}`); } }); return out; });
+const titleBodies = await page.evaluate(() => nn.physics.dynamics.map((e) => `${e.data?.item || 'body'}@${e.body.translation().x.toFixed(1)},${e.body.translation().y.toFixed(1)},${e.body.translation().z.toFixed(1)}`));
 const titleWins = await page.evaluate(() => [...nn.world.windows.windows.values()].filter((w) => w.broken).map((w) => w.id));
 await page.click('.title-screen button[data-act=play]');
 await page.waitForFunction(() => nn.state === 'play', null, { timeout: 60000 });
 for (let t = 0; t < 60 && await page.evaluate(() => !!nn.story.mode); t += 0.5) await page.evaluate(() => nn.simulate(0.5));
 await page.evaluate(() => { nn.input.locked = true; });
 let shot = 25;
-const snap = async (label) => page.screenshot({ path: `${outDir}/${String(shot++).padStart(2, '0')}-${label}.png` });
+const snap = async (label) => page.screenshot({ timeout: 180000, path: `${outDir}/${String(shot++).padStart(2, '0')}-${label}.png` });
 
 // ---------------------------------------------------------------- 1. props
 const bodies = () => page.evaluate(() => {
@@ -51,6 +51,9 @@ const bodies = () => page.evaluate(() => {
 });
 const wins = await page.evaluate(() => [...nn.world.windows.windows.values()].filter((w) => w.broken || w.open).map((w) => `${w.id}${w.broken ? ' broken' : ''}${w.open ? ' open' : ''} at ${w.center.toArray().map((v) => v.toFixed(1))}`));
 note(`at the title screen: ${titleBodies.length} dynamic bodies; windows broken: ${titleWins.join(', ') || 'none'}`);
+note(`  shards at the title screen: ${titleBodies.filter((b) => /shard/.test(b)).join(' | ') || 'none'}`);
+note(`  snow globe at the title screen: ${titleBodies.filter((b) => /snowGlobe/.test(b)).join(' | ') || 'MISSING'}`);
+note(`  snow globe after the intro: ${(await page.evaluate(() => nn.physics.dynamics.filter((e) => e.data?.item === 'snowGlobe').length)) ? 'present' : 'MISSING'}`);
 note(`windows already broken/open after the intro: ${wins.join(' | ') || 'none'}`);
 const before = await bodies();
 note(`dynamic bodies after the intro: ${before.length}`);
