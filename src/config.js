@@ -79,6 +79,14 @@ export const CONFIG = {
     climbSpeed: 2.6,
   },
 
+  audio: {
+    master: 0.9,
+    music: 0.55,
+    sfx: 0.9,
+    ambience: 0.7,
+    voice: 1.0,
+  },
+
   brain: {
     trapAt: 2, // entries through the same opening before a bear trap goes in
     cameraAt: 3,

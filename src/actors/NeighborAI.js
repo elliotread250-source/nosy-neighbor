@@ -765,6 +765,7 @@ export class NeighborAI {
     }
     if (this.stairEdge && this.speed > 0.01 && !this.sidestep) {
       this._rideStairs(dt);
+      this._stride(dt);
       this.lastPos.copy(this.curFeet);
       return;
     }
@@ -787,8 +788,22 @@ export class NeighborAI {
         this.sidestep = { dir: side.add(this.vel.clone().normalize().multiplyScalar(-0.6)).normalize(), t: 0.6 };
       }
     }
+    this._stride(dt);
     this.lastPos.copy(this.curFeet);
     if (this.curFeet.y < -20) this.teleport(new Vector3(6, NH.F0.y, -22));
+  }
+
+  // Heavy footsteps for the audio (one per stride of travelled ground).
+  _stride() {
+    const moved = Math.hypot(this.curFeet.x - this.lastPos.x, this.curFeet.z - this.lastPos.z);
+    if (moved > 0.5) return; // teleports
+    this.strideAcc = (this.strideAcc ?? 0) + moved;
+    const run = this.speed > 3;
+    const len = run ? 1.05 : 0.72;
+    if (this.strideAcc >= len) {
+      this.strideAcc -= len;
+      Events.emit('neighbor:step', { position: this.curFeet.clone(), run });
+    }
   }
 
   // Kinematic stair travel: slide along the flight's center line with height

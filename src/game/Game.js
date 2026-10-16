@@ -27,6 +27,11 @@ import { Devices } from './Devices.js';
 import { Impacts } from './Impacts.js';
 import { NeighborBrain } from './NeighborBrain.js';
 import { Story } from './Story.js';
+import { AudioEngine } from '../audio/AudioEngine.js';
+import { Sfx } from '../audio/Sfx.js';
+import { Voice } from '../audio/Voice.js';
+import { Music } from '../audio/Music.js';
+import { Ambience } from '../audio/Ambience.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
 import { HUD } from '../ui/HUD.js';
 import { DebugOverlay } from '../ui/DebugOverlay.js';
@@ -84,6 +89,11 @@ export class Game {
     }
     if (this.ai) this.brain = new NeighborBrain(this);
     if (this.devices && this.world.interior) this.story = new Story(this);
+    this.audio = new AudioEngine(this);
+    this.sfx = this.audio.add(new Sfx(this.audio));
+    this.voice = this.audio.add(new Voice(this.audio));
+    this.music = this.audio.add(new Music(this.audio));
+    this.ambience = this.audio.add(new Ambience(this.audio));
     this.timeScale = 1;
     this.state = 'play';
     this.catches = 0;
@@ -123,6 +133,7 @@ export class Game {
     }
     let started = false;
     overlay.addEventListener('click', () => {
+      this.audio.unlock();
       input.requestLock();
       engine.canvas.focus();
     });
@@ -133,7 +144,7 @@ export class Game {
       if (locked && !started) {
         started = true;
         if (this.story && !qs.has('nointro')) this.story.startIntro();
-        else hud.showObjective('Find out what\'s in the basement.');
+        else { hud.showObjective('Find out what\'s in the basement.'); Events.emit('music', { track: 'explore' }); }
       }
     };
   }
@@ -212,6 +223,7 @@ export class Game {
     const t = performance.now() / 1000;
     ToonShared.uTime.value = t;
     for (const u of this.updaters) u(dt, t);
+    this.audio.update(realDt);
     this.lights.update(engine.camera.position);
     this.world.updateCulling?.(engine.camera.position);
     this.indoorK = MathUtils.damp(this.indoorK, this.zones.isIndoor(engine.camera.position) ? 1 : 0, CONFIG.lighting.indoorFade, realDt);
