@@ -94,6 +94,8 @@ Calibers and ammo types are fictional-ish but based on real cartridges so they b
 
 Damage values are "base damage on an unarmored flesh hit to the thorax before range falloff." Zone multipliers are applied after.
 
+The drag column above is a first draft. Part 43.1 has the calibrated drag constants (in 1/m, with velocity retention targets per cartridge) and the four falloff curve families. Part 43 wins wherever the two differ.
+
 ### 5.3.4 Damage over distance
 
 Damage scales with the projectile's current kinetic energy relative to its muzzle energy, through a curve that's flat at first and then drops. Per ammo type, a `DamageFalloffCurve` maps remaining velocity fraction (current speed / muzzle speed) to damage multiplier. Default curve: 1.0 at 1.0 velocity, 1.0 at 0.85, 0.85 at 0.65, 0.6 at 0.45, 0.4 at 0.3, and 0.2 at 0.15. Projectiles below 15% of their muzzle velocity are destroyed. Penetration power scales linearly with velocity fraction.

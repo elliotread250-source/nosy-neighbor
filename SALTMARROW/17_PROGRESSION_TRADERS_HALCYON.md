@@ -8,7 +8,7 @@ All progression state lives on the backend (part 19). The client displays it. Co
 
 ## 17.1 ACCOUNT LEVEL
 
-Levels 1 to 60. XP sources in part 03. The XP curve: `XPToNext(level) = round(1000 × level^1.35 / 50) × 50`, which gives about 1,000 XP for level 2, 6,300 XP for level 20, 15,000 for level 40 and 25,000 for level 59. Total to level 60 is roughly 700,000 XP. A good raid is 1,500 to 3,000 XP, so level 60 is about 300 raids: a long tail for dedicated players without making early levels slow.
+Levels 1 to 60. XP sources in part 03. The XP curve: `XPToNext(level) = round((800 + 60 × level^1.5) / 50) × 50`, which gives 850 XP for level 2, 6,150 XP from level 20 to 21, 16,000 from 40 to 41 and 28,000 from 59 to 60. Total to level 60 is 702,300 XP (part 43 has the full table). A good raid is 1,500 to 3,000 XP, so level 60 is about 300 raids: a long tail for dedicated players without making early levels slow.
 
 Level unlocks (the important ones; the rest are cosmetics):
 
