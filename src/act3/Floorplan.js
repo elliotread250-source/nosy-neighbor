@@ -65,7 +65,7 @@ export function floorplanSVG(spec, plan, floorId, { scale = 40, pad = 1.2 } = {}
   const ly = H - 14;
   out.push(`<g font-size="10"><text x="8" y="${ly}" fill="#223">${floorId} · elevation ${val(fl.elevation).toFixed(2)} m · ceiling ${val(fl.ceiling).toFixed(2)} m · 1 m = ${scale} px</text>`);
   let lx = 8;
-  for (const k of ['measured', 'documented', 'assumed']) { out.push(`<rect x="${lx + 330}" y="${ly - 9}" width="12" height="10" fill="url(#h-${k})" stroke="${COLORS[k]}"/><text x="${lx + 346}" y="${ly}" fill="${COLORS[k]}">${LABEL[k]}</text>`); lx += 100; }
+  for (const k of ['measured', 'documented', 'assumed']) { out.push(`<rect x="${lx}" y="${ly - 23}" width="12" height="10" fill="url(#h-${k})" stroke="${COLORS[k]}"/><text x="${lx + 16}" y="${ly - 14}" fill="${COLORS[k]}">${LABEL[k]}</text>`); lx += 100; }
   out.push(`<text x="${W - 10}" y="14" text-anchor="end" fill="#556">street (z = 0) at the top</text></g>`);
   out.push('</svg>');
   return out.join('\n');
