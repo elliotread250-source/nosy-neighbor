@@ -109,7 +109,7 @@ Air control: 0.18. Low enough that jumping is committal.
 
 Fall damage: none under 3.5 m. From 3.5 m to 9 m, damage scales from 0 to 300 HP split across both legs (and a 60% chance per leg of a fracture above 6 m). Above 9 m: death unless landing in water. Landing in water deeper than 1.5 m negates all fall damage up to 25 m (the cliffs on the north coast are 18 to 22 m high, and jumping off them into the sea at high tide is a deliberate escape route).
 
-Landing: soft landing (fall under 1.5 m) is seamless; medium landing (1.5 to 3.5 m) plays a short land animation with a 0.25 s movement slowdown to 50%; hard landing (over 3.5 m) plays a roll if sprinting forward on landing (no slowdown, but costs 15 stamina) or a heavy land with 0.6 s at 30% speed.
+Landing: a soft landing (fall under 1.5 m) has no animation or slowdown; medium landing (1.5 to 3.5 m) plays a short land animation with a 0.25 s movement slowdown to 50%; hard landing (over 3.5 m) plays a roll if sprinting forward on landing (no slowdown, but costs 15 stamina) or a heavy land with 0.6 s at 30% speed.
 
 ## 4.5 MANTLING AND VAULTING
 

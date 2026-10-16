@@ -114,4 +114,4 @@ The ship feels alive: at any time, at least 6 NPCs are visible doing something o
 
 ---
 
-End of part 51. Next: `52_RISKS_AND_WORKING_RULES.md`.
+End of part 51. Next: `52_SKIRMISH_MODE.md`.

@@ -14,7 +14,7 @@ Goal: an empty but correctly structured project, building cleanly, with the back
 
 Tasks:
 
-0.1 Read the whole design bible (parts 00 to 45). Write `design/BUILD_LOG.md` with a first entry summarizing your understanding and any questions. ⚑ Send me the questions before writing code.
+0.1 Read the whole design bible (parts 00 to 56). Write `design/BUILD_LOG.md` with a first entry summarizing your understanding and any questions. ⚑ Send me the questions before writing code.
 
 0.2 Check the machine: installed Unreal Engine versions, Visual Studio (2022 with the "Game development with C++" workload and the Windows SDK UE needs), Git, Git LFS, Node.js LTS, Docker (for local Postgres; optional), and disk space (at least 300 GB free recommended for engine, project, DDC and builds). Report what's missing. ⚑ Ask before installing anything big.
 

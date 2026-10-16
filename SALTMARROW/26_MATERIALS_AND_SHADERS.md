@@ -2,7 +2,7 @@
 
 Every surface in the game comes from a small family of master materials, controlled by material instances and a few global Material Parameter Collections. This part specifies each master material, its layers and parameters, the special shaders (water, scopes, salt, storm, rain), and the rules that keep shader compile times and performance under control.
 
-Engine note on Substrate: UE5's Substrate material framework is the future of UE materials. Use it only if it's marked production-ready in the installed engine and every target preset (including Low on the Steam Deck) runs it at our budgets. Otherwise use the legacy shading models. Record the decision. Everything below is written to work in either.
+Engine note on Substrate: UE5's Substrate material framework is where Epic is taking UE materials. Use it only if it's marked production-ready in the installed engine and every target preset (including Low on the Steam Deck) runs it at our budgets. Otherwise use the legacy shading models. Record the decision. Everything below is written to work in either.
 
 ---
 

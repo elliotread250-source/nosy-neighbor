@@ -38,7 +38,7 @@ This is the flow of one play session. Each step lists the screen or space, the s
 
 6. Matchmaking: one of two paths. Path A (host): the squad leader's machine creates a raid lobby (EOS Lobby, "raid" bucket, up to 12 members, with attributes for map, raid type, region, version, slots open) and starts a listen server. Path B (join): the squad searches for open raid lobbies with matching attributes and joins one, or, if none found within 20 seconds, falls back to Path A and becomes the host. The host's game creates a raid on the backend. Backend: `POST /v1/raids` returns a `raidId`, a `raidSeed` and a signed `raidTicket`. Each joining player calls `POST /v1/raids/{raidId}/join` with their validated loadout, which returns their `entryManifest` (every item with its server-issued instance ID).
 
-7. Loading: players travel to the raid map. The deployment screen shows the squad on a boat with a countdown (the boat ride is a 20 second in-engine cinematic of the boat crossing toward their insertion point; it masks loading). Systems: seamless travel, level streaming of the start zone first.
+7. Loading: players travel to the raid map. The deployment screen shows the squad on a boat with a countdown (the boat ride is a 20 second in-engine cinematic of the boat crossing toward their insertion point; it masks loading). Systems: ServerTravel with `bUseSeamlessTravel` enabled, level streaming of the start zone first.
 
 8. Insertion: each squad lands at a different insertion point (part 14 lists 8). The host's server assigns insertion points so squads start far apart.
 
@@ -268,6 +268,58 @@ Percentage of raids where at least one PvP kill happens: 85%+ in a full lobby.
 Average Scrip value extracted by a successful player: 2 to 4 times the value of a mid-tier loadout.
 
 If extraction rate drops under 35%, the game is too punishing. If it goes above 70%, the tension's gone.
+
+
+## 3.12 THREE EXAMPLE RAIDS
+
+These are written as play reports, the way a player would tell them afterward. They exist so you can check the systems produce these stories. If a playtest can't produce something like each of them, something's off.
+
+### 3.12.1 The quiet one (solo, Standard, Surge from the southwest)
+
+Kitt lands at the East Shore Noust with a Gannet, a stab vest, a daypack and two bandages. It's overcast and calm. She hears gulls and the bell buoys at the harbor mouth. She works the Shore Street terraces one house at a time: a kitchen cupboard with tinned peaches, a bedside table with a wedding ring, a shed with duct tape. A Shambler is standing in a front room staring at a photograph on the mantelpiece. She crouches past the window and it doesn't turn.
+
+At 6:10 the gulls lift off the cannery roof and fly northeast, away from her. At 6:40 the sky over Gannet Rock goes the color of a bruise. She checks her barometer: falling. Sparks calls the Surge. She's in a low street and she knows what that means, so she moves up Cannery Row toward the High Street, stopping to loot a hardware shop on the way. Someone fires a long burst near the terminal, far to the west, and a few seconds later she hears the Hollows in the street outside start clicking and drifting toward the sound.
+
+At 7:30 the storm wall comes in over the harbor. Rain hammers the shop's roof. From the High Street she watches the quay go under, and figures stand up out of the water and wade toward the noise near the terminal. She's not there. She loots Lowrie's in the rain, alone, with the Surge masking her footsteps, and fills her bag.
+
+At 9:20, in the lull, Sparks says the cannery jetty boat is coming at 10:00. She goes down Kirk Wynd. The quay is knee-deep. Salt glitters on the harbour master's office wall at the high-water line; she scrapes a shard off and keeps moving. The boat's engine is audible from the wynd. She reaches the jetty with forty seconds to spare, boards, and watches two Shamblers wade toward the boat as it pulls away. Extracted with 61,000 Scrip of loot and a shard of salt. Nobody saw her. That's a good raid.
+
+### 3.12.2 The loud one (two squads of three, Standard, Surge from the south)
+
+Gull's squad lands at the Cannery Jetty and goes straight for the cold store, because they know the salt there is the best in Harbourside. They clear the receiving bay and two Shamblers at the gutting lines with suppressed Makos. The third member, Rook, takes the chimney: thirteen seconds up the ladder, and he's on the platform with a Fathom.
+
+At 5:00, Rook sees movement on the terminal's roof, 380 m west: another squad with a scope glinting in the low afternoon sun. He calls it on squad voice. They don't shoot; neither does the other squad. Everyone knows the cannery chimney is a lightning rod in a Surge.
+
+At 7:30 the Surge hits from the south, which floods the harbor side first. The cold store basement goes under. Gull's squad is on the first floor when the water starts pouring under the loading doors. They cross the covered bridge to the cold store's ground floor and wait for the lull, because the salt comes after the water goes down.
+
+At 9:30 the water drops to waist depth in the basement. Gull and a squadmate go down. The salt is everywhere, glowing in the dark, and so are the Shamblers that were lying in the water. The suppressed rifles cough. A Crawler drags Gull under for two seconds before his squadmate shoots it. They harvest two clusters and a geode; the scraping is loud.
+
+At 10:10 the other squad comes through the receiving bay. They heard the scraping, or the shots, or Sparks's broadcast about salt on the cannery shore. Rook, still on the chimney, sees them crossing the jetty and opens up with the Fathom. One goes down. The rest push into the processing hall. A firefight across the gutting lines: brass bouncing off the conveyors, the mezzanine trading shots with the floor. Gull's squad wins it, barely: Gull is downed, revived on the covered bridge, and the third member is dead.
+
+Then the noise has done its work. Hollows are pouring in from the quay. Gull's squad loots the dead squad's bodies (a Corsair with a Harrow scope, Class 4 plate), drops their own worn armor to make room, and runs for the ferry ramp boat at 12:00 through the terminal's flooded yard, climbing over cars. Rook comes down the chimney last and nearly doesn't make it. Two of three extract with everything. The dead member's gear is on a body in the cannery, which the other team's survivor loots on the way out. Everyone has a story.
+
+### 3.12.3 The greedy one (a squad of three, Night, Surge from the east, the Ferryman)
+
+Night raid. Flashlights off, moon behind cloud. The squad lands at West Slipway and works the lifeboat station for medical, then the High Street for the bank. They pull the vault lever at 8:00 during the first lull, knowing it'll ring the alarm across the town. Ninety seconds of bell. Two squadmates hold the banking hall with shotguns while one waits at the vault door. The vault opens: Scrip, gold, an old coin collection, and Donald Ross in his suit. They kill him, take the master key from his pocket and open the rich deposit boxes. Nobody comes. That's suspicious.
+
+At 14:00 Sparks says the fog's thick round the harbor mouth and the old-timers would say the Ferryman's working tonight. They're rich. They should leave by the hill flare. They don't. They want the strongroom at the terminal, which only the Ferryman's punch opens.
+
+At 15:00 the second Surge comes in from the east, flooding the cannery and the fish market first. The Ferryman walks up the linkspan out of the black water, rings the bell, and every Hollow within 150 m turns toward the terminal. The squad fights him in the marshalling yard among the cars, in the rain, in the dark, with the lighthouse beam sweeping across them every eight seconds (the Lighthouse Wakes event). He hooks one of them across the yard into a sweep. Downed. They break his chest plate with AP rounds and burn the Hollows with a Dragon's Breath shotgun, which also sets two cars on fire, which lights the whole yard for the squad camping the terminal roof that's been waiting for exactly this.
+
+The roof squad opens fire. The greedy squad, half dead, kills the Ferryman with the last of their AP, grabs the ticket punch from his body, opens the strongroom while one of them returns fire from behind the coach, and runs for the linkspan boat that Sparks just called. The water is at the top third of the ramp. Two of them make it. The third is downed on the ramp. His squadmates jump back off, revive him at the foot of the ramp as the horn blows, and he staggers aboard, where a last shot from the roof drops him again on the deck. He extracts anyway, downed, with the Ferryman's coin in his pocket, which is exactly the rule in part 3.10. They tell this story for a week.
+
+
+### 3.12.4 What these examples test
+
+Each example exercises a set of systems working together, and each one is a scripted bot scenario in the soak tests (part 37.5) as well as a playtest target.
+
+The quiet one tests stealth and reading the world: the gulls as a Surge tell, the barometer, rain masking footsteps (part 04.16), memory-point Hollows that don't notice a crouched player outside their sight cone, noise drawing Hollows elsewhere, salt on the high-water line after a lull, a scheduled boat at the jetty, and a solo player extracting with modest loot. If a careful solo player can't have this raid, the AI perception or the Surge pacing is too aggressive.
+
+The loud one tests squad play and the third party: the chimney's sightlines and its risk, the cold store's flooding and draining, salt harvesting noise, a Crawler grab broken by a squadmate, a fight across the processing hall's verticality, downed and revive on the covered bridge, swapping gear from bodies, Hollows converging on gunfire, and an escape through a flooded yard. If the noise doesn't pull Hollows in fast enough, or the cold store doesn't drain in the lull, this story can't happen.
+
+The greedy one tests risk escalation at its peak: the vault alarm as a deliberate gamble, the boss hint on the radio, the Ferryman's bell pulling Hollows, a Night raid's lighting with the lighthouse event, fire from Dragon's Breath lighting a dark yard for an ambushing squad, AP ammo against the boss's armor plates, the strongroom key, the last boat at a flooded ramp, and the downed-on-deck extraction rule. If the boss is too hard for a hurt squad, or too easy to ignore, or if the fire doesn't light the yard, the story falls apart.
+
+When balance changes land, rerun these three scenarios and compare the outcomes against the stories. They're the game's intent in narrative form.
 
 ---
 

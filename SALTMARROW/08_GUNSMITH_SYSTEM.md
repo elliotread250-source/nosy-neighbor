@@ -53,6 +53,7 @@ struct FSMPartNode
     UPROPERTY() float Durability = 100.f;          // per-part durability (barrels, triggers matter most)
     UPROPERTY() uint8 ParentIndex = 255;           // index into the flat array, 255 = root
     UPROPERTY() FName ParentSlot;                  // slot name on the parent
+    UPROPERTY() uint8 RailPosition = 0;            // slot index along a rail (part 08.4), 0 if not rail-mounted
     UPROPERTY() uint8 CosmeticSkinIndex = 0;       // index into the owner's skin table, 0 = default (part 10)
 };
 

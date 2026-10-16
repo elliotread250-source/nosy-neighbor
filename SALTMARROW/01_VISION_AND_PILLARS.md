@@ -32,7 +32,7 @@ Every feature has to serve at least one of these. If something serves none of th
 
 ### Pillar 1: Every bullet has weight
 
-Shooting is the main verb, and it has to feel incredible from the very first prototype. That means real projectile ballistics with drop and travel time, recoil you can learn and control, sounds that crack and echo off the water, impacts that throw spray and splinters, and hit feedback that tells you exactly what you hit and how hard. Guns are slow to kill with if you miss and fast to kill with if you hit. Time to kill on an unarmored target with a mid-tier rifle lands between 0.25 and 0.45 seconds. Armor stretches that out, and the right ammunition shrinks it back down. Nothing in this game is a hitscan laser except, possibly, nothing at all.
+Shooting is the main verb, and it has to feel incredible from the very first prototype. That means real projectile ballistics with drop and travel time, recoil you can learn and control, sounds that crack and echo off the water, impacts that throw spray and splinters, and hit feedback that tells you exactly what you hit and how hard. Guns are slow to kill with if you miss and fast to kill with if you hit. Time to kill on an unarmored target with a mid-tier rifle lands between 0.25 and 0.45 seconds. Armor stretches that out, and the right ammunition shrinks it back down. Nothing in this game is a hitscan laser.
 
 ### Pillar 2: The gun is yours
 
@@ -188,7 +188,7 @@ Be honest about state. If something is a placeholder, label it in the UI with a 
 
 I'll consider this a success when I can send a link to three friends who have never heard of the game, they download it, they get into a raid with me in under five minutes, we play three raids in a row, someone dies with a gun they spent twenty minutes building and swears loudly, and at the end of the night somebody says "one more".
 
-That's the bar. Everything in the other 45 parts is in service of that evening.
+That's the bar. Everything in the other 56 parts is in service of that evening.
 
 ## 1.15 GLOSSARY OF TERMS USED THROUGHOUT
 
