@@ -1,0 +1,146 @@
+{
+ "schemaVersion": 1,
+ "note": "Surface id -> palette name (or hex). Change one line when a color reference arrives. All colors assumed.",
+ "exterior": {
+  "F0": "NH_SIDING_MAIN",
+  "F1": "#EBC14A",
+  "F2": "NH_SIDING_ALT",
+  "trim": "NH_TRIM",
+  "foundation": "NH_FOUNDATION",
+  "roof": "NH_ROOF",
+  "boxRoof": "NH_ROOF_ALT",
+  "frontDoor": "NH_DOOR_FRONT",
+  "downspout": "NH_METAL_SHEET",
+  "terrace": "#3B3B44"
+ },
+ "rooms": {
+  "basement_b1": {
+   "floor": "BASEMENT_FLOOR",
+   "wall": "BASEMENT_WALL",
+   "ceiling": "BASEMENT_WALL",
+   "light": "BASEMENT_LIGHT"
+  },
+  "foyer_f0": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_GREEN",
+   "ink": "WALLPAPER_GREEN_STRIPE",
+   "pattern": "stripes",
+   "wainscot": {
+    "value": 1,
+    "tag": "assumed",
+    "rule": "wainscot height"
+   },
+   "ceiling": "CEILING"
+  },
+  "living_f0": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_BLUE",
+   "ink": "WALLPAPER_BLUE_DIAMOND",
+   "pattern": "diamonds",
+   "ceiling": "CEILING"
+  },
+  "dining_f0": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_YELLOW",
+   "ink": "WALLPAPER_YELLOW_STRIPE",
+   "pattern": "pinstripes",
+   "ceiling": "CEILING"
+  },
+  "hall_ground": {
+   "floor": "FLOOR_WOOD_DARK",
+   "wall": "WALLPAPER_PINK",
+   "ink": "WALLPAPER_PINK_DOT",
+   "pattern": "dots",
+   "ceiling": "CEILING"
+  },
+  "closet_f0": {
+   "floor": "FLOOR_WOOD_DARK",
+   "wall": "WAINSCOT",
+   "ceiling": "CEILING"
+  },
+  "stair_hall_f0": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_PINK",
+   "ink": "WALLPAPER_PINK_DOT",
+   "pattern": "dots",
+   "ceiling": "CEILING"
+  },
+  "kitchen_f0": {
+   "floor": "checker",
+   "wall": "RETRO_MINT",
+   "wainscot": {
+    "value": 1.2,
+    "tag": "assumed",
+    "rule": "tile height"
+   },
+   "upper": "CEILING",
+   "ceiling": "CEILING"
+  },
+  "back_hall_f0": {
+   "floor": "#B9B3A3",
+   "wall": "#9DBF7B",
+   "ceiling": "CEILING"
+  },
+  "basement_landing_f0": {
+   "floor": "BASEMENT_FLOOR",
+   "wall": "BASEMENT_WALL",
+   "ceiling": "CEILING"
+  },
+  "hall_f1": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_PINK",
+   "ink": "WALLPAPER_PINK_DOT",
+   "pattern": "dots",
+   "runner": "CARPET_GREEN",
+   "ceiling": "CEILING"
+  },
+  "stairwell_f1": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_PINK",
+   "ink": "WALLPAPER_PINK_DOT",
+   "pattern": "dots",
+   "ceiling": "CEILING"
+  },
+  "bedroom_a": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_BLUE",
+   "ink": "WALLPAPER_BLUE_DIAMOND",
+   "pattern": "diamonds",
+   "ceiling": "CEILING"
+  },
+  "bath_f1": {
+   "floor": "FLOOR_TILE_A",
+   "wall": "WALLPAPER_YELLOW",
+   "ceiling": "CEILING"
+  },
+  "study_f1": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALL_PAINT_PURPLE",
+   "ceiling": "CEILING"
+  },
+  "gallery_f1": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_GREEN",
+   "ink": "WALLPAPER_GREEN_STRIPE",
+   "pattern": "stripes",
+   "ceiling": "CEILING"
+  },
+  "birthday_room": {
+   "floor": "FLOOR_WOOD",
+   "wall": "WALLPAPER_PINK",
+   "ink": "WALLPAPER_PINK_DOT",
+   "pattern": "dots",
+   "ceiling": "CEILING"
+  },
+  "ladder_room_f2": {
+   "floor": "BASEMENT_FLOOR",
+   "wall": "RETRO_MINT",
+   "ceiling": "CEILING"
+  },
+  "control_room_f2": {
+   "floor": "BASEMENT_FLOOR",
+   "wall": "RETRO_MINT",
+   "ceiling": "CEILING"
+  }
+ }
+}

@@ -27,6 +27,27 @@
       #a3-start .t { font-size: 34px; font-weight: 800; letter-spacing: 1px; }
       #a3-start .sub { margin-top: 10px; font-size: 16px; }
       #a3-start .warn { margin-top: 18px; font-size: 13px; max-width: 640px; opacity: 0.85; line-height: 1.5; }
+      .a3-cross.hand { width: 14px; height: 14px; margin: -7px 0 0 -7px; background: #ffd166; }
+      .a3-prompt { position: absolute; top: 56%; left: 50%; transform: translateX(-50%); background: rgba(20,28,40,0.85); color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 14px; display: none; white-space: nowrap; }
+      .a3-prompt.show { display: block; }
+      .a3-prompt.blocked { color: #b8c2cc; background: rgba(60,64,72,0.85); }
+      .a3-hold { position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: conic-gradient(#ffd166 var(--p, 0%), rgba(255,255,255,0.2) 0); -webkit-mask: radial-gradient(circle, transparent 11px, #000 12px); mask: radial-gradient(circle, transparent 11px, #000 12px); display: none; }
+      .a3-hold.show { display: block; }
+      .a3-items { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+      .a3-items span { background: rgba(255,255,255,0.9); padding: 4px 9px; border-radius: 5px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+      .a3-sub { position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); color: #fff; background: rgba(0,0,0,0.6); padding: 3px 10px; border-radius: 4px; font-size: 13px; opacity: 0; transition: opacity 0.2s; }
+      .a3-sub.show { opacity: 1; }
+      .a3-alarm { position: absolute; top: 90px; left: 50%; transform: translateX(-50%); background: #c0182b; color: #fff; font-weight: 800; padding: 6px 14px; border-radius: 6px; display: none; letter-spacing: 1px; }
+      .a3-alarm.show { display: block; animation: a3blink 0.5s steps(2) infinite; }
+      @keyframes a3blink { 50% { opacity: 0.4; } }
+      @media (prefers-reduced-motion: reduce) { .a3-alarm.show { animation: none; } }
+      #a3-menu { position: fixed; inset: 0; z-index: 11; display: flex; align-items: center; justify-content: center; background: rgba(28,36,48,0.6); }
+      #a3-menu.hidden { display: none; }
+      #a3-menu .card { background: #fff8ec; color: #1c2430; border-radius: 16px; padding: 22px 26px; min-width: 320px; box-shadow: 0 8px 0 #c8b89a; font-family: system-ui, sans-serif; }
+      #a3-menu h2 { margin: 0 0 12px; font-size: 22px; }
+      #a3-menu button { display: block; width: 100%; margin: 6px 0; padding: 9px; border-radius: 10px; border: 0; background: #ffd166; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 3px 0 #c9a227; }
+      #a3-menu label { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 7px 0; font-size: 14px; }
+      #a3-menu .note { font-size: 12px; opacity: 0.7; margin-top: 10px; max-width: 320px; }
     </style>
   </head>
   <body>
@@ -36,6 +57,22 @@
       <div class="t">ACT 3 HOUSE STUDY</div>
       <div class="sub">Click to explore</div>
       <div class="warn">A scale study of a fan-remembered house layout. Every dimension carries a source tag; press F10 for the audit. Nothing here is measured yet, so treat it as a plausible stand-in, not a reconstruction.</div>
+    </div>
+    <div id="a3-menu" class="hidden">
+      <div class="card">
+        <h2>Paused</h2>
+        <button data-a="resume">Resume</button>
+        <button data-a="mode">Mode: survey (V)</button>
+        <label>Graphics <select data-a="gfx"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></label>
+        <label>Volume <input data-a="vol" type="range" min="0" max="1" step="0.05" value="0.6" /></label>
+        <label>Mouse sensitivity <input data-a="sens" type="range" min="0.0005" max="0.006" step="0.0001" value="0.0022" /></label>
+        <label>Invert Y <input data-a="inv" type="checkbox" /></label>
+        <label>Head bob <input data-a="bob" type="checkbox" checked /></label>
+        <label>Subtitles <input data-a="subs" type="checkbox" checked /></label>
+        <button data-a="reset">Reset house</button>
+        <button data-a="quit">Quit to the classic game</button>
+        <div class="note">Tools: R ruler, H height gauge, G grid, F7 freecam, F10 audit, F3 stats. Floor plans: <a href="/tools/floorplan.html">tools/floorplan.html</a>. Measuring: <a href="/tools/measure.html">tools/measure.html</a>.</div>
+      </div>
     </div>
     <script type="module" src="/src/act3/main.js"></script>
   </body>

@@ -1,0 +1,201 @@
+{
+ "schemaVersion": 1,
+ "note": "Pickup locations, the bolt order, the mannequin count and the train sequence. All design placeholders [X]; the real solution is not claimed.",
+ "items": [
+  {
+   "id": "crowbar",
+   "kind": "crowbar",
+   "at": {
+    "x": 9,
+    "y": 0.02,
+    "z": 9.9,
+    "tag": "design",
+    "note": "behind the stove in the kitchen"
+   },
+   "floor": "F0",
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "standard",
+     "note": "crowbar length"
+    },
+    {
+     "value": 0.02,
+     "tag": "standard",
+     "note": "round steel"
+    }
+   ]
+  },
+  {
+   "id": "keycard",
+   "kind": "keycard",
+   "at": {
+    "x": 9.4,
+    "y": 0.6,
+    "z": 6.15,
+    "tag": "design",
+    "note": "in the control room desk drawer"
+   },
+   "floor": "F2",
+   "size": [
+    {
+     "value": 0.086,
+     "tag": "standard",
+     "note": "ISO ID-1 card"
+    },
+    {
+     "value": 0.054,
+     "tag": "standard"
+    },
+    {
+     "value": 0.001,
+     "tag": "standard"
+    }
+   ],
+   "cartoonScale": {
+    "value": 2,
+    "tag": "design",
+    "note": "cartoon scale for props"
+   }
+  }
+ ],
+ "basement": {
+  "door": "basement_door",
+  "bolts": 6,
+  "boltOrder": "any",
+  "boltHold": {
+   "value": 1.5,
+   "tag": "design",
+   "note": "seconds per bolt"
+  },
+  "keycardHold": {
+   "value": 0.4,
+   "tag": "design",
+   "note": "seconds"
+  },
+  "requires": [
+   "crowbar",
+   "keycard"
+  ]
+ },
+ "mannequinCount": 5,
+ "mannequinHeight": {
+  "value": 1.75,
+  "tag": "assumed",
+  "rule": "mannequin adult"
+ },
+ "mannequins": [
+  {
+   "id": "mannequin_gallery",
+   "at": {
+    "x": 12.3,
+    "y": 3.7,
+    "z": 1.2,
+    "tag": "design",
+    "note": "under a dust sheet in the gallery"
+   },
+   "floor": "F1",
+   "sheet": true
+  },
+  {
+   "id": "mannequin_train",
+   "at": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "tag": "design",
+    "note": "rides the last train carriage"
+   },
+   "onTrain": true,
+   "decoy": true
+  },
+  {
+   "id": "mannequin_windmill",
+   "at": {
+    "x": 7,
+    "y": 0,
+    "z": 5.5,
+    "tag": "design",
+    "note": "hangs from the windmill hub, 0.2 m below its center"
+   },
+   "onWindmill": true
+  },
+  {
+   "id": "mannequin_study",
+   "at": {
+    "x": 3.8,
+    "y": 3.7,
+    "z": 10.5,
+    "tag": "design",
+    "note": "in the study closet, in a plastic bag"
+   },
+   "floor": "F1",
+   "bagged": true
+  },
+  {
+   "id": "mannequin_basement",
+   "at": {
+    "x": 8.5,
+    "y": -3.5,
+    "z": 8.5,
+    "tag": "design",
+    "note": "standing against the basement wall"
+   },
+   "floor": "B1"
+  }
+ ],
+ "birthday": {
+  "room": "birthday_room",
+  "mannequinCount": 5,
+  "pads": [
+   {
+    "x": 13.4,
+    "y": 3.7,
+    "z": 6.9,
+    "tag": "design",
+    "note": "pad 1"
+   },
+   {
+    "x": 13.4,
+    "y": 3.7,
+    "z": 8.1,
+    "tag": "design",
+    "note": "pad 2"
+   },
+   {
+    "x": 13.4,
+    "y": 3.7,
+    "z": 9.3,
+    "tag": "design",
+    "note": "pad 3"
+   },
+   {
+    "x": 13.4,
+    "y": 3.7,
+    "z": 10.5,
+    "tag": "design",
+    "note": "pad 4"
+   },
+   {
+    "x": 13.4,
+    "y": 3.7,
+    "z": 11.7,
+    "tag": "design",
+    "note": "pad 5"
+   }
+  ],
+  "padDiameter": {
+   "value": 0.6,
+   "tag": "design"
+  },
+  "order": "any"
+ },
+ "train": {
+  "sequence": [
+   "train_button",
+   "train_lever"
+  ],
+  "laps": 3,
+  "station": "P1"
+ }
+}

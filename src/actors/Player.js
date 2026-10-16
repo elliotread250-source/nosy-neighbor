@@ -271,6 +271,9 @@ export class Player {
     } else this.vel.y += CONFIG.physics.gravity * dt;
 
     const desired = { x: this.vel.x * dt, y: this.vel.y * dt, z: this.vel.z * dt };
+    // riding a moving platform (the Act 3 train): its motion this step
+    const pd = this.platformDelta;
+    if (pd) { desired.x += pd.x; desired.y += pd.y; desired.z += pd.z; this.platformDelta = null; }
     this.controller.computeColliderMovement(this.collider, desired, RAPIER.QueryFilterFlags.EXCLUDE_SENSORS);
     const m = this.controller.computedMovement();
     const t = this.body.translation();
@@ -287,7 +290,7 @@ export class Player {
         Events.emit('player:land', { speed: this.fallSpeed, position: this.curFeet.clone() });
       }
       this.fallSpeed = 0;
-      if (this.vel.y < 0) this.vel.y = -1; // keep pressed into the ground for snapping
+      if (this.vel.y < 0) this.vel.y = P.groundPress ?? -1; // keep pressed into the ground for snapping
     }
     // horizontal speed actually achieved (walls stop us)
     this.horizSpeed = Math.hypot(m.x, m.z) / dt;

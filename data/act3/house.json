@@ -1,0 +1,6507 @@
+{
+ "schemaVersion": 1,
+ "revision": 1,
+ "units": "m",
+ "polygonConvention": "centerline",
+ "name": "Act 3 House Study: the baseline house (Part III, all assumed until measured)",
+ "origin": "Room rectangles are wall centerlines from (0, 0); the outer face of the front-left corner is at (-0.15, -0.15).",
+ "playerHeight": {
+  "value": 1.2,
+  "tag": "assumed",
+  "rule": "player_height_default",
+  "note": "child, unconfirmed"
+ },
+ "spawn": {
+  "at": {
+   "x": 2.05,
+   "y": 0,
+   "z": -2.6,
+   "tag": "design",
+   "note": "on the front path, facing the broken window"
+  },
+  "yaw": {
+   "value": 0,
+   "tag": "design"
+  }
+ },
+ "floors": [
+  {
+   "id": "B1",
+   "label": "Basement",
+   "elevation": {
+    "value": -3.5,
+    "tag": "assumed",
+    "rule": "basement_depth"
+   },
+   "ceiling": {
+    "value": 3.2,
+    "tag": "assumed",
+    "rule": "ceiling_basement"
+   },
+   "slab": {
+    "value": 0.3,
+    "tag": "assumed",
+    "rule": "slab"
+   },
+   "rooms": [
+    {
+     "id": "basement_b1",
+     "label": "Basement",
+     "polygon": [
+      [
+       0,
+       3
+      ],
+      [
+       9,
+       3
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "b1_exit_door",
+         "type": "door",
+         "state": "locked",
+         "offset": {
+          "value": 1.05,
+          "tag": "design",
+          "note": "absolute x 7 to 7.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "design",
+          "note": "exit to a short passage, locked [X]"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "design",
+          "note": "exit to a short passage, locked [X]"
+         },
+         "note": "exit to a short passage, locked [X]"
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "basement entrance sealed with boards, bolts and a keycard lock (src_0005)"
+     ],
+     "surfaces": {
+      "floor": "BASEMENT_FLOOR",
+      "wall": "BASEMENT_WALL",
+      "ceiling": "BASEMENT_WALL",
+      "light": "BASEMENT_LIGHT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "F0",
+   "label": "Ground floor",
+   "elevation": {
+    "value": 0,
+    "tag": "assumed",
+    "rule": "ground_zero"
+   },
+   "ceiling": {
+    "value": 3.4,
+    "tag": "assumed",
+    "rule": "ceiling_default"
+   },
+   "slab": {
+    "value": 0.3,
+    "tag": "assumed",
+    "rule": "slab"
+   },
+   "rooms": [
+    {
+     "id": "foyer_f0",
+     "label": "Foyer",
+     "polygon": [
+      [
+       4.5,
+       0
+      ],
+      [
+       9.5,
+       0
+      ],
+      [
+       9.5,
+       3
+      ],
+      [
+       4.5,
+       3
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 0,
+       "to": 1,
+       "openings": [
+        {
+         "id": "front_door",
+         "type": "door",
+         "state": "bolted",
+         "offset": {
+          "value": 2,
+          "tag": "design",
+          "note": "absolute x 6.5 to 7.45 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "shut and bolted from inside; the way in is the broken window [D]",
+         "leaf": "NH_DOOR_FRONT"
+        }
+       ]
+      },
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "foyer_dining",
+         "type": "door",
+         "offset": {
+          "value": 1,
+          "tag": "design",
+          "note": "absolute z 1 to 1.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "foyer_hall",
+         "type": "door",
+         "offset": {
+          "value": 3.35,
+          "tag": "design",
+          "note": "absolute x 5.2 to 6.15 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "foyer_living",
+         "type": "door",
+         "offset": {
+          "value": 1.05,
+          "tag": "design",
+          "note": "absolute z 1 to 1.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_GREEN",
+      "ink": "WALLPAPER_GREEN_STRIPE",
+      "pattern": "stripes",
+      "wainscot": {
+       "value": 1,
+       "tag": "assumed",
+       "rule": "wainscot height"
+      },
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "living_f0",
+     "label": "Living room",
+     "polygon": [
+      [
+       0,
+       0
+      ],
+      [
+       4.5,
+       0
+      ],
+      [
+       4.5,
+       6.5
+      ],
+      [
+       0,
+       6.5
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 0,
+       "to": 1,
+       "openings": [
+        {
+         "id": "broken_window",
+         "type": "window",
+         "state": "broken",
+         "offset": {
+          "value": 1.6,
+          "tag": "design",
+          "note": "absolute x 1.6 to 2.5 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "documented",
+          "source": "src_0003"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "documented",
+          "source": "src_0003"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         },
+         "source": "src_0003",
+         "note": "the documented way in; route: box stack (0.35 m) then a jump [X]"
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "living_backhall",
+         "type": "door",
+         "offset": {
+          "value": 0.35,
+          "tag": "design",
+          "note": "absolute x 3.2 to 4.15 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "living_west_window",
+         "type": "window",
+         "state": "boarded",
+         "offset": {
+          "value": 2.6,
+          "tag": "design",
+          "note": "absolute z 3 to 3.9 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         },
+         "boards": 3
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "the way in is a broken ground-floor window (src_0003)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_BLUE",
+      "ink": "WALLPAPER_BLUE_DIAMOND",
+      "pattern": "diamonds",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "dining_f0",
+     "label": "Dining room",
+     "polygon": [
+      [
+       9.5,
+       0
+      ],
+      [
+       14,
+       0
+      ],
+      [
+       14,
+       5.5
+      ],
+      [
+       9.5,
+       5.5
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 0,
+       "to": 1,
+       "openings": [
+        {
+         "id": "dining_front_window",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 1.8,
+          "tag": "design",
+          "note": "absolute x 11.3 to 12.2 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      },
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "dining_east_window",
+         "type": "window",
+         "state": "boarded",
+         "offset": {
+          "value": 2.3,
+          "tag": "design",
+          "note": "absolute z 2.3 to 3.2 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         },
+         "boards": 3
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "dining_kitchen",
+         "type": "door",
+         "offset": {
+          "value": 3.1,
+          "tag": "design",
+          "note": "absolute x 9.5 to 10.9 in the house bible"
+         },
+         "width": {
+          "value": 1.4,
+          "tag": "assumed",
+          "rule": "double_swing_door"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "double swing door, left open"
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_YELLOW",
+      "ink": "WALLPAPER_YELLOW_STRIPE",
+      "pattern": "pinstripes",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "hall_ground",
+     "label": "Cluttered hallway",
+     "polygon": [
+      [
+       4.5,
+       3
+      ],
+      [
+       7,
+       3
+      ],
+      [
+       7,
+       6
+      ],
+      [
+       4.5,
+       6
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "hall_closet",
+         "type": "door",
+         "offset": {
+          "value": 1,
+          "tag": "design",
+          "note": "absolute z 4 to 4.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "laser tripwire across it at 0.3 m [X]"
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [],
+       "open": true,
+       "note": "the hallway opens straight into the stair hall (no wall)"
+      }
+     ],
+     "documented": [
+      "a cluttered hallway near the stairs (src_0003)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD_DARK",
+      "wall": "WALLPAPER_PINK",
+      "ink": "WALLPAPER_PINK_DOT",
+      "pattern": "dots",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "closet_f0",
+     "label": "Hall closet (electrical panel)",
+     "polygon": [
+      [
+       7,
+       3
+      ],
+      [
+       9.5,
+       3
+      ],
+      [
+       9.5,
+       5.5
+      ],
+      [
+       7,
+       5.5
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD_DARK",
+      "wall": "WAINSCOT",
+      "ceiling": "CEILING"
+     },
+     "note": "fills the x[7,9.5] z[3,5.5] gap in the bible tiling; the bible mentions this closet off the hallway [X]"
+    },
+    {
+     "id": "stair_hall_f0",
+     "label": "Stair hall",
+     "polygon": [
+      [
+       4.5,
+       6
+      ],
+      [
+       7,
+       6
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       4.5,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [],
+     "documented": [
+      "stairs near the cluttered hallway (src_0003)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_PINK",
+      "ink": "WALLPAPER_PINK_DOT",
+      "pattern": "dots",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "kitchen_f0",
+     "label": "Kitchen",
+     "polygon": [
+      [
+       7,
+       5.5
+      ],
+      [
+       14,
+       5.5
+      ],
+      [
+       14,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "kitchen_side_door",
+         "type": "door",
+         "state": "locked",
+         "offset": {
+          "value": 1.5,
+          "tag": "design",
+          "note": "absolute z 7 to 7.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "side door, locked, camera above",
+         "leaf": "NH_PLANKS"
+        },
+        {
+         "id": "kitchen_east_window",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 3.8,
+          "tag": "design",
+          "note": "absolute z 9.3 to 10.2 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "kitchen_service_door",
+         "type": "door",
+         "state": "locked",
+         "offset": {
+          "value": 2.05,
+          "tag": "design",
+          "note": "absolute x 11 to 11.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "mudroom service door, locked",
+         "leaf": "NH_DOOR_FRONT"
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "kitchen_stairhall",
+         "type": "door",
+         "offset": {
+          "value": 2.05,
+          "tag": "design",
+          "note": "absolute z 8 to 8.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "checker",
+      "wall": "RETRO_MINT",
+      "wainscot": {
+       "value": 1.2,
+       "tag": "assumed",
+       "rule": "tile height"
+      },
+      "upper": "CEILING",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "back_hall_f0",
+     "label": "Back hall",
+     "polygon": [
+      [
+       2,
+       6.5
+      ],
+      [
+       4.5,
+       6.5
+      ],
+      [
+       4.5,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "basement_door",
+         "type": "door",
+         "state": "sealed",
+         "offset": {
+          "value": 1.55,
+          "tag": "design",
+          "note": "absolute z 8.5 to 9.45 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "documented",
+          "source": "src_0005"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "documented",
+          "source": "src_0005"
+         },
+         "source": "src_0005",
+         "note": "heavy steel door, three boards on six bolts, keycard panel on the north jamb at 1.25 m",
+         "boards": {
+          "heights": [
+           {
+            "value": 0.55,
+            "tag": "design"
+           },
+           {
+            "value": 1.3,
+            "tag": "design"
+           },
+           {
+            "value": 2.05,
+            "tag": "design"
+           }
+          ],
+          "length": {
+           "value": 1.15,
+           "tag": "design"
+          },
+          "section": {
+           "value": 0.14,
+           "tag": "standard",
+           "note": "140 x 38 mm board"
+          },
+          "thickness": {
+           "value": 0.038,
+           "tag": "standard"
+          },
+          "bolts": 6,
+          "boltHead": {
+           "value": 0.024,
+           "tag": "standard",
+           "note": "hex head 24 mm"
+          },
+          "washer": {
+           "value": 0.04,
+           "tag": "standard"
+          }
+         },
+         "lock": {
+          "kind": "keycard",
+          "height": {
+           "value": 1.25,
+           "tag": "design"
+          },
+          "panelW": {
+           "value": 0.12,
+           "tag": "design"
+          },
+          "panelH": {
+           "value": 0.18,
+           "tag": "design"
+          }
+         },
+         "leaf": "BASEMENT_WALL"
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "basement sealed with boards and bolts and a keycard lock (src_0005)"
+     ],
+     "surfaces": {
+      "floor": "#B9B3A3",
+      "wall": "#9DBF7B",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "basement_landing_f0",
+     "label": "Basement landing",
+     "polygon": [
+      [
+       0,
+       6.5
+      ],
+      [
+       2,
+       6.5
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "landing_west_window",
+         "type": "window",
+         "state": "boarded",
+         "offset": {
+          "value": 0.7,
+          "tag": "design",
+          "note": "absolute z 9.4 to 10.3 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         },
+         "note": "the bible puts a boarded west window in the back hall, which has no west exterior wall; it sits on the landing instead",
+         "boards": 3
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "BASEMENT_FLOOR",
+      "wall": "BASEMENT_WALL",
+      "ceiling": "CEILING"
+     }
+    }
+   ],
+   "holes": [
+    {
+     "x0": 0.15,
+     "x1": 1.25,
+     "z0": 6.95,
+     "z1": 10.15,
+     "tag": "design",
+     "note": "basement stair opening: covers the flight where the slab would cut headroom below 2.0 m"
+    }
+   ]
+  },
+  {
+   "id": "F1",
+   "label": "First floor",
+   "elevation": {
+    "value": 3.7,
+    "tag": "assumed",
+    "rule": "floor_to_floor"
+   },
+   "ceiling": {
+    "value": 3.4,
+    "tag": "assumed",
+    "rule": "ceiling_default"
+   },
+   "slab": {
+    "value": 0.3,
+    "tag": "assumed",
+    "rule": "slab"
+   },
+   "rooms": [
+    {
+     "id": "hall_f1",
+     "label": "First floor hall",
+     "polygon": [
+      [
+       4.5,
+       0
+      ],
+      [
+       7,
+       0
+      ],
+      [
+       7,
+       6.2
+      ],
+      [
+       4.5,
+       6.2
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "dutch_gate",
+         "type": "gate",
+         "state": "barrier",
+         "offset": {
+          "value": 1.5,
+          "tag": "design",
+          "note": "absolute z 1.5 to 3.5 in the house bible"
+         },
+         "width": {
+          "value": 2,
+          "tag": "design",
+          "note": "gate opening"
+         },
+         "height": {
+          "value": 3.4,
+          "tag": "design",
+          "note": "gate opening: full height. The bible has 2.6 m, which leaves 1.0 m over the barrier; a 1.2 m player whose feet clear 1.6 m has their head at 2.8 m or more, so the hop could never pass. The bible hop check ignored head clearance"
+         },
+         "source": "src_0003",
+         "note": "Dutch-style gate: pickets fill the lower 1.6 m, the upper 1.0 m is open; latch on the far side, out of reach",
+         "barrier": {
+          "height": {
+           "value": 1.6,
+           "tag": "design",
+           "note": "lower 1.60 m filled with pickets"
+          },
+          "rail": {
+           "value": 0.04,
+           "tag": "design"
+          },
+          "pickets": {
+           "value": 0.1,
+           "tag": "design",
+           "note": "picket spacing"
+          }
+         }
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [],
+       "open": true,
+       "note": "the hall runs straight on into the stairwell (no wall)"
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "hall_bedroom",
+         "type": "door",
+         "offset": {
+          "value": 4.25,
+          "tag": "design",
+          "note": "absolute z 1 to 1.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "a second-floor section is gated off; the way past is a railing, then a lamp (src_0003)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_PINK",
+      "ink": "WALLPAPER_PINK_DOT",
+      "pattern": "dots",
+      "runner": "CARPET_GREEN",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "stairwell_f1",
+     "label": "Stairwell",
+     "polygon": [
+      [
+       4.5,
+       6.2
+      ],
+      [
+       7,
+       6.2
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       4.5,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "stairwell_birthday",
+         "type": "door",
+         "offset": {
+          "value": 1.8,
+          "tag": "design",
+          "note": "absolute z 8 to 8.95 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "stairwell_study",
+         "type": "door",
+         "offset": {
+          "value": 0.55,
+          "tag": "design",
+          "note": "absolute z 9.5 to 10.45 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "the bible opens the study and bath off the stairwell; the stair opening blocks z 5.37 to 8.55 of that wall, so the study door sits past it and the bath is reached through the study"
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_PINK",
+      "ink": "WALLPAPER_PINK_DOT",
+      "pattern": "dots",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "bedroom_a",
+     "label": "Bedroom",
+     "polygon": [
+      [
+       0,
+       0
+      ],
+      [
+       4.5,
+       0
+      ],
+      [
+       4.5,
+       5.5
+      ],
+      [
+       0,
+       5.5
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "bedroom_window",
+         "type": "window",
+         "state": "boarded",
+         "offset": {
+          "value": 2.3,
+          "tag": "design",
+          "note": "absolute z 2.3 to 3.2 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         },
+         "boards": 3
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_BLUE",
+      "ink": "WALLPAPER_BLUE_DIAMOND",
+      "pattern": "diamonds",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "bath_f1",
+     "label": "Bathroom",
+     "polygon": [
+      [
+       0,
+       5.5
+      ],
+      [
+       4.5,
+       5.5
+      ],
+      [
+       4.5,
+       8
+      ],
+      [
+       0,
+       8
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_TILE_A",
+      "wall": "WALLPAPER_YELLOW",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "study_f1",
+     "label": "Study",
+     "polygon": [
+      [
+       0,
+       8
+      ],
+      [
+       4.5,
+       8
+      ],
+      [
+       4.5,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 0,
+       "to": 1,
+       "openings": [
+        {
+         "id": "study_bath",
+         "type": "door",
+         "offset": {
+          "value": 2.5,
+          "tag": "design",
+          "note": "absolute x 2.5 to 3.45 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         }
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "study_window",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 1.1,
+          "tag": "design",
+          "note": "absolute z 9 to 9.9 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALL_PAINT_PURPLE",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "gallery_f1",
+     "label": "Gallery (the gated section)",
+     "polygon": [
+      [
+       7,
+       0
+      ],
+      [
+       14,
+       0
+      ],
+      [
+       14,
+       6
+      ],
+      [
+       7,
+       6
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 0,
+       "to": 1,
+       "openings": [
+        {
+         "id": "gallery_front_window_0",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 1.5,
+          "tag": "design",
+          "note": "absolute x 8.5 to 9.4 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        },
+        {
+         "id": "gallery_front_window_1",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 4.5,
+          "tag": "design",
+          "note": "absolute x 11.5 to 12.4 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      },
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "gallery_east_window_0",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 0.8,
+          "tag": "design",
+          "note": "absolute z 0.8 to 1.7000000000000002 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        },
+        {
+         "id": "gallery_east_window_1",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 2.55,
+          "tag": "design",
+          "note": "absolute z 2.55 to 3.4499999999999997 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        },
+        {
+         "id": "gallery_east_window_2",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 4.3,
+          "tag": "design",
+          "note": "absolute z 4.3 to 5.2 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "second-floor gated section (src_0003)",
+      "ladder to the penultimate floor (src_0004)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_GREEN",
+      "ink": "WALLPAPER_GREEN_STRIPE",
+      "pattern": "stripes",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "birthday_room",
+     "label": "Birthday room",
+     "polygon": [
+      [
+       7,
+       6
+      ],
+      [
+       14,
+       6
+      ],
+      [
+       14,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "birthday_east_window",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 2,
+          "tag": "design",
+          "note": "absolute z 8 to 8.9 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "birthday_back_window",
+         "type": "window",
+         "state": "intact",
+         "offset": {
+          "value": 3.1,
+          "tag": "design",
+          "note": "absolute x 10 to 10.9 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "a birthday room that needs several mannequins (src_0006)"
+     ],
+     "surfaces": {
+      "floor": "FLOOR_WOOD",
+      "wall": "WALLPAPER_PINK",
+      "ink": "WALLPAPER_PINK_DOT",
+      "pattern": "dots",
+      "ceiling": "CEILING"
+     }
+    }
+   ],
+   "holes": [
+    {
+     "x0": 4.59,
+     "x1": 5.69,
+     "z0": 5.37,
+     "z1": 8.55,
+     "tag": "design",
+     "note": "main stair opening: the bible has x[4.5,5.6] z[6.2,10.9]; follows the moved flight and stops where headroom no longer needs it, so the study door has floor"
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "label": "Upper box",
+   "elevation": {
+    "value": 7.4,
+    "tag": "assumed",
+    "rule": "floor_to_floor"
+   },
+   "ceiling": {
+    "value": 3,
+    "tag": "assumed",
+    "rule": "ceiling_f2_box"
+   },
+   "slab": {
+    "value": 0.3,
+    "tag": "assumed",
+    "rule": "slab"
+   },
+   "rooms": [
+    {
+     "id": "ladder_room_f2",
+     "label": "Ladder room",
+     "polygon": [
+      [
+       3.5,
+       3
+      ],
+      [
+       10.5,
+       3
+      ],
+      [
+       10.5,
+       5.5
+      ],
+      [
+       3.5,
+       5.5
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 1,
+       "to": 2,
+       "openings": [
+        {
+         "id": "track_hole_east",
+         "type": "hole",
+         "offset": {
+          "value": 0.8,
+          "tag": "design",
+          "note": "absolute z 3.8 to 5 in the house bible"
+         },
+         "width": {
+          "value": 1.2,
+          "tag": "design",
+          "note": "track hole"
+         },
+         "height": {
+          "value": 1,
+          "tag": "design",
+          "note": "track hole"
+         },
+         "sill": {
+          "value": 0.3,
+          "tag": "design",
+          "note": "track sits 0.3 m above the box floor"
+         },
+         "note": "the train track exits here"
+        }
+       ]
+      },
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "crawl_hole",
+         "type": "hole",
+         "offset": {
+          "value": 4.3,
+          "tag": "design",
+          "note": "absolute x 5 to 6.2 in the house bible"
+         },
+         "width": {
+          "value": 1.2,
+          "tag": "design",
+          "note": "crawl hole"
+         },
+         "height": {
+          "value": 1,
+          "tag": "design",
+          "note": "crawl hole"
+         },
+         "sill": {
+          "value": 0,
+          "tag": "design",
+          "note": "crawl hole at floor level: the bible has a 0.30 m sill, but a crouching player cannot step a sill only 0.18 m deep, so the hole starts at the floor"
+         },
+         "source": "src_0004",
+         "note": "the documented hole into the control room, big enough to crawl through"
+        }
+       ]
+      },
+      {
+       "from": 3,
+       "to": 0,
+       "openings": [
+        {
+         "id": "track_hole_west",
+         "type": "hole",
+         "offset": {
+          "value": 0.5,
+          "tag": "design",
+          "note": "absolute z 3.8 to 5 in the house bible"
+         },
+         "width": {
+          "value": 1.2,
+          "tag": "design",
+          "note": "track hole"
+         },
+         "height": {
+          "value": 1,
+          "tag": "design",
+          "note": "track hole"
+         },
+         "sill": {
+          "value": 0.3,
+          "tag": "design",
+          "note": "track sits 0.3 m above the box floor"
+         },
+         "note": "the train track enters here"
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "ladder up to the penultimate floor (src_0004)",
+      "a train track and a hole that leads into another room (src_0004)"
+     ],
+     "surfaces": {
+      "floor": "BASEMENT_FLOOR",
+      "wall": "RETRO_MINT",
+      "ceiling": "CEILING"
+     }
+    },
+    {
+     "id": "control_room_f2",
+     "label": "Control room",
+     "polygon": [
+      [
+       3.5,
+       5.5
+      ],
+      [
+       10.5,
+       5.5
+      ],
+      [
+       10.5,
+       8
+      ],
+      [
+       3.5,
+       8
+      ]
+     ],
+     "polygonTag": "assumed",
+     "walls": [
+      {
+       "from": 2,
+       "to": 3,
+       "openings": [
+        {
+         "id": "control_terrace_door",
+         "type": "door",
+         "offset": {
+          "value": 3.05,
+          "tag": "design",
+          "note": "absolute x 6.5 to 7.45 in the house bible"
+         },
+         "width": {
+          "value": 0.95,
+          "tag": "assumed",
+          "rule": "door_width"
+         },
+         "height": {
+          "value": 2.6,
+          "tag": "assumed",
+          "rule": "door_height"
+         },
+         "note": "exterior door out to the back terrace (the bible says \"south\"; the back terrace is the z = 11 side)"
+        },
+        {
+         "id": "control_window",
+         "type": "window",
+         "state": "cracked",
+         "offset": {
+          "value": 0.8,
+          "tag": "design",
+          "note": "absolute x 8.8 to 9.7 in the house bible"
+         },
+         "width": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_width"
+         },
+         "height": {
+          "value": 1.5,
+          "tag": "assumed",
+          "rule": "window_height"
+         },
+         "sill": {
+          "value": 0.9,
+          "tag": "assumed",
+          "rule": "window_sill"
+         }
+        }
+       ]
+      }
+     ],
+     "documented": [
+      "a button and a lever start the train (src_0004)"
+     ],
+     "surfaces": {
+      "floor": "BASEMENT_FLOOR",
+      "wall": "RETRO_MINT",
+      "ceiling": "CEILING"
+     }
+    }
+   ],
+   "holes": [
+    {
+     "x0": 8.05,
+     "x1": 8.75,
+     "z0": 4.65,
+     "z1": 5.35,
+     "tag": "design",
+     "note": "ladder hatch, 0.7 x 0.7 m"
+    }
+   ]
+  }
+ ],
+ "stairs": [
+  {
+   "id": "stair_main",
+   "label": "Main stair",
+   "type": "straight",
+   "from": "F0",
+   "to": "F1",
+   "direction": "-z",
+   "foot": {
+    "x": 5.14,
+    "y": 0,
+    "z": 10.05,
+    "tag": "design",
+    "note": "bible: along the west wall, bottom step z 10.9, top z 6.22. The bible puts the first riser against the back wall, leaving nowhere to stand in front of it; moved 0.8 m forward to give a bottom landing (top now z 5.37, in the hall), and onto the west wall face (x 4.59)"
+   },
+   "width": {
+    "value": 1.1,
+    "tag": "assumed",
+    "rule": "stair_width"
+   },
+   "riser": {
+    "value": 0.2,
+    "tag": "assumed",
+    "rule": "stair_riser"
+   },
+   "tread": {
+    "value": 0.26,
+    "tag": "assumed",
+    "rule": "stair_tread"
+   },
+   "banister": {
+    "side": "east",
+    "height": {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "handrail"
+    },
+    "gap": {
+     "value": 0.1,
+     "tag": "assumed",
+     "rule": "baluster_gap"
+    },
+    "startAlong": {
+     "value": 0.3,
+     "tag": "design",
+     "note": "banister from the second tread up"
+    }
+   },
+   "documented": [
+    "stairs to the second floor (src_0003)"
+   ]
+  },
+  {
+   "id": "stair_basement",
+   "label": "Basement stair",
+   "type": "straight",
+   "from": "B1",
+   "to": "F0",
+   "direction": "+z",
+   "foot": {
+    "x": 0.7,
+    "y": -3.5,
+    "z": 5.73,
+    "tag": "design",
+    "note": "bible: descends toward +z with 0.08 m to spare, but the landing is 4.26 m clear inside its walls; flipped to descend toward -z, running under the living room floor"
+   },
+   "width": {
+    "value": 1.1,
+    "tag": "assumed",
+    "rule": "stair_width"
+   },
+   "riser": {
+    "value": 0.2,
+    "tag": "assumed",
+    "rule": "stair_riser"
+   },
+   "tread": {
+    "value": 0.26,
+    "tag": "assumed",
+    "rule": "stair_tread"
+   },
+   "banister": {
+    "side": "east",
+    "height": {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "handrail"
+    },
+    "gap": {
+     "value": 0.1,
+     "tag": "assumed",
+     "rule": "baluster_gap"
+    },
+    "startAlong": {
+     "value": 0.3,
+     "tag": "design"
+    },
+    "note": "open side faces the landing strip"
+   }
+  }
+ ],
+ "roof": {
+  "terrace": {
+   "floor": "F1",
+   "deck": {
+    "value": 7.4,
+    "tag": "assumed",
+    "rule": "floor_to_floor"
+   },
+   "color": "#3B3B44",
+   "seams": {
+    "value": 1,
+    "tag": "design",
+    "note": "felt seams"
+   }
+  },
+  "parapet": {
+   "height": {
+    "value": 0.55,
+    "tag": "design",
+    "note": "parapet"
+   },
+   "thickness": {
+    "value": 0.25,
+    "tag": "design",
+    "note": "parapet"
+   },
+   "coping": "NH_ROOF"
+  },
+  "box": {
+   "floor": "F2",
+   "pitch": {
+    "value": 12,
+    "tag": "assumed",
+    "rule": "roof_pitch_low"
+   },
+   "ridge": "x",
+   "color": "NH_ROOF_ALT",
+   "eaves": {
+    "value": 0.15,
+    "tag": "assumed",
+    "rule": "box eaves, small"
+   }
+  },
+  "perch": {
+   "at": {
+    "x": 10,
+    "y": 0,
+    "z": 5.5,
+    "tag": "design",
+    "note": "flat 1.0 m perch at the east end of the box roof, where the ladder lands"
+   },
+   "size": [
+    {
+     "value": 1,
+     "tag": "design"
+    },
+    {
+     "value": 1.2,
+     "tag": "design"
+    },
+    {
+     "value": 0.1,
+     "tag": "design"
+    }
+   ]
+  },
+  "boxLadder": {
+   "at": {
+    "x": 10.72,
+    "y": 7.4,
+    "z": 5.4,
+    "tag": "design",
+    "note": "bible: x 10.5 + 0.05 on the east wall, z[5.0,5.8]"
+   },
+   "width": {
+    "value": 0.8,
+    "tag": "design"
+   },
+   "rungSpacing": {
+    "value": 0.28,
+    "tag": "standard",
+    "note": "ladder rung spacing"
+   },
+   "cage": true,
+   "facing": "-x"
+  },
+  "chimney": {
+   "at": {
+    "x": 13.4,
+    "y": 7.4,
+    "z": 7.45,
+    "tag": "design",
+    "note": "east edge of the terrace"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "design"
+    },
+    {
+     "value": 0.9,
+     "tag": "design"
+    },
+    {
+     "value": 1.5,
+     "tag": "design",
+     "note": "above the deck"
+    }
+   ]
+  },
+  "porch": {
+   "width": {
+    "value": 5,
+    "tag": "assumed",
+    "rule": "porch"
+   },
+   "depth": {
+    "value": 1.6,
+    "tag": "assumed",
+    "rule": "porch"
+   },
+   "columns": {
+    "value": 0.28,
+    "tag": "assumed",
+    "rule": "porch column"
+   },
+   "steps": {
+    "count": 3,
+    "rise": {
+     "value": 0.18,
+     "tag": "standard",
+     "note": "step rise"
+    },
+    "tread": {
+     "value": 0.3,
+     "tag": "standard",
+     "note": "step tread"
+    },
+    "width": {
+     "value": 3,
+     "tag": "assumed"
+    }
+   },
+   "eaves": {
+    "value": 0.45,
+    "tag": "assumed",
+    "rule": "eaves"
+   }
+  },
+  "foundation": {
+   "height": {
+    "value": 0.45,
+    "tag": "assumed",
+    "rule": "foundation plinth"
+   },
+   "color": "NH_FOUNDATION",
+   "vents": 3
+  },
+  "yard": {
+   "depth": {
+    "value": 8,
+    "tag": "assumed",
+    "rule": "back yard"
+   },
+   "fence": {
+    "value": 1.2,
+    "tag": "assumed",
+    "rule": "fence height"
+   }
+  }
+ },
+ "windmill": {
+  "at": {
+   "x": 7,
+   "y": 0,
+   "z": 5.5,
+   "tag": "documented-weak",
+   "note": "on the roof (src_0007, weak source); stands on the ridge of the box roof"
+  },
+  "tower": {
+   "height": {
+    "value": 3,
+    "tag": "assumed",
+    "rule": "windmill_tower"
+   },
+   "base": {
+    "value": 1.2,
+    "tag": "design"
+   },
+   "top": {
+    "value": 0.8,
+    "tag": "design"
+   },
+   "sides": 8
+  },
+  "blades": {
+   "count": 4,
+   "length": {
+    "value": 1.8,
+    "tag": "assumed",
+    "rule": "windmill_blade"
+   },
+   "width": {
+    "value": 0.35,
+    "tag": "assumed",
+    "rule": "windmill_blade"
+   },
+   "twist": {
+    "value": 8,
+    "tag": "design"
+   },
+   "rps": {
+    "value": 0.3,
+    "tag": "assumed",
+    "rule": "windmill_speed"
+   },
+   "rpsClimbing": {
+    "value": 0.1,
+    "tag": "design"
+   }
+  },
+  "hub": {
+   "value": 0.3,
+   "tag": "design"
+  },
+  "platform": {
+   "value": 0.8,
+   "tag": "design",
+   "note": "top platform"
+  },
+  "rungSpacing": {
+   "value": 0.28,
+   "tag": "standard",
+   "note": "ladder rung spacing"
+  },
+  "source": "src_0007"
+ },
+ "features": [
+  {
+   "id": "coat_stand",
+   "kind": "coat_stand",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 4.95,
+    "y": 0,
+    "z": 0.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "design"
+    },
+    {
+     "value": 0.5,
+     "tag": "design"
+    },
+    {
+     "value": 1.9,
+     "tag": "design"
+    }
+   ],
+   "rot": {
+    "value": 5,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "foyer_console",
+   "kind": "table",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 8.6,
+    "y": 0,
+    "z": 2.7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.1,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_table"
+    }
+   ],
+   "items": [
+    "bowl",
+    "keys"
+   ],
+   "noise": "jingle"
+  },
+  {
+   "id": "foyer_picture",
+   "kind": "picture",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 8.6,
+    "y": 1.5,
+    "z": 2.9,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_picture"
+    },
+    {
+     "value": 0.04,
+     "tag": "assumed",
+     "rule": "prop_picture"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_picture"
+    }
+   ]
+  },
+  {
+   "id": "foyer_box",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 7.85,
+    "y": 0,
+    "z": 0.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true,
+   "label": "scribble"
+  },
+  {
+   "id": "foyer_runner",
+   "kind": "runner",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 6.975,
+    "y": 0.005,
+    "z": 1.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.1,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    },
+    {
+     "value": 3,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    }
+   ],
+   "color": "CARPET_RED"
+  },
+  {
+   "id": "foyer_bulb",
+   "kind": "lamp_pendant",
+   "floor": "F0",
+   "room": "foyer_f0",
+   "at": {
+    "x": 7,
+    "y": 3,
+    "z": 1.5,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFC97A",
+    "intensity": 0.8,
+    "range": 6,
+    "flicker": true,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "living_sofa",
+   "kind": "sofa",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 0.6,
+    "y": 0,
+    "z": 3.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_sofa"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_sofa"
+    },
+    {
+     "value": 0.85,
+     "tag": "assumed",
+     "rule": "prop_sofa"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   },
+   "color": "RETRO_ORANGE"
+  },
+  {
+   "id": "living_armchair",
+   "kind": "armchair",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2.6,
+    "y": 0,
+    "z": 1.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.85,
+     "tag": "assumed",
+     "rule": "prop_armchair"
+    },
+    {
+     "value": 0.85,
+     "tag": "assumed",
+     "rule": "prop_armchair"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_armchair"
+    }
+   ],
+   "rot": {
+    "value": 35,
+    "tag": "design"
+   },
+   "color": "SOFA_GREEN"
+  },
+  {
+   "id": "living_coffee_table",
+   "kind": "table",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2,
+    "y": 0,
+    "z": 3.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.1,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.42,
+     "tag": "assumed",
+     "rule": "prop_table"
+    }
+   ],
+   "items": [
+    "mug",
+    "newspaper"
+   ]
+  },
+  {
+   "id": "living_bookcase",
+   "kind": "bookcase",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2.2,
+    "y": 0,
+    "z": 6.24,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1,
+     "tag": "assumed",
+     "rule": "prop_bookcase"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bookcase"
+    },
+    {
+     "value": 2.3,
+     "tag": "assumed",
+     "rule": "prop_bookcase"
+    }
+   ],
+   "lean": {
+    "value": 4,
+    "tag": "design"
+   },
+   "books": 25
+  },
+  {
+   "id": "living_tv",
+   "kind": "tv",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 3.9,
+    "y": 0,
+    "z": 4.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_tv"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_tv"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_tv"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   },
+   "stand": {
+    "value": 0.45,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "living_box_0",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 1.8,
+    "y": 0,
+    "z": 0.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true,
+   "note": "step 1 of the window route (0.35 m) [X]"
+  },
+  {
+   "id": "living_box_1",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2.35,
+    "y": 0,
+    "z": 0.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "living_box_2",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 1.2,
+    "y": 0,
+    "z": 0.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "living_box_3",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2.1,
+    "y": 0.35,
+    "z": 0.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "living_glass",
+   "kind": "glass_shards",
+   "floor": "F0",
+   "room": "living_f0",
+   "at": {
+    "x": 2.05,
+    "y": 0,
+    "z": 0.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    },
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    }
+   ],
+   "count": 14,
+   "physicsShards": 6
+  },
+  {
+   "id": "outside_crate",
+   "kind": "crate",
+   "floor": "F0",
+   "room": null,
+   "at": {
+    "x": 2.05,
+    "y": 0,
+    "z": -0.62,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "standard"
+    },
+    {
+     "value": 0.4,
+     "tag": "standard"
+    },
+    {
+     "value": 0.4,
+     "tag": "standard"
+    }
+   ],
+   "physics": false,
+   "note": "a crate under the broken window outside: the step up from the yard (0.4 m, then a 0.5 m hop to the 0.9 m sill) [X]"
+  },
+  {
+   "id": "porch_glass",
+   "kind": "glass_shards",
+   "floor": "F0",
+   "room": null,
+   "at": {
+    "x": 2.05,
+    "y": 0,
+    "z": -0.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_glass_shards"
+    }
+   ],
+   "count": 10,
+   "physicsShards": 0,
+   "exterior": true
+  },
+  {
+   "id": "dining_table",
+   "kind": "table",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11.75,
+    "y": 0,
+    "z": 2.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2.2,
+     "tag": "standard"
+    },
+    {
+     "value": 1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.78,
+     "tag": "standard"
+    }
+   ],
+   "items": [
+    "plates"
+   ]
+  },
+  {
+   "id": "dining_chair_0",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11,
+    "y": 0,
+    "z": 1.85,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "dining_chair_1",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11.75,
+    "y": 0,
+    "z": 1.85,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "physics": true,
+   "knocked": true
+  },
+  {
+   "id": "dining_chair_2",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 12.5,
+    "y": 0,
+    "z": 1.85,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "dining_chair_3",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11,
+    "y": 0,
+    "z": 3.35,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "dining_chair_4",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11.75,
+    "y": 0,
+    "z": 3.35,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": true
+  },
+  {
+   "id": "dining_chair_5",
+   "kind": "chair",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 12.5,
+    "y": 0,
+    "z": 3.35,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "dining_chandelier",
+   "kind": "chandelier",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 11.75,
+    "y": 2.4,
+    "z": 2.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_chandelier"
+    },
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_chandelier"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_chandelier"
+    }
+   ],
+   "tilt": {
+    "value": 12,
+    "tag": "design",
+    "note": "snapped chain"
+   }
+  },
+  {
+   "id": "dining_china_cabinet",
+   "kind": "cabinet",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 10.3,
+    "y": 0,
+    "z": 5.18,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 0.45,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 1.9,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "dining_sideboard",
+   "kind": "sideboard",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 13.6,
+    "y": 0,
+    "z": 1.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_sideboard"
+    },
+    {
+     "value": 0.45,
+     "tag": "assumed",
+     "rule": "prop_sideboard"
+    },
+    {
+     "value": 0.85,
+     "tag": "assumed",
+     "rule": "prop_sideboard"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "dining_lamp",
+   "kind": "lamp_table",
+   "floor": "F0",
+   "room": "dining_f0",
+   "at": {
+    "x": 13.6,
+    "y": 0.85,
+    "z": 1,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "standard"
+    },
+    {
+     "value": 0.3,
+     "tag": "standard"
+    },
+    {
+     "value": 0.55,
+     "tag": "standard"
+    }
+   ],
+   "light": {
+    "color": "#FFD9A0",
+    "intensity": 0.4,
+    "range": 4,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "clutter_00",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.6,
+    "y": 0,
+    "z": 3.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_01",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.6,
+    "y": 0.35,
+    "z": 3.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_02",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.6,
+    "y": 0,
+    "z": 5.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_03",
+   "kind": "carpet_roll",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.78,
+    "y": 0,
+    "z": 4.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_carpet_roll"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_carpet_roll"
+    },
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_carpet_roll"
+    }
+   ],
+   "physics": true,
+   "lean": {
+    "value": 12,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "clutter_04",
+   "kind": "bicycle",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.1,
+    "y": 0,
+    "z": 4.9,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.4,
+     "tag": "assumed",
+     "rule": "prop_bicycle"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_bicycle"
+    },
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_bicycle"
+    }
+   ],
+   "rot": {
+    "value": 70,
+    "tag": "design"
+   },
+   "physics": true
+  },
+  {
+   "id": "clutter_05",
+   "kind": "crate",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.5,
+    "y": 0,
+    "z": 4.3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "standard"
+    },
+    {
+     "value": 0.4,
+     "tag": "standard"
+    },
+    {
+     "value": 0.4,
+     "tag": "standard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_06",
+   "kind": "bucket",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5,
+    "y": 0,
+    "z": 3.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_07",
+   "kind": "newspapers",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.9,
+    "y": 0,
+    "z": 3.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "clutter_08",
+   "kind": "frames",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.68,
+    "y": 0,
+    "z": 3.9,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_frames"
+    },
+    {
+     "value": 0.1,
+     "tag": "assumed",
+     "rule": "prop_frames"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_frames"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   },
+   "physics": true
+  },
+  {
+   "id": "clutter_09",
+   "kind": "stepladder",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.85,
+    "y": 0,
+    "z": 5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_stepladder"
+    },
+    {
+     "value": 0.15,
+     "tag": "assumed",
+     "rule": "prop_stepladder"
+    },
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_stepladder"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   },
+   "physics": true
+  },
+  {
+   "id": "clutter_10",
+   "kind": "bucket",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.182,
+    "y": 0,
+    "z": 3.407,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_bucket"
+    }
+   ],
+   "rot": {
+    "value": 76,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_12",
+   "kind": "crate",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.681,
+    "y": 0,
+    "z": 4.086,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    }
+   ],
+   "rot": {
+    "value": 38,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_13",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.315,
+    "y": 0,
+    "z": 5.135,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 46,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_14",
+   "kind": "paint_can",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.057,
+    "y": 0,
+    "z": 3.381,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.19,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    }
+   ],
+   "rot": {
+    "value": 81,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_15",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.699,
+    "y": 0,
+    "z": 4.454,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 63,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_16",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.988,
+    "y": 0,
+    "z": 4.742,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 74,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_17",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.115,
+    "y": 0,
+    "z": 4.165,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 54,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_18",
+   "kind": "newspapers",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.213,
+    "y": 0,
+    "z": 4.349,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.2,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    }
+   ],
+   "rot": {
+    "value": 49,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_19",
+   "kind": "paint_can",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.634,
+    "y": 0,
+    "z": 5.025,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.19,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    }
+   ],
+   "rot": {
+    "value": 72,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_20",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.293,
+    "y": 0,
+    "z": 4.167,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 12,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_21",
+   "kind": "paint_can",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.858,
+    "y": 0,
+    "z": 3.984,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.19,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    }
+   ],
+   "rot": {
+    "value": 18,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_22",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.06,
+    "y": 0,
+    "z": 3.884,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 67,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_23",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.925,
+    "y": 0,
+    "z": 4.959,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 79,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_24",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.178,
+    "y": 0,
+    "z": 4.192,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 41,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_26",
+   "kind": "crate",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.071,
+    "y": 0,
+    "z": 3.336,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    }
+   ],
+   "rot": {
+    "value": 28,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_27",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.031,
+    "y": 0,
+    "z": 4.191,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 65,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_28",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.049,
+    "y": 0,
+    "z": 5.027,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 44,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_29",
+   "kind": "cardboard_small",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.3,
+    "y": 0,
+    "z": 3.665,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_cardboard_small"
+    }
+   ],
+   "rot": {
+    "value": 4,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_30",
+   "kind": "cardboard",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.949,
+    "y": 0,
+    "z": 3.685,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_cardboard"
+    }
+   ],
+   "rot": {
+    "value": 12,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_31",
+   "kind": "crate",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 4.931,
+    "y": 0,
+    "z": 3.334,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    }
+   ],
+   "rot": {
+    "value": 11,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_32",
+   "kind": "crate",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.308,
+    "y": 0,
+    "z": 4.347,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_crate"
+    }
+   ],
+   "rot": {
+    "value": 66,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_33",
+   "kind": "paint_can",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 6.102,
+    "y": 0,
+    "z": 4.417,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.16,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    },
+    {
+     "value": 0.19,
+     "tag": "assumed",
+     "rule": "prop_paint_can"
+    }
+   ],
+   "rot": {
+    "value": 12,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "clutter_34",
+   "kind": "newspapers",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.014,
+    "y": 0,
+    "z": 3.802,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    },
+    {
+     "value": 0.2,
+     "tag": "assumed",
+     "rule": "prop_newspapers"
+    }
+   ],
+   "rot": {
+    "value": 79,
+    "tag": "design"
+   },
+   "physics": true,
+   "seeded": true
+  },
+  {
+   "id": "hall_bulb",
+   "kind": "lamp_pendant",
+   "floor": "F0",
+   "room": "hall_ground",
+   "at": {
+    "x": 5.75,
+    "y": 3,
+    "z": 5.6,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFC97A",
+    "intensity": 0.5,
+    "range": 5,
+    "flicker": true,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "electrical_panel",
+   "kind": "panel",
+   "floor": "F0",
+   "room": "closet_f0",
+   "at": {
+    "x": 9.38,
+    "y": 1.3,
+    "z": 4.3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.05,
+     "tag": "design"
+    },
+    {
+     "value": 0.5,
+     "tag": "design"
+    },
+    {
+     "value": 0.7,
+     "tag": "design"
+    }
+   ]
+  },
+  {
+   "id": "umbrella_stand",
+   "kind": "umbrella_stand",
+   "floor": "F0",
+   "room": "stair_hall_f0",
+   "at": {
+    "x": 6.75,
+    "y": 0,
+    "z": 10.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_umbrella_stand"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_umbrella_stand"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_umbrella_stand"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "stairhall_side_table",
+   "kind": "table",
+   "floor": "F0",
+   "room": "stair_hall_f0",
+   "at": {
+    "x": 6.7,
+    "y": 0,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_table"
+    }
+   ]
+  },
+  {
+   "id": "stairhall_lamp",
+   "kind": "lamp_table",
+   "floor": "F0",
+   "room": "stair_hall_f0",
+   "at": {
+    "x": 6.7,
+    "y": 0.7,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "standard"
+    },
+    {
+     "value": 0.3,
+     "tag": "standard"
+    },
+    {
+     "value": 0.55,
+     "tag": "standard"
+    }
+   ],
+   "note": "a normal lamp, not the climbable one",
+   "light": {
+    "color": "#FFD9A0",
+    "intensity": 0.4,
+    "range": 4,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "kitchen_fridge",
+   "kind": "fridge",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 7.6,
+    "y": 0,
+    "z": 10.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_fridge"
+    },
+    {
+     "value": 0.75,
+     "tag": "assumed",
+     "rule": "prop_fridge"
+    },
+    {
+     "value": 1.8,
+     "tag": "assumed",
+     "rule": "prop_fridge"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "color": "RETRO_MINT",
+   "ajar": true
+  },
+  {
+   "id": "kitchen_stove",
+   "kind": "stove",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 9,
+    "y": 0,
+    "z": 10.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.75,
+     "tag": "assumed",
+     "rule": "prop_stove"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_stove"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_stove"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "items": [
+    "kettle"
+   ]
+  },
+  {
+   "id": "kitchen_counter_n",
+   "kind": "counter",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 11.6,
+    "y": 0,
+    "z": 10.55,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 3.6,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "sink": true
+  },
+  {
+   "id": "kitchen_counter_e",
+   "kind": "counter",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 13.55,
+    "y": 0,
+    "z": 6.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.8,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_counter"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "kitchen_island",
+   "kind": "table",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 10.6,
+    "y": 0,
+    "z": 8.3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_table"
+    }
+   ],
+   "items": [
+    "laundry"
+   ]
+  },
+  {
+   "id": "kitchen_stool_0",
+   "kind": "stool",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 10,
+    "y": 0,
+    "z": 7.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "kitchen_stool_1",
+   "kind": "stool",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 10.4,
+    "y": 0,
+    "z": 7.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "kitchen_stool_2",
+   "kind": "stool",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 10.8,
+    "y": 0,
+    "z": 7.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "kitchen_stool_3",
+   "kind": "stool",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 11.2,
+    "y": 0,
+    "z": 7.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_stool"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "kitchen_pantry",
+   "kind": "cabinet",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 13.55,
+    "y": 0,
+    "z": 9.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 2.1,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "kitchen_corkboard",
+   "kind": "corkboard",
+   "floor": "F0",
+   "room": "kitchen_f0",
+   "at": {
+    "x": 12,
+    "y": 1.5,
+    "z": 5.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_corkboard"
+    },
+    {
+     "value": 0.03,
+     "tag": "assumed",
+     "rule": "prop_corkboard"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_corkboard"
+    }
+   ]
+  },
+  {
+   "id": "backhall_drain",
+   "kind": "drain",
+   "floor": "F0",
+   "room": "back_hall_f0",
+   "at": {
+    "x": 3.25,
+    "y": 0.002,
+    "z": 8.75,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_drain"
+    },
+    {
+     "value": 0.25,
+     "tag": "assumed",
+     "rule": "prop_drain"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_drain"
+    }
+   ]
+  },
+  {
+   "id": "landing_bulb",
+   "kind": "lamp_pendant",
+   "floor": "F0",
+   "room": "basement_landing_f0",
+   "at": {
+    "x": 1,
+    "y": 3,
+    "z": 8,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFF0D0",
+    "intensity": 0.5,
+    "range": 5,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "b1_workbench",
+   "kind": "workbench",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 5.5,
+    "y": 0,
+    "z": 10.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2.4,
+     "tag": "assumed",
+     "rule": "prop_workbench"
+    },
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_workbench"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_workbench"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "items": [
+    "tools"
+   ]
+  },
+  {
+   "id": "b1_boiler",
+   "kind": "boiler",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 8.2,
+    "y": 0,
+    "z": 4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_boiler"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_boiler"
+    },
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_boiler"
+    }
+   ]
+  },
+  {
+   "id": "b1_shelves",
+   "kind": "shelf",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 3,
+    "y": 0,
+    "z": 3.35,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.8,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    },
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    }
+   ],
+   "items": [
+    "jars"
+   ]
+  },
+  {
+   "id": "b1_chalk",
+   "kind": "chalk_outline",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 5,
+    "y": 0.002,
+    "z": 6.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_chalk_outline"
+    },
+    {
+     "value": 1.9,
+     "tag": "assumed",
+     "rule": "prop_chalk_outline"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_chalk_outline"
+    }
+   ]
+  },
+  {
+   "id": "b1_pipe",
+   "kind": "pipe",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 4.5,
+    "y": 2.95,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 8.5,
+     "tag": "assumed",
+     "rule": "prop_pipe"
+    },
+    {
+     "value": 0.12,
+     "tag": "assumed",
+     "rule": "prop_pipe"
+    },
+    {
+     "value": 0.12,
+     "tag": "assumed",
+     "rule": "prop_pipe"
+    }
+   ]
+  },
+  {
+   "id": "b1_tally",
+   "kind": "tally_wall",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 8.83,
+    "y": 1.4,
+    "z": 7.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.02,
+     "tag": "assumed",
+     "rule": "prop_tally_wall"
+    },
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_tally_wall"
+    },
+    {
+     "value": 0.8,
+     "tag": "assumed",
+     "rule": "prop_tally_wall"
+    }
+   ]
+  },
+  {
+   "id": "b1_tube_0",
+   "kind": "tube_light",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 2.5,
+    "y": 3.1,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    }
+   ],
+   "light": {
+    "color": "#A6F0D0",
+    "intensity": 0.7,
+    "range": 7,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "b1_tube_1",
+   "kind": "tube_light",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 5.5,
+    "y": 3.1,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    }
+   ],
+   "light": {
+    "color": "#A6F0D0",
+    "intensity": 0.7,
+    "range": 7,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "b1_tube_2",
+   "kind": "tube_light",
+   "floor": "B1",
+   "room": "basement_b1",
+   "at": {
+    "x": 8.5,
+    "y": 3.1,
+    "z": 7,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    },
+    {
+     "value": 0.08,
+     "tag": "assumed",
+     "rule": "prop_tube_light"
+    }
+   ],
+   "light": {
+    "color": "#A6F0D0",
+    "intensity": 0.7,
+    "range": 7,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "gate_rail",
+   "kind": "climbable_rail",
+   "floor": "F1",
+   "room": "hall_f1",
+   "at": {
+    "x": 6.66,
+    "y": 0,
+    "z": 4.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "design",
+     "note": "cap wider than the 0.44 m capsule"
+    },
+    {
+     "value": 2,
+     "tag": "design"
+    },
+    {
+     "value": 0.55,
+     "tag": "design",
+     "note": "rail top"
+    }
+   ],
+   "documented": "jump onto a railing (src_0003)",
+   "note": "bible: x[6.5,7.0]; slid west to the wall face (x 6.91) so it does not stand inside the wall"
+  },
+  {
+   "id": "gate_lamp",
+   "kind": "lamp_climbable",
+   "floor": "F1",
+   "room": "hall_f1",
+   "at": {
+    "x": 6.25,
+    "y": 0,
+    "z": 2.65,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.52,
+     "tag": "design",
+     "note": "shade cap"
+    },
+    {
+     "value": 0.52,
+     "tag": "design"
+    },
+    {
+     "value": 1.2,
+     "tag": "design",
+     "note": "cap height"
+    }
+   ],
+   "documented": "then onto a lamp (src_0003)",
+   "anchored": true,
+   "note": "heavy steel-reinforced drum shade, anchored, never tips"
+  },
+  {
+   "id": "hall1_bulb",
+   "kind": "lamp_pendant",
+   "floor": "F1",
+   "room": "hall_f1",
+   "at": {
+    "x": 5.75,
+    "y": 3,
+    "z": 3,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFC97A",
+    "intensity": 0.6,
+    "range": 6,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "hall1_runner",
+   "kind": "runner",
+   "floor": "F1",
+   "room": "hall_f1",
+   "at": {
+    "x": 5.5,
+    "y": 0.005,
+    "z": 3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    },
+    {
+     "value": 5.6,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_runner"
+    }
+   ],
+   "color": "CARPET_GREEN"
+  },
+  {
+   "id": "bedroom_bed",
+   "kind": "bed",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 1.3,
+    "y": 0,
+    "z": 1.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2,
+     "tag": "standard"
+    },
+    {
+     "value": 1.4,
+     "tag": "standard"
+    },
+    {
+     "value": 0.55,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "bedroom_nightstand",
+   "kind": "nightstand",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 0.4,
+    "y": 0,
+    "z": 2.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_nightstand"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_nightstand"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_nightstand"
+    }
+   ],
+   "items": [
+    "alarm_clock"
+   ]
+  },
+  {
+   "id": "bedroom_wardrobe",
+   "kind": "wardrobe",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 3.6,
+    "y": 0,
+    "z": 5.08,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "standard"
+    },
+    {
+     "value": 0.6,
+     "tag": "standard"
+    },
+    {
+     "value": 2.2,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "bedroom_dresser",
+   "kind": "dresser",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 1.8,
+    "y": 0,
+    "z": 5.15,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.2,
+     "tag": "assumed",
+     "rule": "prop_dresser"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_dresser"
+    },
+    {
+     "value": 1,
+     "tag": "assumed",
+     "rule": "prop_dresser"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "mirror": true
+  },
+  {
+   "id": "bedroom_chair",
+   "kind": "chair",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 3.4,
+    "y": 0,
+    "z": 0.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.95,
+     "tag": "standard"
+    }
+   ],
+   "physics": true
+  },
+  {
+   "id": "bedroom_rug",
+   "kind": "rug",
+   "floor": "F1",
+   "room": "bedroom_a",
+   "at": {
+    "x": 2.4,
+    "y": 0.005,
+    "z": 2.6,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    },
+    {
+     "value": 1.4,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    }
+   ],
+   "color": "CARPET_RED"
+  },
+  {
+   "id": "study_desk",
+   "kind": "desk",
+   "floor": "F1",
+   "room": "study_f1",
+   "at": {
+    "x": 1,
+    "y": 0,
+    "z": 9.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    },
+    {
+     "value": 1.4,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    },
+    {
+     "value": 0.75,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    }
+   ],
+   "items": [
+    "typewriter",
+    "monitor"
+   ]
+  },
+  {
+   "id": "study_filing",
+   "kind": "cabinet",
+   "floor": "F1",
+   "room": "study_f1",
+   "at": {
+    "x": 2.4,
+    "y": 0,
+    "z": 10.62,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    },
+    {
+     "value": 1.3,
+     "tag": "assumed",
+     "rule": "prop_cabinet"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "study_closet",
+   "kind": "closet",
+   "floor": "F1",
+   "room": "study_f1",
+   "at": {
+    "x": 3.8,
+    "y": 0,
+    "z": 10.55,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.1,
+     "tag": "assumed",
+     "rule": "prop_closet"
+    },
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_closet"
+    },
+    {
+     "value": 2.1,
+     "tag": "assumed",
+     "rule": "prop_closet"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "note": "the study closet, holds a mannequin in a plastic bag [X]"
+  },
+  {
+   "id": "study_map",
+   "kind": "map",
+   "floor": "F1",
+   "room": "study_f1",
+   "at": {
+    "x": 0.12,
+    "y": 1.5,
+    "z": 9.45,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.02,
+     "tag": "assumed",
+     "rule": "prop_map"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_map"
+    },
+    {
+     "value": 0.6,
+     "tag": "assumed",
+     "rule": "prop_map"
+    }
+   ]
+  },
+  {
+   "id": "bath_tub",
+   "kind": "tub",
+   "floor": "F1",
+   "room": "bath_f1",
+   "at": {
+    "x": 0.95,
+    "y": 0,
+    "z": 6.75,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.7,
+     "tag": "assumed",
+     "rule": "prop_tub"
+    },
+    {
+     "value": 0.75,
+     "tag": "assumed",
+     "rule": "prop_tub"
+    },
+    {
+     "value": 0.65,
+     "tag": "assumed",
+     "rule": "prop_tub"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "bath_toilet",
+   "kind": "toilet",
+   "floor": "F1",
+   "room": "bath_f1",
+   "at": {
+    "x": 3.6,
+    "y": 0,
+    "z": 5.9,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.4,
+     "tag": "standard"
+    },
+    {
+     "value": 0.65,
+     "tag": "standard"
+    },
+    {
+     "value": 0.75,
+     "tag": "standard"
+    }
+   ]
+  },
+  {
+   "id": "bath_sink",
+   "kind": "sink",
+   "floor": "F1",
+   "room": "bath_f1",
+   "at": {
+    "x": 2.6,
+    "y": 0,
+    "z": 5.85,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.55,
+     "tag": "standard"
+    },
+    {
+     "value": 0.45,
+     "tag": "standard"
+    },
+    {
+     "value": 0.85,
+     "tag": "standard"
+    }
+   ]
+  },
+  {
+   "id": "stairwell_plant",
+   "kind": "plant",
+   "floor": "F1",
+   "room": "stairwell_f1",
+   "at": {
+    "x": 6.6,
+    "y": 0,
+    "z": 10.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_plant"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_plant"
+    },
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_plant"
+    }
+   ]
+  },
+  {
+   "id": "stairwell_balustrade",
+   "kind": "railing",
+   "floor": "F1",
+   "room": "stairwell_f1",
+   "at": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "tag": "design"
+   },
+   "path": [
+    {
+     "x": 5.7,
+     "y": 0,
+     "z": 5.37,
+     "tag": "design"
+    },
+    {
+     "x": 5.7,
+     "y": 0,
+     "z": 8.55,
+     "tag": "design"
+    },
+    {
+     "x": 4.59,
+     "y": 0,
+     "z": 8.55,
+     "tag": "design"
+    }
+   ],
+   "height": {
+    "value": 0.9,
+    "tag": "assumed",
+    "rule": "handrail"
+   },
+   "gap": {
+    "value": 0.1,
+    "tag": "assumed",
+    "rule": "baluster_gap"
+   },
+   "note": "open balustrade along the stair opening"
+  },
+  {
+   "id": "landing_balustrade",
+   "kind": "railing",
+   "floor": "F0",
+   "room": "basement_landing_f0",
+   "at": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "tag": "design"
+   },
+   "path": [
+    {
+     "x": 0.15,
+     "y": 0,
+     "z": 6.95,
+     "tag": "design"
+    },
+    {
+     "x": 1.26,
+     "y": 0,
+     "z": 6.95,
+     "tag": "design"
+    },
+    {
+     "x": 1.26,
+     "y": 0,
+     "z": 10.15,
+     "tag": "design"
+    }
+   ],
+   "height": {
+    "value": 0.9,
+    "tag": "assumed",
+    "rule": "handrail"
+   },
+   "gap": {
+    "value": 0.1,
+    "tag": "assumed",
+    "rule": "baluster_gap"
+   }
+  },
+  {
+   "id": "gallery_table",
+   "kind": "table",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 11,
+    "y": 0,
+    "z": 3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2.4,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.9,
+     "tag": "assumed",
+     "rule": "prop_table"
+    },
+    {
+     "value": 0.78,
+     "tag": "assumed",
+     "rule": "prop_table"
+    }
+   ]
+  },
+  {
+   "id": "gallery_sofa",
+   "kind": "sofa",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 13.4,
+    "y": 0,
+    "z": 2.55,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2,
+     "tag": "standard"
+    },
+    {
+     "value": 0.9,
+     "tag": "standard"
+    },
+    {
+     "value": 0.85,
+     "tag": "standard"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   },
+   "color": "SOFA_GREEN"
+  },
+  {
+   "id": "gallery_rug",
+   "kind": "rug",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 11,
+    "y": 0.005,
+    "z": 3,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 3.4,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    },
+    {
+     "value": 2.2,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    },
+    {
+     "value": 0.01,
+     "tag": "assumed",
+     "rule": "prop_rug"
+    }
+   ],
+   "color": "CARPET_GREEN"
+  },
+  {
+   "id": "gallery_toy_shelf",
+   "kind": "shelf",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 9.6,
+    "y": 0,
+    "z": 5.75,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    },
+    {
+     "value": 0.4,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    },
+    {
+     "value": 1.6,
+     "tag": "assumed",
+     "rule": "prop_shelf"
+    }
+   ],
+   "rot": {
+    "value": 180,
+    "tag": "design"
+   },
+   "items": [
+    "toys"
+   ]
+  },
+  {
+   "id": "gallery_sheet_0",
+   "kind": "dust_sheet",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 12.6,
+    "y": 0,
+    "z": 0.55,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    },
+    {
+     "value": 0.45,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    },
+    {
+     "value": 1.75,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    }
+   ]
+  },
+  {
+   "id": "gallery_sheet_1",
+   "kind": "dust_sheet",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 13.2,
+    "y": 0,
+    "z": 0.55,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    },
+    {
+     "value": 0.45,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    },
+    {
+     "value": 1.75,
+     "tag": "assumed",
+     "rule": "prop_dust_sheet"
+    }
+   ]
+  },
+  {
+   "id": "gallery_ladder",
+   "kind": "ladder",
+   "floor": "F1",
+   "room": "gallery_f1",
+   "at": {
+    "x": 8.4,
+    "y": 0,
+    "z": 4.68,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.9,
+     "tag": "design",
+     "note": "frame"
+    },
+    {
+     "value": 0.9,
+     "tag": "design"
+    },
+    {
+     "value": 3.7,
+     "tag": "design",
+     "note": "gallery floor to the F2 floor"
+    }
+   ],
+   "documented": "a ladder to the penultimate floor (src_0004)",
+   "rungSpacing": {
+    "value": 0.28,
+    "tag": "standard",
+    "note": "ladder rung spacing"
+   },
+   "railGap": {
+    "value": 0.45,
+    "tag": "standard"
+   },
+   "rungDia": {
+    "value": 0.025,
+    "tag": "standard"
+   },
+   "facing": "-z",
+   "to": "F2",
+   "note": "rungs on the south edge of the hatch, the climber faces -z and steps off forward; the bible frame x[8.0,8.8] z[4.6,5.4] is kept as the hatch area"
+  },
+  {
+   "id": "party_table",
+   "kind": "table",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 0,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 3,
+     "tag": "standard"
+    },
+    {
+     "value": 1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.78,
+     "tag": "standard"
+    }
+   ],
+   "items": [
+    "cake",
+    "hats"
+   ]
+  },
+  {
+   "id": "party_chair_0",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 12.4,
+    "y": 0,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "party_chair_1",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 11.45,
+    "y": 0,
+    "z": 9.366,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": 30,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "party_chair_2",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 9.55,
+    "y": 0,
+    "z": 9.366,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": -30,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": true
+  },
+  {
+   "id": "party_chair_3",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 8.6,
+    "y": 0,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": -90,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "party_chair_4",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 9.55,
+    "y": 0,
+    "z": 7.634,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": -150,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "party_chair_5",
+   "kind": "chair_child",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 11.45,
+    "y": 0,
+    "z": 7.634,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    },
+    {
+     "value": 0.55,
+     "tag": "assumed",
+     "rule": "prop_chair_child"
+    }
+   ],
+   "rot": {
+    "value": -210,
+    "tag": "design"
+   },
+   "physics": true,
+   "knocked": false
+  },
+  {
+   "id": "party_cake",
+   "kind": "cake",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 0.78,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.25,
+     "tag": "standard",
+     "note": "birthday cake"
+    },
+    {
+     "value": 0.25,
+     "tag": "standard"
+    },
+    {
+     "value": 0.15,
+     "tag": "standard"
+    }
+   ]
+  },
+  {
+   "id": "party_banner",
+   "kind": "banner",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 2.4,
+    "z": 6.12,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 3,
+     "tag": "assumed",
+     "rule": "prop_banner"
+    },
+    {
+     "value": 0.02,
+     "tag": "assumed",
+     "rule": "prop_banner"
+    },
+    {
+     "value": 0.5,
+     "tag": "assumed",
+     "rule": "prop_banner"
+    }
+   ]
+  },
+  {
+   "id": "party_balloons",
+   "kind": "balloons",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 2.2,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.25,
+     "tag": "standard",
+     "note": "balloon"
+    }
+   ],
+   "count": 14
+  },
+  {
+   "id": "party_disco",
+   "kind": "disco_ball",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 2.9,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_disco_ball"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_disco_ball"
+    },
+    {
+     "value": 0.35,
+     "tag": "assumed",
+     "rule": "prop_disco_ball"
+    }
+   ]
+  },
+  {
+   "id": "party_lights",
+   "kind": "string_lights",
+   "floor": "F1",
+   "room": "birthday_room",
+   "at": {
+    "x": 10.5,
+    "y": 3.2,
+    "z": 8.5,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFD6A0",
+    "intensity": 0.6,
+    "range": 7,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "hatch_guard",
+   "kind": "guard_rail",
+   "floor": "F2",
+   "room": "ladder_room_f2",
+   "at": {
+    "x": 8.4,
+    "y": 0,
+    "z": 4.9,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.1,
+     "tag": "design"
+    },
+    {
+     "value": 0.95,
+     "tag": "design"
+    },
+    {
+     "value": 0.9,
+     "tag": "design"
+    }
+   ],
+   "openSide": "-z",
+   "note": "steel guard rail around the hatch"
+  },
+  {
+   "id": "f2_bulb",
+   "kind": "lamp_pendant",
+   "floor": "F2",
+   "room": "ladder_room_f2",
+   "at": {
+    "x": 6.5,
+    "y": 2.6,
+    "z": 4.2,
+    "tag": "design"
+   },
+   "light": {
+    "color": "#FFF0D0",
+    "intensity": 0.6,
+    "range": 6,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "control_switches",
+   "kind": "switch_bank",
+   "floor": "F2",
+   "room": "control_room_f2",
+   "at": {
+    "x": 3.7,
+    "y": 0,
+    "z": 6.75,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "assumed",
+     "rule": "prop_switch_bank"
+    },
+    {
+     "value": 2,
+     "tag": "assumed",
+     "rule": "prop_switch_bank"
+    },
+    {
+     "value": 1.4,
+     "tag": "assumed",
+     "rule": "prop_switch_bank"
+    }
+   ],
+   "rot": {
+    "value": 90,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "control_desk",
+   "kind": "desk",
+   "floor": "F2",
+   "room": "control_room_f2",
+   "at": {
+    "x": 9.4,
+    "y": 0,
+    "z": 6.15,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 1.4,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    },
+    {
+     "value": 0.7,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    },
+    {
+     "value": 0.75,
+     "tag": "assumed",
+     "rule": "prop_desk"
+    }
+   ],
+   "drawer": true,
+   "note": "the keycard is in the drawer [X]"
+  },
+  {
+   "id": "train_button",
+   "kind": "button_post",
+   "floor": "F2",
+   "room": "control_room_f2",
+   "at": {
+    "x": 6,
+    "y": 0,
+    "z": 7.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.25,
+     "tag": "design"
+    },
+    {
+     "value": 0.25,
+     "tag": "design"
+    },
+    {
+     "value": 1,
+     "tag": "design",
+     "note": "post height"
+    }
+   ],
+   "documented": "a button and a lever start the train (src_0004)"
+  },
+  {
+   "id": "train_lever",
+   "kind": "lever_box",
+   "floor": "F2",
+   "room": "control_room_f2",
+   "at": {
+    "x": 8.5,
+    "y": 0,
+    "z": 7.4,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.3,
+     "tag": "design"
+    },
+    {
+     "value": 0.3,
+     "tag": "design"
+    },
+    {
+     "value": 0.9,
+     "tag": "design"
+    }
+   ],
+   "throwDeg": {
+    "value": 60,
+    "tag": "design",
+    "note": "lever throw"
+   }
+  },
+  {
+   "id": "train_fault",
+   "kind": "fault_light",
+   "floor": "F2",
+   "room": "control_room_f2",
+   "at": {
+    "x": 8.5,
+    "y": 1.7,
+    "z": 7.86,
+    "tag": "design"
+   },
+   "size": [
+    {
+     "value": 0.12,
+     "tag": "assumed",
+     "rule": "prop_fault_light"
+    },
+    {
+     "value": 0.05,
+     "tag": "assumed",
+     "rule": "prop_fault_light"
+    },
+    {
+     "value": 0.12,
+     "tag": "assumed",
+     "rule": "prop_fault_light"
+    }
+   ],
+   "light": {
+    "color": "#FF3030",
+    "intensity": 0.5,
+    "range": 3,
+    "blink": true,
+    "tag": "design"
+   }
+  }
+ ],
+ "sources": "sources.json"
+}

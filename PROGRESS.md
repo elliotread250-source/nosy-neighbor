@@ -30,10 +30,10 @@ How to attach: paste or drag images into this chat, or commit them to `reference
 | 0 | Reference request | Done (no material yet; continuing all-assumed) |
 | 1 | Scale foundation | Done: tagged spec, walls, slabs, stairs, audit, ruler, gauge, grid, freecam, F10, F3, test room. Shots in screenshots/act3/m1-*.png |
 | 2 | Measure tool | Done: tools/measure.html (straight-on, four-corner homography, loupe, SHA-256 provenance, export), src/act3/Measure.js, measurements.json, npm run ingest / audit, conflict, rescale and migration tests. Tool check on our own render: test door 2.575 ± 0.060 m (true 2.6). No game screenshots yet, so nothing measured. |
-| 3 | Ground floor | pending |
-| 4 | Second floor and gated section | pending |
-| 5 | Upper floors, ladder, train, roof | pending |
-| 6 | Security and puzzle items | pending |
+| 3 | Ground floor | Done: all F0 rooms plus closet, broken window route, 35 seeded clutter props, main stair, basement stair, sealed basement door (3 boards, 6 bolts, keycard panel), basement |
+| 4 | Second floor and gated section | Done: F1 rooms, rail, lamp and Dutch gate; test 6 jump math (margins 17, 7, 22 cm) and reachability |
+| 5 | Upper floors, ladder, train, roof | Done: gallery ladder and hatch, F2 box, crawl hole, track holes, terrace and parapet, train on kinematic bodies with platform carry, button then lever, box ladder, gable roof, windmill |
+| 6 | Security and puzzle items | Done: 12 cameras with sweeping cones, 4 laser beams, alarm events, crowbar, keycard, 5 mannequins, birthday pads, save with ?reset=1 |
 | 7 | Exterior shell and style mode | pending |
 | 8 | Audit, compare, floor plans, full tests | pending |
 | 9 | Deployment | pending |

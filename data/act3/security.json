@@ -1,0 +1,868 @@
+{
+ "schemaVersion": 1,
+ "note": "Reports mention new cameras and laser grids (src_0001). Every position here is design [X].",
+ "alarm": {
+  "beep": {
+   "value": 2,
+   "tag": "design",
+   "note": "tracking seconds before the alarm"
+  },
+  "loudCamera": {
+   "value": 90,
+   "tag": "design"
+  },
+  "loudLaser": {
+   "value": 100,
+   "tag": "design"
+  }
+ },
+ "cameras": [
+  {
+   "id": "cam_dining",
+   "kind": "camera",
+   "floor": "F0",
+   "at": {
+    "x": 13.7,
+    "y": 3.15,
+    "z": 5.2,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 100,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -35,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 13.85,
+    "y": 1.4,
+    "z": 4.4,
+    "tag": "design"
+   },
+   "note": "north-east ceiling corner, covers the kitchen doorway"
+  },
+  {
+   "id": "cam_kitchen",
+   "kind": "camera",
+   "floor": "F0",
+   "at": {
+    "x": 13.75,
+    "y": 2.95,
+    "z": 7.475,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 90,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -30,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 13.85,
+    "y": 1.4,
+    "z": 8.6,
+    "tag": "design"
+   },
+   "note": "above the east door"
+  },
+  {
+   "id": "cam_landing",
+   "kind": "camera",
+   "floor": "F0",
+   "at": {
+    "x": 0.25,
+    "y": 3.1,
+    "z": 10.7,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": -45,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -35,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 0.15,
+    "y": 1.4,
+    "z": 7.4,
+    "tag": "design"
+   },
+   "blind": {
+    "value": 3,
+    "tag": "design",
+    "note": "seconds, left side"
+   },
+   "note": "over the sealed door, covers the six bolts"
+  },
+  {
+   "id": "cam_hall_gate",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 4.7,
+    "y": 3.1,
+    "z": 2.5,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": -90,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -30,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 4.62,
+    "y": 1.4,
+    "z": 0.6,
+    "tag": "design"
+   },
+   "note": "above the gate on the hall side, sees the rail"
+  },
+  {
+   "id": "cam_gallery_0",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 9,
+    "y": 3.2,
+    "z": 5.8,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 0,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -45,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 60,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 7.12,
+    "y": 1.4,
+    "z": 5.4,
+    "tag": "design"
+   },
+   "note": "leaves a 1.5 m blind strip along the south wall"
+  },
+  {
+   "id": "cam_gallery_1",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 12.5,
+    "y": 3.2,
+    "z": 5.8,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 0,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -45,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 60,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 13.85,
+    "y": 1.4,
+    "z": 5.6,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "cam_control",
+   "kind": "camera",
+   "floor": "F2",
+   "at": {
+    "x": 10.25,
+    "y": 2.85,
+    "z": 7.75,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 45,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -35,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 10,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": {
+    "x": 10.35,
+    "y": 1.4,
+    "z": 6.2,
+    "tag": "design"
+   }
+  },
+  {
+   "id": "cam_terrace_0",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 0,
+    "y": 4.25,
+    "z": 0,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": -135,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -20,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 12,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": null,
+   "note": "terrace parapet corner"
+  },
+  {
+   "id": "cam_terrace_1",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 14,
+    "y": 4.25,
+    "z": 0,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 135,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -20,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 12,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": null
+  },
+  {
+   "id": "cam_terrace_2",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 14,
+    "y": 4.25,
+    "z": 11,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": 45,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -20,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 12,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": null
+  },
+  {
+   "id": "cam_terrace_3",
+   "kind": "camera",
+   "floor": "F1",
+   "at": {
+    "x": 0,
+    "y": 4.25,
+    "z": 11,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": -45,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -20,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 12,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": null
+  },
+  {
+   "id": "cam_east_door",
+   "kind": "camera",
+   "floor": "F0",
+   "at": {
+    "x": 14.4,
+    "y": 3,
+    "z": 7.475,
+    "tag": "design"
+   },
+   "yaw": {
+    "value": -90,
+    "tag": "design"
+   },
+   "pitch": {
+    "value": -35,
+    "tag": "design"
+   },
+   "fov": {
+    "value": 70,
+    "tag": "design",
+    "note": "camera field of view"
+   },
+   "range": {
+    "value": 8,
+    "tag": "design",
+    "note": "camera range"
+   },
+   "sweep": {
+    "value": 90,
+    "tag": "design",
+    "note": "sweep degrees"
+   },
+   "period": {
+    "value": 8,
+    "tag": "design",
+    "note": "seconds per sweep"
+   },
+   "body": [
+    {
+     "value": 0.2,
+     "tag": "standard",
+     "note": "camera body"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    },
+    {
+     "value": 0.1,
+     "tag": "standard"
+    }
+   ],
+   "arm": {
+    "value": 0.25,
+    "tag": "standard",
+    "note": "bracket arm"
+   },
+   "switchAt": null,
+   "note": "outside, above the kitchen side door"
+  }
+ ],
+ "lasers": [
+  {
+   "id": "laser_closet",
+   "floor": "F0",
+   "a": {
+    "x": 6.95,
+    "y": 0.3,
+    "z": 4,
+    "tag": "design"
+   },
+   "b": {
+    "x": 6.95,
+    "y": 0.3,
+    "z": 4.95,
+    "tag": "design"
+   },
+   "note": "tripwire across the closet door, 0.3 m up"
+  },
+  {
+   "id": "laser_hall_0",
+   "floor": "F1",
+   "a": {
+    "x": 4.6,
+    "y": 0.2,
+    "z": 5,
+    "tag": "design"
+   },
+   "b": {
+    "x": 6.4,
+    "y": 0.2,
+    "z": 5,
+    "tag": "design"
+   },
+   "note": "laser grid across the hall at z 5.0; the rail top carries you past it"
+  },
+  {
+   "id": "laser_hall_1",
+   "floor": "F1",
+   "a": {
+    "x": 4.6,
+    "y": 0.6,
+    "z": 5,
+    "tag": "design"
+   },
+   "b": {
+    "x": 6.4,
+    "y": 0.6,
+    "z": 5,
+    "tag": "design"
+   },
+   "note": "laser grid across the hall at z 5.0; the rail top carries you past it"
+  },
+  {
+   "id": "laser_hall_2",
+   "floor": "F1",
+   "a": {
+    "x": 4.6,
+    "y": 1,
+    "z": 5,
+    "tag": "design"
+   },
+   "b": {
+    "x": 6.4,
+    "y": 1,
+    "z": 5,
+    "tag": "design"
+   },
+   "note": "laser grid across the hall at z 5.0; the rail top carries you past it"
+  }
+ ],
+ "emitter": {
+  "value": 0.06,
+  "tag": "standard",
+  "note": "laser emitter cube"
+ },
+ "beam": {
+  "value": 0.01,
+  "tag": "standard",
+  "note": "beam thickness"
+ }
+}

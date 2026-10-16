@@ -7,7 +7,8 @@
 // dimensions. Anything else is a build error naming the exact JSON path.
 import { TAGS } from './assumptions.js';
 
-const STRUCTURAL = new Set(['schemaVersion', 'revision', 'from', 'to', 'index', 'count', 'laps', 'order']);
+// structural integers and counts: not dimensions, so they need no tag
+const STRUCTURAL = new Set(['schemaVersion', 'revision', 'from', 'to', 'index', 'count', 'laps', 'order', 'books', 'physicsShards', 'boards', 'bolts', 'sides', 'vents', 'mannequinCount']);
 
 export class SpecError extends Error {
   constructor(errors) {
