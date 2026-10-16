@@ -1,6 +1,6 @@
 # Act 3 House Study
 
-A scale-accurate, data-driven study of a fan-remembered three-story house, walked at child height in the browser. The house is generated from a tagged spec, so correcting one measurement moves everything attached to it. Every mesh, texture and sound is generated in code. The site root serves the study; the original Nosy Neighbor game is at `/classic.html`.
+A scale-accurate, data-driven study of a fan-remembered three-story house, walked at child height in the browser. The house is generated from a tagged spec, so correcting one measurement moves everything attached to it. Every mesh, texture and sound is generated in code. The site root serves the original Nosy Neighbor game; the study is at `/act3/`.
 
 Right now no reference screenshots have been ingested, so the house is 0 percent measured: a plausible stand-in built from proportion rules, not a reconstruction. The audit says so in red until real measurements arrive.
 
@@ -8,7 +8,7 @@ Right now no reference screenshots have been ingested, so the house is 0 percent
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173 (the study), /classic.html (the game)
+npm run dev        # http://localhost:5173 (the game), /act3/ (the study)
 npm test           # Vitest: tag checks, geometry, headroom, jump route, track, audit, property and round-trip tests
 npm run audit      # print the audit, write reports/audit-YYYYMMDD.json
 npm run ingest     # hash new images in reference/, apply data/act3/measurements.json, print the diff (--write to apply)
@@ -46,7 +46,7 @@ Drop screenshots into `reference/` (git-ignored, so nothing copyrighted is ever 
 
 This is a fan reconstruction of another studio's level layout. Everything here is generated from scratch in code, with no ripped models, textures, sounds or music, and the original game's name and characters are not used; the neighbor is Mr. Grimsby from the main project. A faithful copy of a commercial game's level layout is still a derivative work even when every asset is original: a private study is low risk, a public release is higher risk.
 
-## The classic game (/classic.html)
+## The classic game (site root)
 
 A browser-based, first-person stealth-horror-comedy about the man across the street and his locked basement. Every mesh, texture, sound and note of music is generated in code at load time: no downloaded assets. The full design spec lives in `NOSY_NEIGHBOR_PROMPT.md`.
 
@@ -54,7 +54,7 @@ A browser-based, first-person stealth-horror-comedy about the man across the str
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173/classic.html
+npm run dev        # http://localhost:5173/
 npm run build      # production build into dist/
 npm start          # serve dist/ on $PORT (default 3000)
 ```

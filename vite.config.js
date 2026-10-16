@@ -25,6 +25,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
+        act3: resolve(import.meta.dirname, 'act3/index.html'),
         classic: resolve(import.meta.dirname, 'classic.html'),
         measure: resolve(import.meta.dirname, 'tools/measure.html'),
         floorplan: resolve(import.meta.dirname, 'tools/floorplan.html'),

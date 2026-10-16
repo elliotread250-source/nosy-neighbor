@@ -1,7 +1,7 @@
 // Drive the player through the route with simulated keys and report where
 // they end up. Each leg: teleport (feet), face a yaw, hold keys, optional jumps.
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const only = process.argv[3];
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });

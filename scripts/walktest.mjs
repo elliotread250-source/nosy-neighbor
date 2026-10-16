@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 480, height: 270 } });
 page.on('pageerror', (e) => console.log('[pageerror]', e.message));
-await page.goto('http://localhost:5173/classic.html?debug=1&gfx=low&nopost');
+await page.goto('http://localhost:5173/?debug=1&gfx=low&nopost');
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 180000 });
 const st = () => page.evaluate(() => { const f = nn.player.curFeet; return `(${f.x.toFixed(2)}, ${f.y.toFixed(2)}, ${f.z.toFixed(2)}) ${nn.player.grounded ? 'G' : 'air'}${nn.player.onLadder ? ' LADDER' : ''}`; });
 const tp = (x, y, z, yaw) => page.evaluate(([x, y, z, yaw]) => { nn.input.locked = true; nn.player.spawn({ x, y, z, clone() { return { ...this }; } }, yaw); }, [x, y, z, yaw]);

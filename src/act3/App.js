@@ -332,7 +332,7 @@ export class App {
     this.statsEl.addEventListener('click', () => this.statsEl.classList.remove('show'));
     on('reset', 'click', () => this.interact?.reset());
     on('mode', 'click', () => { this.setMode(this.mode === 'survey' ? 'style' : 'survey'); this._menuLabels(); });
-    on('quit', 'click', () => { location.href = '/classic.html'; });
+    on('quit', 'click', () => { location.href = '/'; });
     on('vol', 'input', (e) => this.audio.setVolume(+e.target.value));
     on('sens', 'input', (e) => { CONFIG.player.mouseSensitivity = +e.target.value; });
     on('inv', 'change', (e) => { CONFIG.player.invertY = e.target.checked; });

@@ -7,7 +7,7 @@
 //   node scripts/act3mobile.mjs [base]
 import { chromium, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const out = 'screenshots/act3/mobile';
 mkdirSync(out, { recursive: true });
 const ONLY = process.env.ONLY;

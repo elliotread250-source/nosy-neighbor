@@ -36,6 +36,8 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://x');
     if (url.pathname === '/healthz') { res.writeHead(200, { 'content-type': 'text/plain' }); res.end('ok'); return; }
+    // the study lives in a folder: /act3 -> /act3/
+    if (url.pathname === '/act3') { res.writeHead(301, { location: `/act3/${url.search}` }); res.end(); return; }
     let rel = normalize(decodeURIComponent(url.pathname)).replace(/^(\.\.[/\\])+/, '');
     if (rel.endsWith('/')) rel += 'index.html';
     let path = join(ROOT, rel);

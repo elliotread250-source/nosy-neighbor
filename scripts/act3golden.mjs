@@ -5,7 +5,7 @@
 //   node scripts/act3golden.mjs [base] [--update]
 import { chromium } from 'playwright';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-const base = process.argv.find((a) => a.startsWith('http')) || 'http://localhost:5173/';
+const base = process.argv.find((a) => a.startsWith('http')) || 'http://localhost:5173/act3/';
 const update = process.argv.includes('--update');
 const dir = 'test/act3/golden';
 mkdirSync(dir, { recursive: true });

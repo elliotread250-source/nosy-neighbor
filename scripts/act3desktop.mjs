@@ -1,7 +1,7 @@
 // Desktop still works as before: keyboard walks, the mouse looks (pointer
 // lock), a gamepad moves, no touch controls are shown, the key hints are.
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 const errors = [];

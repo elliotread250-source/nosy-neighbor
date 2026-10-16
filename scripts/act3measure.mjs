@@ -2,7 +2,7 @@
 // beside the door, then measure the door in tools/measure.html using the
 // gauge (the player) as the ruler. The answer should come back near 2.6 m.
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const out = 'screenshots/act3';
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });

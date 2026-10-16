@@ -1,7 +1,7 @@
 // Act 3 House Study screenshots: boots the page, poses the camera, and shoots.
 // Usage: node scripts/act3shots.mjs [base] [house]
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const house = process.argv[3] || '';
 const out = process.argv[4] || 'screenshots/act3';
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });

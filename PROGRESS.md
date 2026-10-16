@@ -11,6 +11,7 @@ Spec: `ACT3_HOUSE_PROMPT.md`. Read this file, `data/act3/CHANGELOG.md` and the s
 
 - 2026-10-16: "Keep going through all the milestones without stopping to ask me." Milestone 0's reference request is recorded below and in the milestone report; the build continues all-assumed (spec section 30.1) until material arrives.
 - 2026-10-16: "Replace the nosy neighbour on the website with this one." The site root now serves the Act 3 House Study. The original game stays in the repo and is reachable at `/classic.html`.
+- 2026-10-16: "Make that the main one." The original Nosy Neighbor game is back at the site root. The study moved to `/act3/` (`/act3` redirects), and `/classic.html` now redirects to `/`.
 
 ## Milestone 0: reference material request
 

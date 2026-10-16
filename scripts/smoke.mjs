@@ -1,6 +1,6 @@
 // Loads the game with debug off and reports any page errors.
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/classic.html';
+const base = process.argv[2] || 'http://localhost:5173/';
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
 const errors = [];

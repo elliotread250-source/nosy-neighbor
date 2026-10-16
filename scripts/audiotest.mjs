@@ -5,7 +5,7 @@ const page = await browser.newPage({ viewport: { width: 320, height: 180 } });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
-await page.goto('http://localhost:5173/classic.html?debug=1&gfx=low&nopost&notitle');
+await page.goto('http://localhost:5173/?debug=1&gfx=low&nopost&notitle');
 await page.waitForFunction(() => window.__nnReady || window.__nnError, null, { timeout: 180000 });
 const res = await page.evaluate(async () => {
   const { Events } = await import('/src/core/Events.js');

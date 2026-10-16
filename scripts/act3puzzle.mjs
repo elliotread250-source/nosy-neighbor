@@ -1,7 +1,7 @@
 // End-to-end puzzle check: drives the interaction handlers in order and
 // checks flags, colliders and the save. Run with a dev server up.
 import { chromium } from 'playwright';
-const base = process.argv[2] || 'http://localhost:5173/';
+const base = process.argv[2] || 'http://localhost:5173/act3/';
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 800, height: 450 } });
 const errors = [];
