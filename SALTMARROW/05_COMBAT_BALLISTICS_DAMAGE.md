@@ -268,7 +268,7 @@ Feet: 0.5, counts as leg.
 
 ### 5.7.2 TTK check
 
-Verify the numbers produce the target TTK from part 01 (0.25 to 0.45 s for unarmored, mid-tier rifle, body shots under 50 m). Mako AR (5.56 M855-type, 50 damage, 750 RPM = 0.08 s between shots): thorax 85 HP, needs 2 thorax hits (100). 2 hits = 0.08 s if both land, realistically 3 to 5 shots fired for 2 hits given recoil, so 0.16 to 0.32 s. Mixed body hits (thorax, stomach, arms) over 440 total HP with spill... For a kill without head or thorax, you'd need a lot more. In practice most fights end with 2 to 4 thorax hits. That lands in the target band. Unit test this as a sim (part 37): 1,000 simulated engagements at 30 m with typical hit distributions per zone, with the median kill time reported for each weapon.
+Verify the numbers produce the target TTK from part 01 (0.25 to 0.45 s for an unarmored target, mid-tier rifle, body shots under 50 m). The Mako with M855 does 50 per thorax hit, so two thorax hits kill (85 HP), and at 750 RPM the shots are 0.08 s apart. Recoil means a player typically fires 3 to 5 rounds to land those 2 hits, which puts the kill at 0.16 to 0.32 s. Kills without a head or thorax hit take much longer (they need spill damage across 440 total HP), and most real fights end on 2 to 4 thorax hits, which lands in the target band. Part 43.3 has the simulation setup and the target table; unit test it there.
 
 ## 5.8 ARMOR
 
