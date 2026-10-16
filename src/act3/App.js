@@ -18,7 +18,11 @@ import { Train } from './Train.js';
 import { Security } from './Security.js';
 import { Interact } from './Interact.js';
 import { Act3Audio } from './Audio.js';
-import { SurveyLighting } from './Scene.js';
+import { SurveyLighting, StyleLighting } from './Scene.js';
+import { SkinsView } from './Skins.js';
+import { warpProp } from './StyleWarp.js';
+import { PostFX } from '../art/PostFX.js';
+import paletteData from '../../data/act3/palette.json';
 import { Tools } from './Tools.js';
 import { audit, auditText } from './Audit.js';
 import { applyMeasurements } from './Measure.js';
@@ -115,6 +119,7 @@ export class App {
       this.train = new Train(this.engine.scene, this.physics, trainData);
       this.roof = new RoofView(this.engine.scene, this.physics).build(this.spec, this.plan, trainData);
       this.security = new Security(this.engine.scene, securityData, this.plan, this.house.meshes);
+      this.skins = new SkinsView(this.engine.scene, this.physics).build(this.spec, this.plan, paletteData);
       for (const l of [...this.props.ladders, ...this.roof.ladders]) {
         const b = new Box3(l.min, l.max);
         b.userData = l;
@@ -174,10 +179,54 @@ export class App {
 
   setMode(m) {
     this.mode = m;
+    const style = m === 'style';
+    if (style && !this.styleLights) this.styleLights = new StyleLighting(this.engine.scene);
+    if (style && !this.postfx) this.postfx = new PostFX(this.engine.renderer, this.engine.scene, this.engine.camera);
+    this.styleLights?.setVisible(style);
+    this.lighting.setVisible(!style);
+    this.engine.setPostFX(style && this.graphics !== 'low' ? this.postfx : null);
     setLook(this.engine.scene, m);
-    this.styleHooks?.forEach((f) => f(m));
+    this._warp(style);
+    if (!style) for (const l of this.props?.lights ?? []) l.visible = false;
     this._badge();
-    this.hint(m === 'survey' ? 'Survey mode: exact geometry, flat light' : 'Style mode: toon look, warp capped at 4 percent');
+    this.hint(style ? 'Style mode: toon look, warp capped at 4 percent' : 'Survey mode: exact geometry, flat light');
+  }
+
+  // style warps on the props (lean, taper, bulge, capped at 4 percent);
+  // survey puts the exact positions back
+  _warp(on) {
+    const root = this.props?.root;
+    if (!root) return;
+    let seed = 1;
+    root.traverse((o) => {
+      if (!o.isMesh || o.isInstancedMesh) return;
+      const pos = o.geometry.attributes.position;
+      if (on) {
+        if (!o.userData.surveyPos) o.userData.surveyPos = pos.array.slice();
+        pos.array.set(warpProp(o.userData.surveyPos, (o.id * 2654435761 + seed++) >>> 0));
+      } else if (o.userData.surveyPos) pos.array.set(o.userData.surveyPos);
+      pos.needsUpdate = true;
+      o.geometry.computeBoundingSphere();
+    });
+  }
+
+  // style mode: the nearest 8 lamps on (spec 22), flicker and blink
+  lightsUpdate(dt) {
+    if (this.mode !== 'style' || !this.props) return;
+    this._lt = (this._lt ?? 0) + dt;
+    const cam = this.engine.camera.position;
+    if (this.frame % 15 === 0) {
+      const ls = [...this.props.lights].sort((a, b) => a.position.distanceToSquared(cam) - b.position.distanceToSquared(cam));
+      ls.forEach((l, i) => { l.visible = i < 8; });
+    }
+    for (const l of this.props.lights) {
+      if (!l.visible) continue;
+      l.userData.base ??= l.intensity;
+      if (l.userData.flicker) l.intensity = l.userData.base * (0.85 + 0.15 * Math.sin(this._lt * 23 + l.id) * Math.sin(this._lt * 7.1));
+      if (l.userData.blink) l.intensity = Math.sin(this._lt * 6) > 0 ? l.userData.base : 0;
+    }
+    const indoor = this.roomAt(this.player.curFeet) ? 1 : 0;
+    this.styleLights?.update(dt, this.engine.camera, indoor);
   }
 
   _stats() {
@@ -242,6 +291,7 @@ export class App {
     sun.shadow.mapSize.set(q === 'high' ? 2048 : 1024, q === 'high' ? 2048 : 1024);
     sun.shadow.map?.dispose();
     sun.shadow.map = null;
+    if (this.mode === 'style') this.engine.setPostFX(q === 'low' ? null : this.postfx);
     this.engine.renderer.setPixelRatio(Math.min(devicePixelRatio, q === 'low' ? 0.75 : q === 'high' ? 2 : 1));
     this.engine.resize?.();
   }
