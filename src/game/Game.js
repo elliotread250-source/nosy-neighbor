@@ -22,6 +22,9 @@ import { NeighborAnimator } from '../actors/NeighborAnimator.js';
 import { NeighborAI, S } from '../actors/NeighborAI.js';
 import { NavGraph } from '../nav/NavGraph.js';
 import { CatchSequence } from './CatchSequence.js';
+import { Interaction } from './Interaction.js';
+import { Devices } from './Devices.js';
+import { Impacts } from './Impacts.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
 import { HUD } from '../ui/HUD.js';
 import { DebugOverlay } from '../ui/DebugOverlay.js';
@@ -70,6 +73,12 @@ export class Game {
       this.ai = new NeighborAI(this);
       this.ai.teleport(new Vector3(6.4, NH.F0.y, -22.4), Math.PI);
       this.catchSeq = new CatchSequence(this);
+    }
+    if (!this.viewer) {
+      this.interaction = new Interaction(this);
+      this.interaction.addHideSpots(this.world.hideSpots || []);
+      this.devices = new Devices(this);
+      this.impacts = new Impacts(this);
     }
     this.timeScale = 1;
     this.state = 'play';
@@ -134,6 +143,7 @@ export class Game {
     this.catches++;
     const p = this.player;
     Events.emit('player:caught', { position: p.curFeet.clone(), count: this.catches });
+    this.interaction?.onCaught(p.curFeet.clone());
     p.spawn(PLAYER_HOUSE.bedSpawn, PLAYER_HOUSE.bedSpawnYaw);
     p.camera.quaternion.identity();
     p.pitch = 0;
@@ -157,6 +167,7 @@ export class Game {
       const d = realDt * this.timeScale;
       physics.step(d, (h) => { player.fixedUpdate(h); this.ai?.fixedUpdate(h); });
       player.update(d, physics.alpha);
+      this._tickSystems(d);
       if (this.ai) {
         if (!this.catchSeq.active) this.ai.syncModel(physics.alpha);
         this.ai.update(d);
@@ -165,6 +176,12 @@ export class Game {
       for (const u of this.updaters) u(d, performance.now() / 1000);
       this.input.endFrame();
     }
+  }
+
+  _tickSystems(dt) {
+    this.interaction?.update(dt);
+    this.devices?.update(dt);
+    this.impacts?.update(dt);
   }
 
   // ------------------------------------------------------------ frame
@@ -178,6 +195,7 @@ export class Game {
       this.ai?.fixedUpdate(h);
     });
     player.update(dt, physics.alpha);
+    this._tickSystems(dt);
     if (this.ai) {
       if (!this.catchSeq.active) this.ai.syncModel(physics.alpha);
       this.ai.update(dt);

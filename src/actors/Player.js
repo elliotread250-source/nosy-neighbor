@@ -170,6 +170,14 @@ export class Player {
       this.yaw -= lx * sens;
       this.pitch -= ly * sens * (P.invertY ? -1 : 1);
       this.pitch = MathUtils.clamp(this.pitch, -P.pitchLimit * DEG, P.pitchLimit * DEG);
+      if (this.hiding) {
+        // peeking: a limited cone around the way the spot faces
+        let d = this.yaw - this.hideYaw;
+        d = Math.atan2(Math.sin(d), Math.cos(d));
+        this.yaw = this.hideYaw + MathUtils.clamp(d, -0.75, 0.75);
+        const low = this.hideSpot?.kind === 'underBed' || this.hideSpot?.kind === 'underTable';
+        this.pitch = MathUtils.clamp(this.pitch, low ? -0.12 : -0.45, low ? 0.22 : 0.35);
+      }
 
       if (P.crouchToggle) {
         if (inp.pressed('crouch') && !this.noclip) this.crouchHeld = !this.crouchHeld;
@@ -179,6 +187,11 @@ export class Player {
 
     if (this.noclip) {
       this._updateNoclip(dt);
+    } else if (this.hiding) {
+      this.hideT = Math.min(1, (this.hideT ?? 1) + dt / 0.3);
+      const k = this.hideT * this.hideT * (3 - 2 * this.hideT);
+      this.camera.position.lerpVectors(this.hideFrom ?? this.hideSpot.eye, this.hideSpot.eye, k);
+      this.horizSpeed = 0;
     } else {
       const feet = _tmp.lerpVectors(this.prevFeet, this.curFeet, alpha);
       this.crouchT = MathUtils.damp(this.crouchT, this.crouching ? 1 : 0, P.crouchLerp, dt);
@@ -196,6 +209,11 @@ export class Player {
 
   fixedUpdate(dt) {
     if (this.noclip) return;
+    if (this.hiding) {
+      this.prevFeet.copy(this.curFeet);
+      this.grounded = true;
+      return;
+    }
     this.prevFeet.copy(this.curFeet);
     const inp = this.input;
     this._updateCrouch();
@@ -337,7 +355,7 @@ export class Player {
   _applyLeanAndBob(dt) {
     const inp = this.input;
     let leanTarget = 0;
-    if (this.enabled && !this.noclip) {
+    if (this.enabled && !this.noclip && !this.hiding) {
       if (inp.down('leanLeft')) leanTarget -= 1;
       if (inp.down('leanRight')) leanTarget += 1;
     }
@@ -376,12 +394,17 @@ export class Player {
     const sway = this.bobAmp * 2.2;
     const run = this.sprinting ? 1 : 0;
     const idle = Math.sin(t * 1.6) * 0.004;
+    this.hands.visible = !this.hiding;
+    const off = this.handOffset;
+    const carry = this.handCarry ?? 0;
     for (const [hand, rest, side] of [[this.handL, this.handRest.L, -1], [this.handR, this.handRest.R, 1]]) {
       const ph = this.bobPhase + (side > 0 ? Math.PI : 0);
+      // the right hand does the reaching and throwing
+      const ox = side > 0 && off ? off.x : 0, oy = side > 0 && off ? off.y : 0, oz = side > 0 && off ? off.z : 0;
       hand.position.set(
-        rest.x + Math.sin(ph) * sway * 0.6,
-        rest.y + Math.abs(Math.cos(ph)) * sway * 0.5 + idle - run * 0.02 + this.landDip * 0.4,
-        rest.z + Math.sin(ph) * sway * run * 1.2,
+        rest.x + Math.sin(ph) * sway * 0.6 + ox - side * carry * 0.05,
+        rest.y + Math.abs(Math.cos(ph)) * sway * 0.5 + idle - run * 0.02 + this.landDip * 0.4 + oy + carry * 0.08,
+        rest.z + Math.sin(ph) * sway * run * 1.2 + oz - carry * 0.1,
       );
     }
   }

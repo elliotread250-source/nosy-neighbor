@@ -79,6 +79,19 @@ export const CONFIG = {
     climbSpeed: 2.6,
   },
 
+  interact: {
+    reach: 2.2,
+    chargeTime: 0.8, // seconds to a full-power throw
+    throwMin: 4, // m/s for a tap
+    throwMax: 15, // m/s fully charged (for a 0.5 kg thing)
+    throwUp: 1.6, // upward bias
+    thrownWindow: 3, // seconds a thrown thing counts as "thrown" (stuns, breaks glass)
+    pryTime: 0.9, // seconds of holding E per board
+    magnetRange: 12,
+    magnetCone: 0.16, // radians
+    flashlightIntensity: 26,
+  },
+
   world: {
     warpIntensity: 1.0, // global multiplier on every warp. Crank it for dream sequences.
     worldSeed: 1337,
@@ -188,7 +201,7 @@ export const CONFIG = {
     suspicious: 0.22,
     hearingThreshold: 0.12,
     noiseRange: 16, // meters a loudness-1 sound carries
-    wallAttenuation: 0.5,
+    wallAttenuation: 0.5, lureWallAttenuation: 0.74, // TVs and kettles carry through walls
     memory: 20,
     loseSightTime: 4,
     catchDistance: 1.1,

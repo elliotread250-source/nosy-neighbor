@@ -30,7 +30,7 @@ export function buildWorld(scene, physics, lights, zones) {
   for (const lp of street.playerHouse.looseProps) {
     lp.obj.position.copy(lp.pos);
     scene.add(lp.obj);
-    props.push(physics.addDynamic(lp.obj, { mass: lp.mass, half: lp.half, data: { item: 'box', noise: 0.3, climbable: true } }));
+    props.push(physics.addDynamic(lp.obj, { mass: lp.mass, half: lp.half, data: { item: 'box', label: 'Cardboard box', noise: 0.3, climbable: true } }));
   }
 
   const updaters = [

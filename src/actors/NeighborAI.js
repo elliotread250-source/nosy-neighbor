@@ -72,6 +72,8 @@ export class NeighborAI {
     this.stuckT = 0;
     this.lastPos = new Vector3();
     this.lureFatigue = {}; // lure type -> count (brain may use)
+    this.lureSeen = new Set();
+    this.lureIgnored = new Set();
 
     this.half = A.height / 2 - A.radius;
     this.prevFeet = new Vector3();
@@ -212,13 +214,19 @@ export class NeighborAI {
     const ear = this.eyePos(_v);
     const dist = ear.distanceTo(e.position);
     let heard = e.global ? e.loudness : e.loudness * Math.max(0, 1 - dist / (A.noiseRange * Math.max(0.3, e.loudness)));
-    if (!e.global && heard > 0) heard *= Math.pow(A.wallAttenuation, this.countWalls(ear, e.position));
+    if (!e.global && heard > 0) heard *= Math.pow(e.lure ? A.lureWallAttenuation : A.wallAttenuation, this.countWalls(ear, e.position));
     heard *= this.diff.hearing;
     if (heard < A.hearingThreshold) return;
     // lure fatigue: the third time the same trick is used, he just looks around
+    // (a ringing lure pulses many noises: each activation counts once)
     if (e.lure) {
-      const n = (this.lureFatigue[e.lure] = (this.lureFatigue[e.lure] || 0) + 1);
-      if (n >= (this.game.brain?.lureLimit?.(e.lure) ?? 99)) {
+      const id = e.lureId ?? `${e.lure}-${this.time.toFixed(1)}`;
+      if (!this.lureSeen.has(id)) {
+        this.lureSeen.add(id);
+        const n = (this.lureFatigue[e.lure] = (this.lureFatigue[e.lure] || 0) + 1);
+        if (n >= (this.game.brain?.lureLimit?.(e.lure) ?? 99)) this.lureIgnored.add(id);
+      }
+      if (this.lureIgnored.has(id)) {
         this.n.setExpression('suspicious');
         return;
       }
@@ -231,6 +239,11 @@ export class NeighborAI {
       return;
     }
     if (this.state === S.ADAPT) return;
+    // already on his way to (roughly) this spot: just refine the target
+    if ((this.state === S.INVESTIGATE || this.state === S.HEAR) && this.investigateTarget && this.investigateTarget.distanceTo(e.position) < 2.5) {
+      this.investigateTarget.copy(e.position);
+      return;
+    }
     this.investigateTarget = e.position.clone();
     this.setState(S.HEAR);
   }

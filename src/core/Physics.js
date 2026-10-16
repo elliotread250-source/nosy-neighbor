@@ -49,6 +49,7 @@ export class Physics {
     let n = 0;
     while (this.accumulator >= h && n < CONFIG.physics.maxSubSteps) {
       for (const d of this.dynamics) {
+        if (d.held) continue;
         d.prevP.copy(d.curP);
         d.prevQ.copy(d.curQ);
       }
@@ -63,6 +64,7 @@ export class Physics {
         });
       });
       for (const d of this.dynamics) {
+        if (d.held) continue;
         const t = d.body.translation();
         const r = d.body.rotation();
         d.curP.set(t.x, t.y, t.z);
@@ -80,7 +82,7 @@ export class Physics {
   _syncMeshes() {
     const a = this.alpha;
     for (const d of this.dynamics) {
-      if (d.body.isSleeping() && d.mesh.userData._synced) continue;
+      if (d.held || (d.body.isSleeping() && d.mesh.userData._synced)) continue;
       d.mesh.position.lerpVectors(d.prevP, d.curP, a);
       d.mesh.quaternion.slerpQuaternions(d.prevQ, d.curQ, a);
       d.mesh.userData._synced = d.body.isSleeping();
@@ -201,6 +203,8 @@ export class Physics {
       .setContactForceEventThreshold(opts.impactThreshold ?? 40);
     if (opts.mass) cdesc.setMass(opts.mass);
     const col = this.world.createCollider(cdesc, body);
+    // resting weight shouldn't read as an impact
+    if (opts.impactThreshold === undefined) col.setContactForceEventThreshold(Math.max(40, col.mass() * 9.81 * 2.5));
 
     // Re-parent to scene root so the body owns the world transform.
     if (obj.parent && obj.parent.type !== 'Scene') {
@@ -240,6 +244,14 @@ export class Physics {
       collider: hit.collider,
       data: this.colliderData.get(hit.collider.handle) ?? null,
     };
+  }
+
+  // Put a prop's body (and its interpolation state) at the mesh's world pose.
+  resetEntry(entry, pos, quat) {
+    entry.body.setTranslation(pos, true);
+    entry.body.setRotation(quat, true);
+    entry.prevP.copy(pos); entry.curP.copy(pos);
+    entry.prevQ.copy(quat); entry.curQ.copy(quat);
   }
 
   bodyCount() {

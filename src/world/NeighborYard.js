@@ -188,7 +188,12 @@ export function buildNeighborYard(scene, physics, { doors }) {
     pool.position.set(5, 0, -29.5);
     pool.traverse((m) => { if (m.isMesh) m.receiveShadow = true; });
     root.add(pool);
-    physics.addStaticBox(new Vector3(5, 0.18, -29.5), new Vector3(1.3, 0.18, 1.3));
+    // a floor you can step down onto and a ring of rim colliders (it's a real pool, not a plinth)
+    physics.addStaticBox(new Vector3(5, 0.03, -29.5), new Vector3(1.25, 0.03, 1.25));
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2;
+      physics.addStaticBox(new Vector3(5 + Math.cos(a) * 1.25, 0.19, -29.5 + Math.sin(a) * 1.25), new Vector3(0.18, 0.19, 0.42), new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), -a));
+    }
     pool.userData.water = water;
     // drain valve on a pipe
     const pipe = new Mesh(chamferCylinder(0.06, 0.06, 1.1, 10, 0.02), makeMat('METAL'));

@@ -43,7 +43,7 @@ export const CLUTTER = {
   can(name, color) {
     const c = color ?? rng(name).pick(['RED_TOY', 'KEY_GREEN']);
     const m = mesh(chamferCylinder(0.035, 0.035, 0.12, 14, 0.008), makeMat(c, { spec: 0.6 }));
-    return { obj: m, phys: { shape: 'cylinder', mass: 0.2, restitution: 0.3, data: { item: 'can', label: 'Soda can', throwable: true, noise: 0.45, rolls: true } } };
+    return { obj: m, phys: { shape: 'cylinder', mass: 0.2, restitution: 0.3, data: { item: 'can', metal: true, label: 'Soda can', throwable: true, noise: 0.45, rolls: true } } };
   },
   paintCan(name) {
     const g = new Group();
@@ -53,7 +53,7 @@ export const CLUTTER = {
     const h = mesh(new TorusGeometry(0.1, 0.006, 4, 16, Math.PI), makeMat('METAL_DARK'));
     h.position.y = 0.09;
     g.add(lid, h);
-    return { obj: g, phys: { shape: 'cylinder', mass: 1.5, data: { item: 'paintCan', label: 'Paint can', throwable: true, noise: 0.75, breaksGlass: true } } };
+    return { obj: g, phys: { shape: 'cylinder', mass: 1.5, data: { item: 'paintCan', metal: true, label: 'Paint can', throwable: true, noise: 0.75, breaksGlass: true } } };
   },
   apple(name) {
     const g = new Group();
@@ -104,7 +104,7 @@ export const CLUTTER = {
       w.position.set(x, -0.03, z);
       g.add(w);
     }
-    return { obj: g, phys: { mass: 0.2, data: { item: 'toyCar', label: 'Toy car', throwable: true, noise: 0.35 } } };
+    return { obj: g, phys: { mass: 0.2, data: { item: 'toyCar', metal: true, label: 'Toy car', throwable: true, noise: 0.35 } } };
   },
   block(name) {
     const r = rng(name);
@@ -214,7 +214,7 @@ export const CLUTTER = {
     const h = mesh(new TorusGeometry(0.15, 0.008, 4, 16, Math.PI), makeMat('METAL_DARK'));
     h.position.y = 0.28;
     g.add(h);
-    return { obj: g, phys: { shape: 'cylinder', mass: 1.0, data: { item: 'bucket', label: 'Bucket', throwable: true, noise: 0.6 } } };
+    return { obj: g, phys: { shape: 'cylinder', mass: 1.0, data: { item: 'bucket', metal: true, label: 'Bucket', throwable: true, noise: 0.6 } } };
   },
   smallBox(name, s = 0.4) {
     const g = new Group();

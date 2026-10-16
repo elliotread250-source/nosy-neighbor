@@ -109,7 +109,7 @@ export function furnishUpperFloor(ctx) {
   const handle = new Mesh(roundedBox(0.3, 0.05, 0.05, 0.02, 1), makeMat('BLACK_SOFT'));
   handle.position.y = 0.34;
   toolbox.add(tb, handle);
-  place(toolbox, 2.2, -25.3, 0.2, { collide: false });
+  place(toolbox, 2.2, -25.3, 0.2, { collide: false, noBake: true });
   ctx.house.toolbox = toolbox;
   // the crowbar hint: a child's crayon drawing taped to the wall
   const drawing = D.blueprint('closet-drawing', 0.6, 0.45);
