@@ -66,7 +66,7 @@ const lookAtMantel = async () => {
   note(`  mantel camera at ${JSON.stringify(await page.evaluate(() => nn.engine.camera.position.toArray().map((v) => +v.toFixed(2))))}`);
 };
 await lookAtMantel();
-await snap('mantel-snow-globe-already-gone-toy-train-still-there');
+await snap('mantel-empty-snow-globe-already-gone');
 // stand the player in their own bedroom so nothing nearby is touched
 await page.evaluate(() => { const V = nn.engine.camera.position.constructor; nn.player.spawn(new V(2.4, 0.5, 19.2), 0); });
 for (let t = 0; t < 30; t += 0.5) await page.evaluate(() => nn.simulate(0.5));

@@ -28,7 +28,7 @@ With the glass broken by script (`breakGlass('w-living2')`), crouching works:
 | Walk in standing | stopped at the wall | stopped at the wall |
 | Walk and jump | lands on the flower box (feet y 1.37), stuck | lands on the flower box (feet y 1.40), stuck |
 | Jump onto the box, hold C, keep walking | slides back to the porch | gets inside, ends at (-3.5, 0.62, -17.14) |
-| Jump, press C in the air, keep walking | back on the porch | gets inside (reached z -16.77), then the neighbor caught the player |
+| Jump, press C in the air, keep walking | back on the porch | gets inside, ends at (-3.5, 0.62, -17.14); in one of two runs the neighbor, drawn by the glass breaking, caught the player just after |
 | Hold C, then try to jump | can't jump while crouched | not tried |
 
 Standing can't fit by design: the opening is 1.6 m tall (sill y 1.5, top y 3.1) and the player is 1.75 m. So once bug 1 is fixed, the player needs to know to crouch on the flower box. Nothing in the game tells them that.
@@ -61,9 +61,9 @@ Severity: medium. The shatter also emits a noise event the neighbor can hear, on
 
 Repro: load the game with `?debug=1`. At the title screen run `nn.physics.dynamics.filter(e => e.data?.item === 'snowGlobe').length`. It returns 0, and there are 7 bodies with `item: 'shard'` around (-7.9, 2.2, -17.7).
 
-Cause (from reading the code, not yet tested): `GroundFloor.js` puts the snow globe at (-7.6, -17.65) on the mantel. The fireplace sits at (-7.55, -17.0) rotated 90 degrees, and its chimney (`Decor.js`, 1.3 by 2.2 by 0.45 m, centered just behind the mantel) covers x -7.83 to -7.38 and z -17.65 to -16.35. The globe spawns half inside the chimney, the solver shoves it out hard enough to cross the 260 shatter threshold, and `Impacts.shatter()` breaks it. The toy train at (-7.6, -16.6) spawns inside the chimney too, but it doesn't break. Moving both to x of about -7.28 (the clear strip at the front of the mantel) should fix it.
+Cause (from reading the code, not yet tested): `GroundFloor.js` puts the snow globe at (-7.6, -17.65) on the mantel. The fireplace sits at (-7.55, -17.0) rotated 90 degrees, and its chimney (`Decor.js`, 1.3 by 2.2 by 0.45 m, centered just behind the mantel) covers x -7.83 to -7.38 and z -17.65 to -16.35. The globe spawns half inside the chimney, the solver shoves it out hard enough to cross the 260 shatter threshold, and `Impacts.shatter()` breaks it. The toy train at (-7.6, -16.6) spawns inside the chimney too. It doesn't break, but it isn't visible on the mantel either (shot 25 shows the mantel bare on both sides of the chimney), so it's either buried in the brickwork or knocked off. Moving both to x of about -7.28 (the clear strip at the front of the mantel) should fix it.
 
-Screenshot: `25-mantel-snow-globe-already-gone-toy-train-still-there.png`.
+Screenshot: `25-mantel-empty-snow-globe-already-gone.png`.
 
 ### 4. Can't step onto the neighbor's porch away from the steps, and a jump perches you too high
 
@@ -87,17 +87,17 @@ Screenshot: `19-front-hallway.png` (mid-jump next to the stair).
 
 Severity: low.
 
-Repro: start a new game, finish the intro, stand still in your own bedroom for 30 s of game time, then compare positions across the street. In two runs: a can in the kitchen rolled from z -24.85 to -23.62 (1.2 m), a mug in the dining room slid from x 7.27 to 5.37 (1.9 m), and a dining chair moved 0.77 m.
+Repro: start a new game, finish the intro, stand still in your own bedroom for 30 s of game time, then compare positions across the street. The kitchen can at about (7.7, 0.63, -25.0) rolled 1.2 m north in all four runs. Once each: a dining-room mug slid from x 7.27 to 5.37 (1.9 m) and a dining chair moved 0.77 m.
 
 Screenshot: none. These are under 2 m and indoors, out of frame for every shot. The numbers are in `reports/m0checks.log`.
 
-### 7. The house interior looks washed out to white through the front window
+### 7. Window glass washes the room behind it out to near white
 
 Severity: low.
 
-Repro: stand on the porch in front of the x -3.5 window and look in. The living room renders almost white with faint outlines. From inside, the same room has normal colors.
+Repro: stand on the neighbor's porch in front of the x -3.5 window and look in. Through the intact pane the living room renders almost white with faint outlines. Break the glass and the same view has normal colors, so it's the glass material, not the room's lighting. Glass this milky also makes it hard for the player to read the room before going in.
 
-Screenshots: `15-at-the-broken-window-sill.png` (from outside), `32-broken-window-after-crouch-attempt.png` (same room from inside).
+Screenshots: `15-at-the-broken-window-sill.png` (through the glass), `31-broken-window-crouched-on-flower-box.png` (same view, glass gone).
 
 ### 8. Power lines render as dashes
 
@@ -113,7 +113,7 @@ Severity: low (debug only), but it makes every screenshot misleading.
 
 Repro: with `?debug=1`, teleport or move the player and take a screenshot. The panel lags behind: shot 14 shows `pos 1.4 1.8 -9.8` while the player is at (-3.5, 1.5, -11.25), and shot 25 shows `NOCLIP air` at `pos 2.4 3.1 3.5` while the camera is at (-5.6, 2.2, -17.2) in the neighbor's living room.
 
-Screenshots: `14-porch-in-front-of-the-broken-window.png`, `25-mantel-snow-globe-already-gone-toy-train-still-there.png`.
+Screenshots: `14-porch-in-front-of-the-broken-window.png`, `25-mantel-empty-snow-globe-already-gone.png`.
 
 ### 10. Low preset is far over its draw-call and triangle budget
 
