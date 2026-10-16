@@ -27,6 +27,25 @@ await page.evaluate(() => {
   window.give = (kind) => { const e = nn.physics.dynamics.find((d) => d.data?.item === kind && !d.held); if (e) nn.interaction.inv.addProp(e); return !!e; };
 });
 const SCENES = {
+  introWalk: () => { nn.ai.frozen = false; nn.story.startIntro(); nn.simulate(4); },
+  introStare: () => { nn.simulate(4.6); },
+  introCard: () => { nn.simulate(3.0); },
+  note: () => { nn.simulate(4); nn.ai.frozen = true; nn.story.showNote(); },
+  monitors: () => { nn.story.mode = null; nn.player.enabled = true; import('/src/core/Events.js').then(({ Events }) => Events.emit('note', { open: false })); nn.ai.frozen = false; nn.ai.teleport(new V(0.4, 0.6, -19.5), 0); nn.ai.setState('patrol'); nn.story.enterMonitors(); },
+  cage: () => {
+    nn.story.exitMonitors(); nn.ai.frozen = true;
+    const end = nn.world.house.tunnelEnd;
+    const c = nn.story.cage.g.getWorldPosition(new V());
+    aim([end.x - 1.5, end.y, end.z + 0.2], c.toArray());
+  },
+  basementDoor: () => {
+    const d = nn.world.doors.get('d-basement').worldCenter(new V());
+    aim([d.x + 0.4, 0.6, d.z + 1.6], [d.x, d.y - 0.2, d.z]);
+  },
+  endStairs: () => { nn.story.startEnding(); nn.simulate(5.5); },
+  endRoom: () => { nn.simulate(8.6); },
+  endBehind: () => { nn.simulate(1.9); },
+  endScreen: () => { nn.simulate(6.0); },
   adapt: () => {
     const b = nn.brain;
     const ent = (id) => b.entries.find((e) => e.id === id);

@@ -26,6 +26,7 @@ import { Interaction } from './Interaction.js';
 import { Devices } from './Devices.js';
 import { Impacts } from './Impacts.js';
 import { NeighborBrain } from './NeighborBrain.js';
+import { Story } from './Story.js';
 import { SHOTS, poseFromTarget, setupViewer } from './Shots.js';
 import { HUD } from '../ui/HUD.js';
 import { DebugOverlay } from '../ui/DebugOverlay.js';
@@ -82,6 +83,7 @@ export class Game {
       this.impacts = new Impacts(this);
     }
     if (this.ai) this.brain = new NeighborBrain(this);
+    if (this.devices && this.world.interior) this.story = new Story(this);
     this.timeScale = 1;
     this.state = 'play';
     this.catches = 0;
@@ -125,12 +127,13 @@ export class Game {
       engine.canvas.focus();
     });
     input.onLockChange = (locked) => {
-      overlay.classList.toggle('hidden', locked);
+      overlay.classList.toggle('hidden', locked || this.state === 'ended');
       overlay.querySelector('.overlay-title').textContent = started ? 'Paused' : 'Nosy Neighbor';
       overlay.querySelector('.overlay-sub').textContent = started ? 'Click to keep sneaking' : 'Click to play';
       if (locked && !started) {
         started = true;
-        hud.showObjective('Find out what\'s in the basement.');
+        if (this.story && !qs.has('nointro')) this.story.startIntro();
+        else hud.showObjective('Find out what\'s in the basement.');
       }
     };
   }
@@ -138,6 +141,7 @@ export class Game {
   // ------------------------------------------------------------ catch & respawn
   startCatch(opts = {}) {
     if (!this.catchSeq || this.catchSeq.active) return;
+    this.story?.beforeCatch();
     this.catchSeq.start(opts);
   }
 
@@ -185,6 +189,7 @@ export class Game {
     this.devices?.update(dt);
     this.impacts?.update(dt);
     this.brain?.update(dt);
+    this.story?.update(dt);
   }
 
   // ------------------------------------------------------------ frame

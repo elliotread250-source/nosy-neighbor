@@ -192,10 +192,10 @@ export class NeighborBrain {
   }
 
   patrolBias() {
-    const out = {};
+    const out = { ...(this.storyBias || {}) };
     for (const [actId, room] of Object.entries(this.activityRooms)) {
       const t = this.roomVisits[room] || 0;
-      if (t > 0) out[actId] = 1 + Math.min(3, t / B().roomBiasSeconds);
+      if (t > 0) out[actId] = (out[actId] ?? 1) * (1 + Math.min(3, t / B().roomBiasSeconds));
     }
     return out;
   }

@@ -273,6 +273,8 @@ export class Interaction {
 
   _doorTarget(door) {
     const inv = this.inv;
+    const special = this.game.story?.doorTarget?.(door);
+    if (special !== undefined) return special;
     if (door.boards > 0) {
       if (!inv.has('crowbar')) return { obj: door.boardGroup ?? door.slab, label: 'Boarded up (needs a crowbar)', act: () => Events.emit('sfx', { name: 'rattle', position: door.worldCenter() }) };
       return { obj: door.boardGroup ?? door.slab, label: 'Pry off a board', hold: CONFIG.interact.pryTime, holdSfx: 'pryStart', act: () => { door.removeBoard(); this.handPush = 1.2; Events.emit('sfx', { name: 'pryPop', position: door.worldCenter() }); } };
@@ -515,7 +517,7 @@ export class Interaction {
       const dist = _w.length();
       if (dist < 0.7) {
         this.magnetLock = null;
-        t.act(this);
+        (t.collect ?? t.act)(this);
         Events.emit('sfx', { name: 'magnetClunk' });
         return;
       }

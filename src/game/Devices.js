@@ -161,7 +161,7 @@ export class Devices {
   }
 
   // ------------------------------------------------------------ keys
-  addKey(color, pos, { parent = null, rotY = 0, enabled = null, magnetic = false, hanging = false, reachableOnlyPulled = false } = {}) {
+  addKey(color, pos, { parent = null, rotY = 0, enabled = null, magnetic = false, hanging = false, reachableOnlyPulled = false, canTake = null } = {}) {
     const obj = buildKey(color);
     obj.position.copy(pos);
     obj.rotation.set(hanging ? 0 : Math.PI / 2, rotY, 0);
@@ -170,9 +170,15 @@ export class Devices {
     pk.target = this.ix.addTarget({
       obj, pad: 0.08, magnetic,
       enabled: () => !pk.collected && (!enabled || enabled()),
-      label: () => (reachableOnlyPulled && !pk.target.pulled ? null : `Take the ${KEY_NAMES[color] ?? 'key'}`),
+      label: () => {
+        if (pk.target.pulled) return `Take the ${KEY_NAMES[color] ?? 'key'}`;
+        if (reachableOnlyPulled) return 'Way out of reach';
+        if (canTake && !canTake()) return null;
+        return `Take the ${KEY_NAMES[color] ?? 'key'}`;
+      },
       dynamicBox: (box) => box.setFromObject(obj).expandByScalar(0.08),
-      act: () => this.collectKey(pk),
+      act: () => { if (pk.target.pulled || (!reachableOnlyPulled && (!canTake || canTake()))) this.collectKey(pk); },
+      collect: () => this.collectKey(pk),
     });
     this.pickups.push(pk);
     return pk;

@@ -13,6 +13,11 @@ export class HUD {
     root.innerHTML = `
       <div class="hud-hide"></div>
       <div class="hud-cine"><div></div><div></div></div>
+      <div class="hud-monitor"><div class="scan"></div><div class="lbl"></div><div class="rec">&#9679; REC</div><div class="help">E next camera &middot; Space leave</div></div>
+      <div class="hud-glow"></div>
+      <div class="hud-card"></div>
+      <div class="hud-note"><canvas width="640" height="460"></canvas><div class="help">E to put it back</div></div>
+      <div class="hud-end"><div class="t1">ACT 1 COMPLETE</div><div class="t2">Act 2 coming soon</div><div class="stats"></div><div class="again">Click to play again</div></div>
       <div class="hud-crosshair"></div>
       <svg class="hud-hold" viewBox="0 0 46 46"><circle cx="23" cy="23" r="18" fill="none" stroke="rgba(42,30,58,0.5)" stroke-width="6"/><circle class="arc" cx="23" cy="23" r="18" fill="none" stroke="#f2c94c" stroke-width="5" stroke-linecap="round" transform="rotate(-90 23 23)" stroke-dasharray="113" stroke-dashoffset="113"/></svg>
       <div class="hud-prompt"></div>
@@ -37,6 +42,24 @@ export class HUD {
     this.hideEl = q('.hud-hide');
     this.slotEls = [...root.querySelectorAll('.hud-slot')];
     this.cine = q('.hud-cine');
+    this.monitorEl = q('.hud-monitor');
+    this.glowEl = q('.hud-glow');
+    this.cardEl = q('.hud-card');
+    this.noteEl = q('.hud-note');
+    this.endEl = q('.hud-end');
+    Events.on('monitor', (e) => { this.monitorEl.classList.toggle('show', e.on); if (e.on) this.monitorEl.querySelector('.lbl').textContent = e.name; root.classList.toggle('cinematic', e.on); });
+    Events.on('glow', (e) => this.glowEl.classList.toggle('show', e.on));
+    Events.on('titlecard', (e) => { this.cardEl.textContent = e.text ?? ''; this.cardEl.classList.toggle('show', !!e.text); });
+    Events.on('note', (e) => { if (e.open) drawNote(this.noteEl.querySelector('canvas'), e.code); this.noteEl.classList.toggle('show', e.open); });
+    Events.on('act:complete', (e) => {
+      const st = e.stats;
+      const mm = Math.floor(st.time / 60), ss = Math.floor(st.time % 60);
+      this.endEl.querySelector('.stats').innerHTML = `<div><b>${mm}:${String(ss).padStart(2, '0')}</b>time</div><div><b>${st.catches}</b>times caught</div><div><b>${st.routes}</b>ways in found</div><div><b>${st.traps}</b>traps stepped in</div>`;
+      this.endEl.classList.add('show');
+      root.classList.add('cinematic');
+      this.endEl.style.pointerEvents = 'auto';
+      this.endEl.addEventListener('click', () => location.reload(), { once: true });
+    });
     Events.on('cinematic', (e) => { this.cine.classList.toggle('show', e.on); root.classList.toggle('cinematic', e.on); });
     this._objTimer = 0;
     this._hintTimer = 0;
@@ -229,5 +252,44 @@ function drawIcon(canvas, item) {
       shape(() => x.arc(0, 0, 20, 0, Math.PI * 2));
       break;
   }
+  x.restore();
+}
+
+// The note from the attic trunk: a crayon washing machine and three numbers.
+function drawNote(c, code) {
+  const x = c.getContext('2d');
+  const W = c.width, H = c.height;
+  x.clearRect(0, 0, W, H);
+  x.save();
+  x.translate(W / 2, H / 2);
+  x.rotate(-0.03);
+  x.fillStyle = '#fbf3dc';
+  x.strokeStyle = '#2a1e3a';
+  x.lineWidth = 6;
+  x.beginPath(); x.roundRect(-W / 2 + 20, -H / 2 + 20, W - 40, H - 40, 10); x.fill(); x.stroke();
+  // ruled lines
+  x.strokeStyle = 'rgba(69,123,157,0.25)'; x.lineWidth = 2;
+  for (let y = -H / 2 + 70; y < H / 2 - 30; y += 34) { x.beginPath(); x.moveTo(-W / 2 + 34, y); x.lineTo(W / 2 - 34, y); x.stroke(); }
+  // washing machine in crayon
+  x.lineCap = 'round'; x.lineJoin = 'round';
+  x.strokeStyle = '#457b9d'; x.lineWidth = 7;
+  x.strokeRect(-250, -150, 200, 230);
+  x.beginPath(); x.arc(-150, -5, 62, 0, Math.PI * 2); x.stroke();
+  x.beginPath(); x.moveTo(-250, -100); x.lineTo(-50, -100); x.stroke();
+  x.strokeStyle = '#e07a5f';
+  for (let i = 0; i < 3; i++) { x.beginPath(); x.arc(-215 + i * 32, -125, 10, 0, Math.PI * 2); x.stroke(); }
+  // arrow down
+  x.strokeStyle = '#2a1e3a'; x.lineWidth = 5;
+  x.beginPath(); x.moveTo(-150, 100); x.lineTo(-150, 160); x.moveTo(-170, 140); x.lineTo(-150, 162); x.lineTo(-130, 140); x.stroke();
+  // the numbers
+  x.fillStyle = '#e63946';
+  x.font = 'bold 120px "Luckiest Guy", "Nunito", sans-serif';
+  x.textAlign = 'center';
+  code.forEach((n, i) => { x.save(); x.translate(10 + i * 90, 10); x.rotate((i - 1) * 0.08); x.fillText(String(n), 0, 0); x.restore(); });
+  x.fillStyle = '#2a1e3a';
+  x.font = 'bold 30px "Nunito", sans-serif';
+  x.fillText('left  middle  right', 100, 70);
+  x.font = 'italic 26px "Nunito", sans-serif';
+  x.fillText("don't forget again, H.", 120, 150);
   x.restore();
 }
