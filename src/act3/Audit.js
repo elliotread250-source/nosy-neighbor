@@ -49,7 +49,9 @@ export function audit(spec, measurements = []) {
   const assumed = [];
   forEachTagged(spec, (node, path) => {
     census[node.tag] = (census[node.tag] || 0) + 1;
-    if (bucketOf(node.tag) === 'assumed' && 'value' in node) assumed.push({ path, value: node.value, tag: node.tag, rule: node.rule, weight: weightOf(path, node.value) });
+    // angles, speeds and times are not lengths: they stay out of the ranked list
+    const notLength = /\.(rot|tilt|lean|twist|yaw|pitch|throwDeg|rps|rpsClimbing|fov|sweep|period|beep|loudCamera|loudLaser|speed|boltHold|keycardHold|pitch|cartoonScale)$/.test(path) || /\.(alarm|blades)\./.test(path);
+    if (bucketOf(node.tag) === 'assumed' && 'value' in node && !notLength) assumed.push({ path, value: node.value, tag: node.tag, rule: node.rule, weight: weightOf(path, node.value) });
   });
   for (const f of spec.floors) for (const r of f.rooms) {
     if (bucketOf(r.polygonTag) !== 'assumed') continue;
